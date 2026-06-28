@@ -1,0 +1,27 @@
+{
+  "protocol_version": "0.1.0",
+  "phase_id": "phase_2",
+  "claims": [
+    {
+      "id": "phase_2-ci-proof",
+      "claim": "pnpm run ci completed successfully after Core engine.",
+      "status": "command_verified",
+      "evidence": [
+        "docs/checkpoints/phase_2/commands.md",
+        "docs/checkpoints/phase_2/artifacts/validation_summary.json"
+      ],
+      "required": true
+    },
+    {
+      "id": "phase_2-checkpoint-proof",
+      "claim": "Checkpoint artifact set exists for phase_2.",
+      "status": "static_verified",
+      "evidence": [
+        "docs/checkpoints/phase_2/checkpoint.md",
+        "docs/checkpoints/phase_2/proof.json",
+        "docs/checkpoints/phase_2/next_action.yaml"
+      ],
+      "required": true
+    }
+  ]
+}

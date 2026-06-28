@@ -1,0 +1,34 @@
+protocol_version: 0.1.0
+phase_id: phase_0
+slices:
+  - id: phase_0_slice_001
+    phase_id: phase_0
+    title: Repo bootstrap
+    objective: Initialized TypeScript pnpm monorepo, package metadata,
+      lint/test/build tooling, README, and CI skeleton.
+    owner: parent-emulated-worker
+    dependencies: []
+    spec_refs:
+      - docs/implementation_spec.md#phase_0
+    allowed_write_scope:
+      - "**"
+    forbidden_write_scope:
+      - .git/**
+      - node_modules/**
+      - .secrets/**
+    expected_changed_files:
+      - package.json
+      - pnpm-workspace.yaml
+      - tsconfig.base.json
+      - .github/workflows/ci.yml
+    validation_commands:
+      - id: local-ci
+        command: pnpm run ci
+        required: true
+    evidence_requirements:
+      - Local CI command completed successfully
+      - Checkpoint artifacts exist
+    side_effect_policy: default
+    packet_required: true
+    next_dependencies:
+      - phase_1

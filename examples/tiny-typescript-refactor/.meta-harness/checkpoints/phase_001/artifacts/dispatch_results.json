@@ -1,0 +1,9 @@
+[
+  {
+    "adapterId": "fake",
+    "sliceId": "phase_001_slice_001",
+    "status": "simulated",
+    "packetPath": ".meta-harness/checkpoints/phase_001/subagent_packets/phase_001_slice_001.packet.yaml",
+    "message": "Prompt and simulated packet written."
+  }
+]

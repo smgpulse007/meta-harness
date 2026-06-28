@@ -1,0 +1,37 @@
+{
+  "protocol_version": "0.1.0",
+  "phase_id": "phase_7",
+  "claims": [
+    {
+      "id": "phase_7-ci-proof",
+      "claim": "pnpm run ci completed successfully after Examples, audit, and release readiness.",
+      "status": "command_verified",
+      "evidence": [
+        "docs/checkpoints/phase_7/commands.md",
+        "docs/checkpoints/phase_7/artifacts/validation_summary.json"
+      ],
+      "required": true
+    },
+    {
+      "id": "phase_7-checkpoint-proof",
+      "claim": "Checkpoint artifact set exists for phase_7.",
+      "status": "static_verified",
+      "evidence": [
+        "docs/checkpoints/phase_7/checkpoint.md",
+        "docs/checkpoints/phase_7/proof.json",
+        "docs/checkpoints/phase_7/next_action.yaml"
+      ],
+      "required": true
+    },
+    {
+      "id": "phase_7-pack-dry-run-proof",
+      "claim": "Publishable package dry-runs completed without publishing.",
+      "status": "command_verified",
+      "evidence": [
+        "docs/checkpoints/phase_7/commands.md",
+        "docs/checkpoints/phase_7/artifacts/validation_summary.json"
+      ],
+      "required": true
+    }
+  ]
+}

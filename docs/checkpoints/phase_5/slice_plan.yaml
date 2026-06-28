@@ -1,0 +1,33 @@
+protocol_version: 0.1.0
+phase_id: phase_5
+slices:
+  - id: phase_5_slice_001
+    phase_id: phase_5
+    title: Skill and instruction emitters
+    objective: Added standalone skill package, canonical templates, AGENTS.md, and
+      generated instruction targets for mainstream coding tools.
+    owner: parent-emulated-worker
+    dependencies: []
+    spec_refs:
+      - docs/implementation_spec.md#phase_5
+    allowed_write_scope:
+      - "**"
+    forbidden_write_scope:
+      - .git/**
+      - node_modules/**
+      - .secrets/**
+    expected_changed_files:
+      - skills/meta-harness/SKILL.md
+      - AGENTS.md
+      - packages/cli/src/commands/emit-instructions.ts
+    validation_commands:
+      - id: local-ci
+        command: pnpm run ci
+        required: true
+    evidence_requirements:
+      - Local CI command completed successfully
+      - Checkpoint artifacts exist
+    side_effect_policy: default
+    packet_required: true
+    next_dependencies:
+      - phase_6

@@ -1,0 +1,15 @@
+{
+  "protocol_version": "0.1.0",
+  "phase_id": "phase_001",
+  "claims": [
+    {
+      "id": "phase_001_slice_001-proof-001",
+      "claim": "Fake adapter packet exists.",
+      "status": "static_verified",
+      "evidence": [
+        ".meta-harness/checkpoints/phase_001/subagent_packets/phase_001_slice_001.packet.yaml"
+      ],
+      "required": true
+    }
+  ]
+}

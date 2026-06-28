@@ -1,0 +1,209 @@
+protocol_version: 0.1.0
+project: meta-harness
+phases:
+  - id: phase_0
+    title: Repo bootstrap
+    source_spec_refs:
+      - docs/implementation_spec.md
+    input_checkpoints: []
+    output_checkpoint: docs/checkpoints/phase_0
+    acceptance_criteria:
+      - Required files exist
+      - Validation evidence is recorded
+    validation_commands:
+      - id: local-ci
+        command: pnpm run ci
+        required: true
+    allowed_terminal_statuses:
+      - complete
+      - complete_pending_human_review
+      - pass_with_risks
+      - blocked
+      - failed
+    human_acceptance_required: false
+    side_effect_policy: default
+    slices:
+      - phase_0_slice_001
+    depends_on: []
+  - id: phase_1
+    title: Protocol docs and schemas
+    source_spec_refs:
+      - docs/implementation_spec.md
+    input_checkpoints:
+      - docs/checkpoints/phase_0
+    output_checkpoint: docs/checkpoints/phase_1
+    acceptance_criteria:
+      - Required files exist
+      - Validation evidence is recorded
+    validation_commands:
+      - id: local-ci
+        command: pnpm run ci
+        required: true
+    allowed_terminal_statuses:
+      - complete
+      - complete_pending_human_review
+      - pass_with_risks
+      - blocked
+      - failed
+    human_acceptance_required: false
+    side_effect_policy: default
+    slices:
+      - phase_1_slice_001
+    depends_on:
+      - phase_0
+  - id: phase_2
+    title: Core engine
+    source_spec_refs:
+      - docs/implementation_spec.md
+    input_checkpoints:
+      - docs/checkpoints/phase_1
+    output_checkpoint: docs/checkpoints/phase_2
+    acceptance_criteria:
+      - Required files exist
+      - Validation evidence is recorded
+    validation_commands:
+      - id: local-ci
+        command: pnpm run ci
+        required: true
+    allowed_terminal_statuses:
+      - complete
+      - complete_pending_human_review
+      - pass_with_risks
+      - blocked
+      - failed
+    human_acceptance_required: false
+    side_effect_policy: default
+    slices:
+      - phase_2_slice_001
+    depends_on:
+      - phase_1
+  - id: phase_3
+    title: CLI
+    source_spec_refs:
+      - docs/implementation_spec.md
+    input_checkpoints:
+      - docs/checkpoints/phase_2
+    output_checkpoint: docs/checkpoints/phase_3
+    acceptance_criteria:
+      - Required files exist
+      - Validation evidence is recorded
+    validation_commands:
+      - id: local-ci
+        command: pnpm run ci
+        required: true
+    allowed_terminal_statuses:
+      - complete
+      - complete_pending_human_review
+      - pass_with_risks
+      - blocked
+      - failed
+    human_acceptance_required: false
+    side_effect_policy: default
+    slices:
+      - phase_3_slice_001
+    depends_on:
+      - phase_2
+  - id: phase_4
+    title: MCP server
+    source_spec_refs:
+      - docs/implementation_spec.md
+    input_checkpoints:
+      - docs/checkpoints/phase_3
+    output_checkpoint: docs/checkpoints/phase_4
+    acceptance_criteria:
+      - Required files exist
+      - Validation evidence is recorded
+    validation_commands:
+      - id: local-ci
+        command: pnpm run ci
+        required: true
+    allowed_terminal_statuses:
+      - complete
+      - complete_pending_human_review
+      - pass_with_risks
+      - blocked
+      - failed
+    human_acceptance_required: false
+    side_effect_policy: default
+    slices:
+      - phase_4_slice_001
+    depends_on:
+      - phase_3
+  - id: phase_5
+    title: Skill and instruction emitters
+    source_spec_refs:
+      - docs/implementation_spec.md
+    input_checkpoints:
+      - docs/checkpoints/phase_4
+    output_checkpoint: docs/checkpoints/phase_5
+    acceptance_criteria:
+      - Required files exist
+      - Validation evidence is recorded
+    validation_commands:
+      - id: local-ci
+        command: pnpm run ci
+        required: true
+    allowed_terminal_statuses:
+      - complete
+      - complete_pending_human_review
+      - pass_with_risks
+      - blocked
+      - failed
+    human_acceptance_required: false
+    side_effect_policy: default
+    slices:
+      - phase_5_slice_001
+    depends_on:
+      - phase_4
+  - id: phase_6
+    title: Adapters
+    source_spec_refs:
+      - docs/implementation_spec.md
+    input_checkpoints:
+      - docs/checkpoints/phase_5
+    output_checkpoint: docs/checkpoints/phase_6
+    acceptance_criteria:
+      - Required files exist
+      - Validation evidence is recorded
+    validation_commands:
+      - id: local-ci
+        command: pnpm run ci
+        required: true
+    allowed_terminal_statuses:
+      - complete
+      - complete_pending_human_review
+      - pass_with_risks
+      - blocked
+      - failed
+    human_acceptance_required: false
+    side_effect_policy: default
+    slices:
+      - phase_6_slice_001
+    depends_on:
+      - phase_5
+  - id: phase_7
+    title: Examples, audit, and release readiness
+    source_spec_refs:
+      - docs/implementation_spec.md
+    input_checkpoints:
+      - docs/checkpoints/phase_6
+    output_checkpoint: docs/checkpoints/phase_7
+    acceptance_criteria:
+      - Required files exist
+      - Validation evidence is recorded
+    validation_commands:
+      - id: local-ci
+        command: pnpm run ci
+        required: true
+    allowed_terminal_statuses:
+      - complete
+      - complete_pending_human_review
+      - pass_with_risks
+      - blocked
+      - failed
+    human_acceptance_required: true
+    side_effect_policy: default
+    slices:
+      - phase_7_slice_001
+    depends_on:
+      - phase_6

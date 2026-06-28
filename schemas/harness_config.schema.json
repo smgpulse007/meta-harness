@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://meta-harness.dev/schemas/harness_config.schema.json",
+  "title": "Meta Harness Config",
+  "type": "object",
+  "required": ["protocol_version", "spec", "manifest"],
+  "properties": {
+    "protocol_version": { "type": "string" },
+    "spec": { "type": "string", "minLength": 1 },
+    "alignment": { "type": "string" },
+    "manifest": { "type": "string", "minLength": 1 },
+    "ingested_at": { "type": "string" }
+  },
+  "additionalProperties": false
+}

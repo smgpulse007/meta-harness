@@ -1,0 +1,56 @@
+protocol_version: 0.1.0
+slice_id: phase_7_slice_001
+status: complete_pending_human_review
+planned_owner: parent-emulated-worker
+actual_owner: codex-parent
+changed_files:
+  - examples/tiny-typescript-refactor/README.md
+  - docs/release-checklist.md
+  - scripts/integration-smoke.ts
+spec_alignment_refs:
+  - docs/implementation_spec.md#phase_7
+implementation_summary: Added tiny examples, release checklist, issue/PR
+  templates, local CI proof, and delegated review reconciliation.
+proof_statements:
+  - id: phase_7-ci-proof
+    claim: pnpm run ci completed successfully after Examples, audit, and release
+      readiness.
+    status: command_verified
+    evidence:
+      - docs/checkpoints/phase_7/commands.md
+      - docs/checkpoints/phase_7/artifacts/validation_summary.json
+    required: true
+  - id: phase_7-checkpoint-proof
+    claim: Checkpoint artifact set exists for phase_7.
+    status: static_verified
+    evidence:
+      - docs/checkpoints/phase_7/checkpoint.md
+      - docs/checkpoints/phase_7/proof.json
+      - docs/checkpoints/phase_7/next_action.yaml
+    required: true
+  - id: phase_7-pack-dry-run-proof
+    claim: Publishable package dry-runs completed without publishing.
+    status: command_verified
+    evidence:
+      - docs/checkpoints/phase_7/commands.md
+      - docs/checkpoints/phase_7/artifacts/validation_summary.json
+    required: true
+validation_command_outputs:
+  - id: local-ci
+    command: pnpm run ci
+    evidence_kind: command
+    exit_code: 0
+    output_path: docs/checkpoints/phase_7/artifacts/validation_summary.json
+    output_excerpt: pnpm run ci completed successfully.
+side_effect_safety_status: ok
+blockers: []
+risks:
+  - Publishing and pushing require explicit human authorization.
+next_dependencies: []
+auto_continue_recommendation: human_review
+delegation_metrics:
+  native_subagents_used: true
+  delegated_review_agents: 2
+interruptions: []
+takeovers: []
+recovery_events: []

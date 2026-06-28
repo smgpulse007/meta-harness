@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://meta-harness.dev/schemas/proof.schema.json",
+  "title": "Proof Ledger",
+  "type": "object",
+  "required": ["protocol_version", "phase_id", "claims"],
+  "properties": {
+    "protocol_version": { "type": "string" },
+    "phase_id": { "type": "string" },
+    "claims": { "type": "array", "items": { "$ref": "#/$defs/proofClaim" } }
+  },
+  "$defs": {
+    "proofStatus": {
+      "enum": [
+        "claimed",
+        "parent_verified",
+        "static_verified",
+        "command_verified",
+        "runtime_verified",
+        "human_verified",
+        "not_verified",
+        "partial"
+      ]
+    },
+    "terminalStatus": {
+      "enum": ["complete", "complete_pending_human_review", "pass_with_risks", "blocked", "failed"]
+    },
+    "proofClaim": {
+      "type": "object",
+      "required": ["id", "claim", "status", "evidence", "required"],
+      "properties": {
+        "id": { "type": "string" },
+        "requirement_id": { "type": "string" },
+        "claim": { "type": "string" },
+        "status": { "$ref": "#/$defs/proofStatus" },
+        "evidence": { "type": "array", "items": { "type": "string" } },
+        "required": { "type": "boolean" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

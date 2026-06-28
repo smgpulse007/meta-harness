@@ -1,0 +1,32 @@
+protocol_version: 0.1.0
+phase_id: phase_7
+slices:
+  - id: phase_7_slice_001
+    phase_id: phase_7
+    title: Examples, audit, and release readiness
+    objective: Added tiny examples, release checklist, issue/PR templates, local CI
+      proof, and delegated review reconciliation.
+    owner: parent-emulated-worker
+    dependencies: []
+    spec_refs:
+      - docs/implementation_spec.md#phase_7
+    allowed_write_scope:
+      - "**"
+    forbidden_write_scope:
+      - .git/**
+      - node_modules/**
+      - .secrets/**
+    expected_changed_files:
+      - examples/tiny-typescript-refactor/README.md
+      - docs/release-checklist.md
+      - scripts/integration-smoke.ts
+    validation_commands:
+      - id: local-ci
+        command: pnpm run ci
+        required: true
+    evidence_requirements:
+      - Local CI command completed successfully
+      - Checkpoint artifacts exist
+    side_effect_policy: default
+    packet_required: true
+    next_dependencies: []

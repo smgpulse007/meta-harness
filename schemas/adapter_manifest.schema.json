@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://meta-harness.dev/schemas/adapter_manifest.schema.json",
+  "title": "Adapter Manifest",
+  "type": "object",
+  "required": ["id", "displayName", "availability", "tier", "reason", "capabilities"],
+  "properties": {
+    "id": { "type": "string" },
+    "displayName": { "type": "string" },
+    "availability": {
+      "enum": ["available", "unavailable", "configured", "filesystem-only", "planned"]
+    },
+    "tier": { "enum": [0, 1, 2, 3] },
+    "reason": { "type": "string" },
+    "capabilities": {
+      "type": "object",
+      "required": [
+        "supportsNativeSubagents",
+        "supportsCliDispatch",
+        "supportsStructuredOutput",
+        "supportsMcp",
+        "supportsHooks",
+        "supportsFilesystemProtocol",
+        "supportsBackgroundPrWorkflow",
+        "supportsWriteScopeHints",
+        "supportsDryRun"
+      ],
+      "properties": {
+        "supportsNativeSubagents": { "type": "boolean" },
+        "supportsCliDispatch": { "type": "boolean" },
+        "supportsStructuredOutput": { "type": "boolean" },
+        "supportsMcp": { "type": "boolean" },
+        "supportsHooks": { "type": "boolean" },
+        "supportsFilesystemProtocol": { "type": "boolean" },
+        "supportsBackgroundPrWorkflow": { "type": "boolean" },
+        "supportsWriteScopeHints": { "type": "boolean" },
+        "supportsDryRun": { "type": "boolean" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

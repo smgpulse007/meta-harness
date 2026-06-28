@@ -1,0 +1,48 @@
+protocol_version: 0.1.0
+slice_id: phase_3_slice_001
+status: complete
+planned_owner: parent-emulated-worker
+actual_owner: codex-parent
+changed_files:
+  - packages/cli/src/index.ts
+  - packages/cli/src/commands/checkpoint.ts
+spec_alignment_refs:
+  - docs/implementation_spec.md#phase_3
+implementation_summary: Implemented mh commands for init, ingest, compile-spec,
+  plan, lint-plan, dispatch, collect, verify, audit-checkpoint, checkpoint,
+  continue, emit-instructions, doctor, and mcp.
+proof_statements:
+  - id: phase_3-ci-proof
+    claim: pnpm run ci completed successfully after CLI.
+    status: command_verified
+    evidence:
+      - docs/checkpoints/phase_3/commands.md
+      - docs/checkpoints/phase_3/artifacts/validation_summary.json
+    required: true
+  - id: phase_3-checkpoint-proof
+    claim: Checkpoint artifact set exists for phase_3.
+    status: static_verified
+    evidence:
+      - docs/checkpoints/phase_3/checkpoint.md
+      - docs/checkpoints/phase_3/proof.json
+      - docs/checkpoints/phase_3/next_action.yaml
+    required: true
+validation_command_outputs:
+  - id: local-ci
+    command: pnpm run ci
+    evidence_kind: command
+    exit_code: 0
+    output_path: docs/checkpoints/phase_3/artifacts/validation_summary.json
+    output_excerpt: pnpm run ci completed successfully.
+side_effect_safety_status: ok
+blockers: []
+risks: []
+next_dependencies:
+  - phase_4
+auto_continue_recommendation: continue
+delegation_metrics:
+  native_subagents_used: false
+  delegated_review_agents: 0
+interruptions: []
+takeovers: []
+recovery_events: []

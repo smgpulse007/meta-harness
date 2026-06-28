@@ -1,0 +1,49 @@
+protocol_version: 0.1.0
+slice_id: phase_6_slice_001
+status: complete
+planned_owner: parent-emulated-worker
+actual_owner: codex-parent
+changed_files:
+  - packages/adapters/src/types.ts
+  - packages/adapters/src/filesystem.ts
+  - packages/adapters/src/fake.ts
+  - docs/agent-support-matrix.md
+spec_alignment_refs:
+  - docs/implementation_spec.md#phase_6
+implementation_summary: Implemented adapter interface, filesystem adapter, fake
+  adapter, conservative CLI adapter starters, and support matrix.
+proof_statements:
+  - id: phase_6-ci-proof
+    claim: pnpm run ci completed successfully after Adapters.
+    status: command_verified
+    evidence:
+      - docs/checkpoints/phase_6/commands.md
+      - docs/checkpoints/phase_6/artifacts/validation_summary.json
+    required: true
+  - id: phase_6-checkpoint-proof
+    claim: Checkpoint artifact set exists for phase_6.
+    status: static_verified
+    evidence:
+      - docs/checkpoints/phase_6/checkpoint.md
+      - docs/checkpoints/phase_6/proof.json
+      - docs/checkpoints/phase_6/next_action.yaml
+    required: true
+validation_command_outputs:
+  - id: local-ci
+    command: pnpm run ci
+    evidence_kind: command
+    exit_code: 0
+    output_path: docs/checkpoints/phase_6/artifacts/validation_summary.json
+    output_excerpt: pnpm run ci completed successfully.
+side_effect_safety_status: ok
+blockers: []
+risks: []
+next_dependencies:
+  - phase_7
+auto_continue_recommendation: continue
+delegation_metrics:
+  native_subagents_used: false
+  delegated_review_agents: 0
+interruptions: []
+takeovers: []
+recovery_events: []

@@ -1,0 +1,27 @@
+{
+  "protocol_version": "0.1.0",
+  "phase_id": "phase_5",
+  "claims": [
+    {
+      "id": "phase_5-ci-proof",
+      "claim": "pnpm run ci completed successfully after Skill and instruction emitters.",
+      "status": "command_verified",
+      "evidence": [
+        "docs/checkpoints/phase_5/commands.md",
+        "docs/checkpoints/phase_5/artifacts/validation_summary.json"
+      ],
+      "required": true
+    },
+    {
+      "id": "phase_5-checkpoint-proof",
+      "claim": "Checkpoint artifact set exists for phase_5.",
+      "status": "static_verified",
+      "evidence": [
+        "docs/checkpoints/phase_5/checkpoint.md",
+        "docs/checkpoints/phase_5/proof.json",
+        "docs/checkpoints/phase_5/next_action.yaml"
+      ],
+      "required": true
+    }
+  ]
+}

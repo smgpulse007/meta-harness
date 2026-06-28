@@ -1,0 +1,61 @@
+{
+  "name": "meta-harness",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Evidence-gated execution harness for coding-agent implementation workflows.",
+  "license": "MIT",
+  "type": "module",
+  "packageManager": "pnpm@11.7.0",
+  "homepage": "https://github.com/meta-harness/meta-harness#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/meta-harness/meta-harness.git"
+  },
+  "bugs": {
+    "url": "https://github.com/meta-harness/meta-harness/issues"
+  },
+  "bin": {
+    "mh": "./packages/cli/dist/index.js"
+  },
+  "scripts": {
+    "build": "pnpm -r build",
+    "clean": "pnpm -r clean",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "typecheck": "pnpm --filter @meta-harness/core typecheck && pnpm --filter @meta-harness/core build && pnpm --filter @meta-harness/adapters typecheck && pnpm --filter @meta-harness/adapters build && pnpm --filter @meta-harness/mcp-server typecheck && pnpm --filter @meta-harness/mcp-server build && pnpm --filter @meta-harness/cli typecheck && pnpm --filter @meta-harness/cli build",
+    "test": "vitest run",
+    "schema-check": "tsx scripts/schema-check.ts",
+    "integration-smoke": "tsx scripts/integration-smoke.ts",
+    "ci": "pnpm lint && pnpm typecheck && pnpm test && pnpm schema-check && pnpm integration-smoke && pnpm build"
+  },
+  "keywords": [
+    "coding-agents",
+    "mcp",
+    "automation",
+    "evidence",
+    "workflow"
+  ],
+  "files": [
+    "packages",
+    "schemas",
+    "templates",
+    "skills",
+    "docs"
+  ],
+  "publishConfig": {
+    "access": "restricted"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.18.0",
+    "@types/node": "^22.10.6",
+    "ajv": "^8.17.1",
+    "eslint": "^9.18.0",
+    "prettier": "^3.4.2",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.3",
+    "typescript-eslint": "^8.20.0",
+    "vitest": "^2.1.8",
+    "yaml": "^2.7.0"
+  }
+}

@@ -1,0 +1,17 @@
+protocol_version: 0.1.0
+current_phase_id: phase_7
+current_phase_status: complete_pending_human_review
+auto_continue_allowed: false
+human_acceptance_required: true
+human_acceptance_present: false
+required_files_to_read:
+  - docs/implementation_harness/phase_manifest.yaml
+  - docs/checkpoints/phase_7/checkpoint.md
+  - docs/checkpoints/phase_7/proof.json
+  - docs/checkpoints/phase_7/next_action.yaml
+carry_forward_risks:
+  - Publishing and pushing require explicit human authorization.
+blocking_risks: []
+required_validation_preface:
+  - Run pnpm run ci before continuing.
+allowed_next_transition: stop

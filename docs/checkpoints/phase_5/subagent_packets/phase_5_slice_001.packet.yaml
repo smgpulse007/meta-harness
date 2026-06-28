@@ -1,0 +1,48 @@
+protocol_version: 0.1.0
+slice_id: phase_5_slice_001
+status: complete
+planned_owner: parent-emulated-worker
+actual_owner: codex-parent
+changed_files:
+  - skills/meta-harness/SKILL.md
+  - AGENTS.md
+  - packages/cli/src/commands/emit-instructions.ts
+spec_alignment_refs:
+  - docs/implementation_spec.md#phase_5
+implementation_summary: Added standalone skill package, canonical templates,
+  AGENTS.md, and generated instruction targets for mainstream coding tools.
+proof_statements:
+  - id: phase_5-ci-proof
+    claim: pnpm run ci completed successfully after Skill and instruction emitters.
+    status: command_verified
+    evidence:
+      - docs/checkpoints/phase_5/commands.md
+      - docs/checkpoints/phase_5/artifacts/validation_summary.json
+    required: true
+  - id: phase_5-checkpoint-proof
+    claim: Checkpoint artifact set exists for phase_5.
+    status: static_verified
+    evidence:
+      - docs/checkpoints/phase_5/checkpoint.md
+      - docs/checkpoints/phase_5/proof.json
+      - docs/checkpoints/phase_5/next_action.yaml
+    required: true
+validation_command_outputs:
+  - id: local-ci
+    command: pnpm run ci
+    evidence_kind: command
+    exit_code: 0
+    output_path: docs/checkpoints/phase_5/artifacts/validation_summary.json
+    output_excerpt: pnpm run ci completed successfully.
+side_effect_safety_status: ok
+blockers: []
+risks: []
+next_dependencies:
+  - phase_6
+auto_continue_recommendation: continue
+delegation_metrics:
+  native_subagents_used: false
+  delegated_review_agents: 0
+interruptions: []
+takeovers: []
+recovery_events: []

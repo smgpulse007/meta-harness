@@ -1,0 +1,16 @@
+protocol_version: 0.1.0
+current_phase_id: phase_001
+current_phase_status: blocked
+auto_continue_allowed: false
+human_acceptance_required: false
+human_acceptance_present: false
+required_files_to_read:
+  - docs/implementation_harness/phase_manifest.yaml
+  - .meta-harness/checkpoints/phase_001/checkpoint.md
+  - .meta-harness/checkpoints/phase_001/proof.json
+carry_forward_risks: []
+blocking_risks:
+  - Gates have not been verified yet.
+required_validation_preface:
+  - Run mh doctor and mh audit-checkpoint before continuing.
+allowed_next_transition: stop

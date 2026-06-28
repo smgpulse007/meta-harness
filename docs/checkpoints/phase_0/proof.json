@@ -1,0 +1,27 @@
+{
+  "protocol_version": "0.1.0",
+  "phase_id": "phase_0",
+  "claims": [
+    {
+      "id": "phase_0-ci-proof",
+      "claim": "pnpm run ci completed successfully after Repo bootstrap.",
+      "status": "command_verified",
+      "evidence": [
+        "docs/checkpoints/phase_0/commands.md",
+        "docs/checkpoints/phase_0/artifacts/validation_summary.json"
+      ],
+      "required": true
+    },
+    {
+      "id": "phase_0-checkpoint-proof",
+      "claim": "Checkpoint artifact set exists for phase_0.",
+      "status": "static_verified",
+      "evidence": [
+        "docs/checkpoints/phase_0/checkpoint.md",
+        "docs/checkpoints/phase_0/proof.json",
+        "docs/checkpoints/phase_0/next_action.yaml"
+      ],
+      "required": true
+    }
+  ]
+}

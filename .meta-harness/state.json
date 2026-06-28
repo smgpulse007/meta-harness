@@ -1,0 +1,15 @@
+{
+  "protocol_version": "0.1.0",
+  "state": "DECIDE_STOP_CONDITION",
+  "current_phase_id": "phase_7",
+  "completed_phases": [
+    "phase_0",
+    "phase_1",
+    "phase_2",
+    "phase_3",
+    "phase_4",
+    "phase_5",
+    "phase_6"
+  ],
+  "updated_at": "2026-06-28T01:34:20.065Z"
+}

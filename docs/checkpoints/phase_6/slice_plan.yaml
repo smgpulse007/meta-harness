@@ -1,0 +1,34 @@
+protocol_version: 0.1.0
+phase_id: phase_6
+slices:
+  - id: phase_6_slice_001
+    phase_id: phase_6
+    title: Adapters
+    objective: Implemented adapter interface, filesystem adapter, fake adapter,
+      conservative CLI adapter starters, and support matrix.
+    owner: parent-emulated-worker
+    dependencies: []
+    spec_refs:
+      - docs/implementation_spec.md#phase_6
+    allowed_write_scope:
+      - "**"
+    forbidden_write_scope:
+      - .git/**
+      - node_modules/**
+      - .secrets/**
+    expected_changed_files:
+      - packages/adapters/src/types.ts
+      - packages/adapters/src/filesystem.ts
+      - packages/adapters/src/fake.ts
+      - docs/agent-support-matrix.md
+    validation_commands:
+      - id: local-ci
+        command: pnpm run ci
+        required: true
+    evidence_requirements:
+      - Local CI command completed successfully
+      - Checkpoint artifacts exist
+    side_effect_policy: default
+    packet_required: true
+    next_dependencies:
+      - phase_7

@@ -1,0 +1,33 @@
+protocol_version: 0.1.0
+phase_id: phase_3
+slices:
+  - id: phase_3_slice_001
+    phase_id: phase_3
+    title: CLI
+    objective: Implemented mh commands for init, ingest, compile-spec, plan,
+      lint-plan, dispatch, collect, verify, audit-checkpoint, checkpoint,
+      continue, emit-instructions, doctor, and mcp.
+    owner: parent-emulated-worker
+    dependencies: []
+    spec_refs:
+      - docs/implementation_spec.md#phase_3
+    allowed_write_scope:
+      - "**"
+    forbidden_write_scope:
+      - .git/**
+      - node_modules/**
+      - .secrets/**
+    expected_changed_files:
+      - packages/cli/src/index.ts
+      - packages/cli/src/commands/checkpoint.ts
+    validation_commands:
+      - id: local-ci
+        command: pnpm run ci
+        required: true
+    evidence_requirements:
+      - Local CI command completed successfully
+      - Checkpoint artifacts exist
+    side_effect_policy: default
+    packet_required: true
+    next_dependencies:
+      - phase_4

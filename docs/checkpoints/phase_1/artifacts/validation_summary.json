@@ -1,0 +1,6 @@
+{
+  "command": "pnpm run ci",
+  "exit_code": 0,
+  "status": "command_verified",
+  "note": "Full output was visible in the Codex run and summarized in the final response."
+}

@@ -1,0 +1,41 @@
+{
+  "name": "@meta-harness/adapters",
+  "version": "0.1.0",
+  "description": "Agent adapter interfaces and starter adapters for Meta Harness.",
+  "license": "MIT",
+  "homepage": "https://github.com/meta-harness/meta-harness#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/meta-harness/meta-harness.git",
+    "directory": "packages/adapters"
+  },
+  "bugs": {
+    "url": "https://github.com/meta-harness/meta-harness/issues"
+  },
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "clean": "rimraf dist *.tsbuildinfo",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run tests"
+  },
+  "dependencies": {
+    "@meta-harness/core": "workspace:*",
+    "yaml": "^2.7.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "devDependencies": {
+    "rimraf": "^6.0.1"
+  }
+}

@@ -1,0 +1,139 @@
+{
+  "protocol_version": "0.1.0",
+  "generated_at": "2026-06-28T01:34:20.069Z",
+  "requirements": [
+    {
+      "id": "REQ-001",
+      "source_file": "docs/implementation_spec.md",
+      "source_heading": "Repo bootstrap",
+      "source_ref": "docs/implementation_spec.md#phase_0",
+      "phase_mapping": "phase_0",
+      "acceptance_criteria": [
+        "Phase artifacts exist",
+        "Validation proof is recorded"
+      ],
+      "implementation_status": "implemented",
+      "proof_references": [
+        "docs/checkpoints/phase_0/proof.json"
+      ],
+      "carry_forward_risks": []
+    },
+    {
+      "id": "REQ-002",
+      "source_file": "docs/implementation_spec.md",
+      "source_heading": "Protocol docs and schemas",
+      "source_ref": "docs/implementation_spec.md#phase_1",
+      "phase_mapping": "phase_1",
+      "acceptance_criteria": [
+        "Phase artifacts exist",
+        "Validation proof is recorded"
+      ],
+      "implementation_status": "implemented",
+      "proof_references": [
+        "docs/checkpoints/phase_1/proof.json"
+      ],
+      "carry_forward_risks": []
+    },
+    {
+      "id": "REQ-003",
+      "source_file": "docs/implementation_spec.md",
+      "source_heading": "Core engine",
+      "source_ref": "docs/implementation_spec.md#phase_2",
+      "phase_mapping": "phase_2",
+      "acceptance_criteria": [
+        "Phase artifacts exist",
+        "Validation proof is recorded"
+      ],
+      "implementation_status": "implemented",
+      "proof_references": [
+        "docs/checkpoints/phase_2/proof.json"
+      ],
+      "carry_forward_risks": []
+    },
+    {
+      "id": "REQ-004",
+      "source_file": "docs/implementation_spec.md",
+      "source_heading": "CLI",
+      "source_ref": "docs/implementation_spec.md#phase_3",
+      "phase_mapping": "phase_3",
+      "acceptance_criteria": [
+        "Phase artifacts exist",
+        "Validation proof is recorded"
+      ],
+      "implementation_status": "implemented",
+      "proof_references": [
+        "docs/checkpoints/phase_3/proof.json"
+      ],
+      "carry_forward_risks": []
+    },
+    {
+      "id": "REQ-005",
+      "source_file": "docs/implementation_spec.md",
+      "source_heading": "MCP server",
+      "source_ref": "docs/implementation_spec.md#phase_4",
+      "phase_mapping": "phase_4",
+      "acceptance_criteria": [
+        "Phase artifacts exist",
+        "Validation proof is recorded"
+      ],
+      "implementation_status": "implemented",
+      "proof_references": [
+        "docs/checkpoints/phase_4/proof.json"
+      ],
+      "carry_forward_risks": []
+    },
+    {
+      "id": "REQ-006",
+      "source_file": "docs/implementation_spec.md",
+      "source_heading": "Skill and instruction emitters",
+      "source_ref": "docs/implementation_spec.md#phase_5",
+      "phase_mapping": "phase_5",
+      "acceptance_criteria": [
+        "Phase artifacts exist",
+        "Validation proof is recorded"
+      ],
+      "implementation_status": "implemented",
+      "proof_references": [
+        "docs/checkpoints/phase_5/proof.json"
+      ],
+      "carry_forward_risks": []
+    },
+    {
+      "id": "REQ-007",
+      "source_file": "docs/implementation_spec.md",
+      "source_heading": "Adapters",
+      "source_ref": "docs/implementation_spec.md#phase_6",
+      "phase_mapping": "phase_6",
+      "acceptance_criteria": [
+        "Phase artifacts exist",
+        "Validation proof is recorded"
+      ],
+      "implementation_status": "implemented",
+      "proof_references": [
+        "docs/checkpoints/phase_6/proof.json"
+      ],
+      "carry_forward_risks": []
+    },
+    {
+      "id": "REQ-008",
+      "source_file": "docs/implementation_spec.md",
+      "source_heading": "Examples, audit, and release readiness",
+      "source_ref": "docs/implementation_spec.md#phase_7",
+      "phase_mapping": "phase_7",
+      "acceptance_criteria": [
+        "Phase artifacts exist",
+        "Validation proof is recorded"
+      ],
+      "implementation_status": "implemented",
+      "proof_references": [
+        "docs/checkpoints/phase_7/proof.json"
+      ],
+      "carry_forward_risks": [
+        "Publishing still requires explicit human authorization"
+      ]
+    }
+  ],
+  "limitations": [
+    "This ledger is generated from the project handoff phases and should be reviewed before downstream release use."
+  ]
+}

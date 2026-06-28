@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://meta-harness.dev/schemas/agent_registry.schema.json",
+  "title": "Agent Registry",
+  "type": "object",
+  "required": ["protocol_version", "adapters"],
+  "properties": {
+    "protocol_version": { "type": "string" },
+    "adapters": {
+      "type": "array",
+      "items": { "$ref": "adapter_manifest.schema.json" }
+    }
+  },
+  "additionalProperties": false
+}

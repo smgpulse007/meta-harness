@@ -1,0 +1,12 @@
+{
+  "command": "pnpm run ci",
+  "exit_code": 0,
+  "status": "command_verified",
+  "package_dry_runs": [
+    "pnpm --filter @meta-harness/core pack --dry-run",
+    "pnpm --filter @meta-harness/adapters pack --dry-run",
+    "pnpm --filter @meta-harness/cli pack --dry-run",
+    "pnpm --filter @meta-harness/mcp-server pack --dry-run"
+  ],
+  "note": "Full output was visible in the Codex run and summarized in the final response."
+}

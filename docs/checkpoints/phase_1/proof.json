@@ -1,0 +1,27 @@
+{
+  "protocol_version": "0.1.0",
+  "phase_id": "phase_1",
+  "claims": [
+    {
+      "id": "phase_1-ci-proof",
+      "claim": "pnpm run ci completed successfully after Protocol docs and schemas.",
+      "status": "command_verified",
+      "evidence": [
+        "docs/checkpoints/phase_1/commands.md",
+        "docs/checkpoints/phase_1/artifacts/validation_summary.json"
+      ],
+      "required": true
+    },
+    {
+      "id": "phase_1-checkpoint-proof",
+      "claim": "Checkpoint artifact set exists for phase_1.",
+      "status": "static_verified",
+      "evidence": [
+        "docs/checkpoints/phase_1/checkpoint.md",
+        "docs/checkpoints/phase_1/proof.json",
+        "docs/checkpoints/phase_1/next_action.yaml"
+      ],
+      "required": true
+    }
+  ]
+}

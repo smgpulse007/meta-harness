@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://meta-harness.dev/schemas/phase_manifest.schema.json",
+  "title": "Phase Manifest",
+  "type": "object",
+  "required": ["protocol_version", "project", "phases"],
+  "properties": {
+    "protocol_version": { "type": "string" },
+    "project": { "type": "string" },
+    "phases": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "title", "output_checkpoint", "allowed_terminal_statuses"],
+        "properties": {
+          "id": { "type": "string" },
+          "title": { "type": "string" },
+          "source_spec_refs": { "type": "array", "items": { "type": "string" } },
+          "input_checkpoints": { "type": "array", "items": { "type": "string" } },
+          "output_checkpoint": { "type": "string" },
+          "acceptance_criteria": { "type": "array", "items": { "type": "string" } },
+          "validation_commands": { "$ref": "#/$defs/validationCommands" },
+          "allowed_terminal_statuses": {
+            "type": "array",
+            "items": { "$ref": "#/$defs/terminalStatus" }
+          },
+          "human_acceptance_required": { "type": "boolean" },
+          "side_effect_policy": { "type": "string" },
+          "slices": { "type": "array", "items": { "type": "string" } },
+          "depends_on": { "type": "array", "items": { "type": "string" } }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "$defs": {
+    "terminalStatus": {
+      "enum": ["complete", "complete_pending_human_review", "pass_with_risks", "blocked", "failed"]
+    },
+    "validationCommands": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "command", "required"],
+        "properties": {
+          "id": { "type": "string" },
+          "command": { "type": "string" },
+          "required": { "type": "boolean" }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

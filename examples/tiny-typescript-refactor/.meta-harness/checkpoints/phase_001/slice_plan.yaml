@@ -1,0 +1,34 @@
+protocol_version: 0.1.0
+phase_id: phase_001
+slices:
+  - id: phase_001_slice_001
+    phase_id: phase_001
+    title: Demonstrate fake adapter
+    objective: Produce a deterministic fake-adapter packet and checkpoint.
+    owner: fake
+    dependencies: []
+    spec_refs:
+      - docs/implementation_spec.md#REQ-001
+      - docs/implementation_spec.md#REQ-002
+    allowed_write_scope:
+      - src/**
+      - tests/**
+      - docs/**
+      - .meta-harness/**
+    forbidden_write_scope:
+      - .git/**
+      - node_modules/**
+      - .secrets/**
+    expected_changed_files:
+      - src/math.ts
+      - tests/math.test.ts
+    validation_commands:
+      - id: example-test
+        command: pnpm test
+        required: true
+    evidence_requirements:
+      - Fake adapter packet exists.
+      - Example test command is represented in command evidence.
+    side_effect_policy: default
+    packet_required: true
+    next_dependencies: []

@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://meta-harness.dev/schemas/next_action.schema.json",
+  "title": "Next Action",
+  "type": "object",
+  "required": [
+    "protocol_version",
+    "current_phase_id",
+    "current_phase_status",
+    "auto_continue_allowed",
+    "human_acceptance_required",
+    "human_acceptance_present",
+    "required_files_to_read",
+    "carry_forward_risks",
+    "blocking_risks",
+    "required_validation_preface",
+    "allowed_next_transition"
+  ],
+  "properties": {
+    "protocol_version": { "type": "string" },
+    "current_phase_id": { "type": "string" },
+    "current_phase_status": { "$ref": "proof.schema.json#/$defs/terminalStatus" },
+    "auto_continue_allowed": { "type": "boolean" },
+    "next_phase_id": { "type": "string" },
+    "human_acceptance_required": { "type": "boolean" },
+    "human_acceptance_present": { "type": "boolean" },
+    "required_files_to_read": { "type": "array", "items": { "type": "string" } },
+    "carry_forward_risks": { "type": "array", "items": { "type": "string" } },
+    "blocking_risks": { "type": "array", "items": { "type": "string" } },
+    "required_validation_preface": { "type": "array", "items": { "type": "string" } },
+    "allowed_next_transition": { "type": "string" }
+  },
+  "additionalProperties": false
+}

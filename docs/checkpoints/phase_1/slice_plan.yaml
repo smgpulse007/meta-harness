@@ -1,0 +1,33 @@
+protocol_version: 0.1.0
+phase_id: phase_1
+slices:
+  - id: phase_1_slice_001
+    phase_id: phase_1
+    title: Protocol docs and schemas
+    objective: Added protocol documentation, concept docs, JSON schemas, templates,
+      and schema validation coverage.
+    owner: parent-emulated-worker
+    dependencies: []
+    spec_refs:
+      - docs/implementation_spec.md#phase_1
+    allowed_write_scope:
+      - "**"
+    forbidden_write_scope:
+      - .git/**
+      - node_modules/**
+      - .secrets/**
+    expected_changed_files:
+      - docs/protocol.md
+      - schemas/slice_packet.schema.json
+      - templates/slice_plan.yaml
+    validation_commands:
+      - id: local-ci
+        command: pnpm run ci
+        required: true
+    evidence_requirements:
+      - Local CI command completed successfully
+      - Checkpoint artifacts exist
+    side_effect_policy: default
+    packet_required: true
+    next_dependencies:
+      - phase_2

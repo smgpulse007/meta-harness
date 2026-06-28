@@ -1,0 +1,27 @@
+protocol_version: 0.1.0
+project: tiny-typescript-refactor
+phases:
+  - id: phase_001
+    title: Fake adapter demonstration
+    source_spec_refs:
+      - docs/implementation_spec.md
+    input_checkpoints: []
+    output_checkpoint: .meta-harness/checkpoints/phase_001
+    acceptance_criteria:
+      - Fake adapter packet exists.
+      - Checkpoint artifacts exist.
+    validation_commands:
+      - id: example-test
+        command: pnpm test
+        required: true
+    allowed_terminal_statuses:
+      - complete
+      - complete_pending_human_review
+      - pass_with_risks
+      - blocked
+      - failed
+    human_acceptance_required: false
+    side_effect_policy: default
+    slices:
+      - phase_001_slice_001
+    depends_on: []

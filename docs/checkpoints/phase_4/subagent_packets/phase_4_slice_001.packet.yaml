@@ -1,0 +1,47 @@
+protocol_version: 0.1.0
+slice_id: phase_4_slice_001
+status: complete
+planned_owner: parent-emulated-worker
+actual_owner: codex-parent
+changed_files:
+  - packages/mcp-server/src/server.ts
+  - packages/mcp-server/tests/mcp-server.test.ts
+spec_alignment_refs:
+  - docs/implementation_spec.md#phase_4
+implementation_summary: Implemented read-only-first MCP server tools, resources,
+  prompts, safe IDs, path containment, and write-mode blocking.
+proof_statements:
+  - id: phase_4-ci-proof
+    claim: pnpm run ci completed successfully after MCP server.
+    status: command_verified
+    evidence:
+      - docs/checkpoints/phase_4/commands.md
+      - docs/checkpoints/phase_4/artifacts/validation_summary.json
+    required: true
+  - id: phase_4-checkpoint-proof
+    claim: Checkpoint artifact set exists for phase_4.
+    status: static_verified
+    evidence:
+      - docs/checkpoints/phase_4/checkpoint.md
+      - docs/checkpoints/phase_4/proof.json
+      - docs/checkpoints/phase_4/next_action.yaml
+    required: true
+validation_command_outputs:
+  - id: local-ci
+    command: pnpm run ci
+    evidence_kind: command
+    exit_code: 0
+    output_path: docs/checkpoints/phase_4/artifacts/validation_summary.json
+    output_excerpt: pnpm run ci completed successfully.
+side_effect_safety_status: ok
+blockers: []
+risks: []
+next_dependencies:
+  - phase_5
+auto_continue_recommendation: continue
+delegation_metrics:
+  native_subagents_used: false
+  delegated_review_agents: 0
+interruptions: []
+takeovers: []
+recovery_events: []

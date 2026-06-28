@@ -1,0 +1,27 @@
+{
+  "protocol_version": "0.1.0",
+  "phase_id": "phase_6",
+  "claims": [
+    {
+      "id": "phase_6-ci-proof",
+      "claim": "pnpm run ci completed successfully after Adapters.",
+      "status": "command_verified",
+      "evidence": [
+        "docs/checkpoints/phase_6/commands.md",
+        "docs/checkpoints/phase_6/artifacts/validation_summary.json"
+      ],
+      "required": true
+    },
+    {
+      "id": "phase_6-checkpoint-proof",
+      "claim": "Checkpoint artifact set exists for phase_6.",
+      "status": "static_verified",
+      "evidence": [
+        "docs/checkpoints/phase_6/checkpoint.md",
+        "docs/checkpoints/phase_6/proof.json",
+        "docs/checkpoints/phase_6/next_action.yaml"
+      ],
+      "required": true
+    }
+  ]
+}

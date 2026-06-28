@@ -1,0 +1,185 @@
+{
+  "protocol_version": "0.1.0",
+  "adapters": [
+    {
+      "id": "filesystem",
+      "displayName": "Filesystem Prompt Adapter",
+      "availability": "filesystem-only",
+      "tier": 0,
+      "reason": "Universal prompt-file fallback",
+      "capabilities": {
+        "supportsNativeSubagents": false,
+        "supportsCliDispatch": false,
+        "supportsStructuredOutput": true,
+        "supportsMcp": false,
+        "supportsHooks": false,
+        "supportsFilesystemProtocol": true,
+        "supportsBackgroundPrWorkflow": false,
+        "supportsWriteScopeHints": true,
+        "supportsDryRun": true
+      }
+    },
+    {
+      "id": "fake",
+      "displayName": "Fake Test Adapter",
+      "availability": "available",
+      "tier": 0,
+      "reason": "Deterministic simulation for tests/examples",
+      "capabilities": {
+        "supportsNativeSubagents": false,
+        "supportsCliDispatch": false,
+        "supportsStructuredOutput": true,
+        "supportsMcp": false,
+        "supportsHooks": false,
+        "supportsFilesystemProtocol": true,
+        "supportsBackgroundPrWorkflow": false,
+        "supportsWriteScopeHints": true,
+        "supportsDryRun": true
+      }
+    },
+    {
+      "id": "codex",
+      "displayName": "Codex CLI Adapter",
+      "availability": "unavailable",
+      "tier": 3,
+      "reason": "Use MCP or filesystem fallback unless configured",
+      "capabilities": {
+        "supportsNativeSubagents": false,
+        "supportsCliDispatch": false,
+        "supportsStructuredOutput": false,
+        "supportsMcp": true,
+        "supportsHooks": false,
+        "supportsFilesystemProtocol": true,
+        "supportsBackgroundPrWorkflow": false,
+        "supportsWriteScopeHints": true,
+        "supportsDryRun": true
+      }
+    },
+    {
+      "id": "claude-code",
+      "displayName": "Claude Code Adapter",
+      "availability": "unavailable",
+      "tier": 2,
+      "reason": "Instruction and prompt-file flow first",
+      "capabilities": {
+        "supportsNativeSubagents": false,
+        "supportsCliDispatch": false,
+        "supportsStructuredOutput": false,
+        "supportsMcp": false,
+        "supportsHooks": false,
+        "supportsFilesystemProtocol": true,
+        "supportsBackgroundPrWorkflow": false,
+        "supportsWriteScopeHints": true,
+        "supportsDryRun": true
+      }
+    },
+    {
+      "id": "cursor",
+      "displayName": "Cursor Adapter",
+      "availability": "unavailable",
+      "tier": 1,
+      "reason": "Rules and prompt-file flow first",
+      "capabilities": {
+        "supportsNativeSubagents": false,
+        "supportsCliDispatch": false,
+        "supportsStructuredOutput": false,
+        "supportsMcp": false,
+        "supportsHooks": false,
+        "supportsFilesystemProtocol": true,
+        "supportsBackgroundPrWorkflow": false,
+        "supportsWriteScopeHints": true,
+        "supportsDryRun": true
+      }
+    },
+    {
+      "id": "gemini",
+      "displayName": "Gemini CLI Adapter",
+      "availability": "unavailable",
+      "tier": 2,
+      "reason": "GEMINI.md and prompt-file flow first",
+      "capabilities": {
+        "supportsNativeSubagents": false,
+        "supportsCliDispatch": false,
+        "supportsStructuredOutput": false,
+        "supportsMcp": false,
+        "supportsHooks": false,
+        "supportsFilesystemProtocol": true,
+        "supportsBackgroundPrWorkflow": false,
+        "supportsWriteScopeHints": true,
+        "supportsDryRun": true
+      }
+    },
+    {
+      "id": "copilot",
+      "displayName": "GitHub Copilot Adapter",
+      "availability": "unavailable",
+      "tier": 1,
+      "reason": "Instruction files only by default",
+      "capabilities": {
+        "supportsNativeSubagents": false,
+        "supportsCliDispatch": false,
+        "supportsStructuredOutput": false,
+        "supportsMcp": false,
+        "supportsHooks": false,
+        "supportsFilesystemProtocol": true,
+        "supportsBackgroundPrWorkflow": true,
+        "supportsWriteScopeHints": true,
+        "supportsDryRun": true
+      }
+    },
+    {
+      "id": "windsurf",
+      "displayName": "Windsurf Adapter",
+      "availability": "unavailable",
+      "tier": 1,
+      "reason": "Rules and prompt-file flow first",
+      "capabilities": {
+        "supportsNativeSubagents": false,
+        "supportsCliDispatch": false,
+        "supportsStructuredOutput": false,
+        "supportsMcp": false,
+        "supportsHooks": false,
+        "supportsFilesystemProtocol": true,
+        "supportsBackgroundPrWorkflow": false,
+        "supportsWriteScopeHints": true,
+        "supportsDryRun": true
+      }
+    },
+    {
+      "id": "aider",
+      "displayName": "Aider Adapter",
+      "availability": "unavailable",
+      "tier": 2,
+      "reason": "Prompt-file fallback unless configured",
+      "capabilities": {
+        "supportsNativeSubagents": false,
+        "supportsCliDispatch": false,
+        "supportsStructuredOutput": false,
+        "supportsMcp": false,
+        "supportsHooks": false,
+        "supportsFilesystemProtocol": true,
+        "supportsBackgroundPrWorkflow": false,
+        "supportsWriteScopeHints": true,
+        "supportsDryRun": true
+      }
+    },
+    {
+      "id": "opencode",
+      "displayName": "OpenCode Adapter",
+      "availability": "unavailable",
+      "tier": 2,
+      "reason": "Prompt-file fallback unless configured",
+      "capabilities": {
+        "supportsNativeSubagents": false,
+        "supportsCliDispatch": false,
+        "supportsStructuredOutput": false,
+        "supportsMcp": false,
+        "supportsHooks": false,
+        "supportsFilesystemProtocol": true,
+        "supportsBackgroundPrWorkflow": false,
+        "supportsWriteScopeHints": true,
+        "supportsDryRun": true
+      }
+    }
+  ]
+}

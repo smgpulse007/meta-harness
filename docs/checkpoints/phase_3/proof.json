@@ -1,0 +1,27 @@
+{
+  "protocol_version": "0.1.0",
+  "phase_id": "phase_3",
+  "claims": [
+    {
+      "id": "phase_3-ci-proof",
+      "claim": "pnpm run ci completed successfully after CLI.",
+      "status": "command_verified",
+      "evidence": [
+        "docs/checkpoints/phase_3/commands.md",
+        "docs/checkpoints/phase_3/artifacts/validation_summary.json"
+      ],
+      "required": true
+    },
+    {
+      "id": "phase_3-checkpoint-proof",
+      "claim": "Checkpoint artifact set exists for phase_3.",
+      "status": "static_verified",
+      "evidence": [
+        "docs/checkpoints/phase_3/checkpoint.md",
+        "docs/checkpoints/phase_3/proof.json",
+        "docs/checkpoints/phase_3/next_action.yaml"
+      ],
+      "required": true
+    }
+  ]
+}

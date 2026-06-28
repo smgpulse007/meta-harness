@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://meta-harness.dev/schemas/checkpoint.schema.json",
+  "title": "Checkpoint File Set",
+  "type": "object",
+  "required": ["phase_id", "required_files"],
+  "properties": {
+    "phase_id": { "type": "string" },
+    "required_files": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "checkpoint.md",
+          "proof.json",
+          "next_action.yaml",
+          "rollup.md",
+          "commands.md",
+          "diff_summary.md",
+          "alignment_review.md",
+          "delegation_review.md",
+          "expert_panel.md",
+          "slice_plan.yaml"
+        ]
+      }
+    }
+  },
+  "additionalProperties": false
+}

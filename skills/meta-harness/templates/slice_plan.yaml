@@ -1,0 +1,31 @@
+protocol_version: 0.1.0
+phase_id: phase_001
+slices:
+  - id: phase_001_slice_001
+    phase_id: phase_001
+    title: Implement bounded slice
+    objective: Implement the slice and produce packet evidence.
+    owner: worker
+    dependencies: []
+    spec_refs:
+      - docs/implementation_spec.md
+    allowed_write_scope:
+      - src/**
+      - tests/**
+      - docs/**
+      - .meta-harness/**
+    forbidden_write_scope:
+      - .git/**
+      - node_modules/**
+      - .secrets/**
+    expected_changed_files: []
+    validation_commands:
+      - id: targeted
+        command: pnpm test
+        required: true
+    evidence_requirements:
+      - Changed files stay inside allowed write scope.
+      - Validation command output is recorded.
+    side_effect_policy: default
+    packet_required: true
+    next_dependencies: []

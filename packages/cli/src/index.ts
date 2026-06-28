@@ -1,0 +1,119 @@
+#!/usr/bin/env node
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import { Command } from "commander";
+import { auditCheckpointCommand } from "./commands/audit-checkpoint.js";
+import { checkpointCommand } from "./commands/checkpoint.js";
+import { collectCommand } from "./commands/collect.js";
+import { compileSpecCommand } from "./commands/compile-spec.js";
+import { continueCommand } from "./commands/continue.js";
+import { dispatchCommand } from "./commands/dispatch.js";
+import { doctorCommand } from "./commands/doctor.js";
+import { emitError } from "./commands/common.js";
+import { emitInstructionsCommand } from "./commands/emit-instructions.js";
+import { ingestCommand } from "./commands/ingest.js";
+import { initCommand } from "./commands/init.js";
+import { lintPlanCommand } from "./commands/lint-plan.js";
+import { mcpCommand } from "./commands/mcp.js";
+import { planCommand } from "./commands/plan.js";
+import { verifyCommand } from "./commands/verify.js";
+
+export function buildCli(cwd = process.cwd()): Command {
+  const context = { cwd };
+  const program = new Command();
+  program.name("mh").description("Meta Harness CLI").version("0.1.0");
+
+  program
+    .command("init")
+    .option("--force", "overwrite generated harness files")
+    .option("--profile <profile>", "basic, strict, or trading-safe", "basic")
+    .action((options) => run(() => initCommand(context, options), context));
+
+  program
+    .command("ingest")
+    .requiredOption("--spec <path>")
+    .option("--alignment <path>")
+    .requiredOption("--manifest <path>")
+    .action((options) => run(() => ingestCommand(context, options), context));
+
+  program
+    .command("compile-spec")
+    .requiredOption("--spec <path>")
+    .option("--phase <phase>", "phase id", "phase_001")
+    .action((options) => run(() => compileSpecCommand(context, options), context));
+
+  program
+    .command("plan")
+    .requiredOption("--phase <phase>")
+    .action((options) => run(() => planCommand(context, options), context));
+
+  program
+    .command("lint-plan")
+    .requiredOption("--phase <phase>")
+    .action((options) => run(() => lintPlanCommand(context, options), context));
+
+  program
+    .command("dispatch")
+    .requiredOption("--phase <phase>")
+    .requiredOption("--agent <adapter>")
+    .action((options) => run(() => dispatchCommand(context, options), context));
+
+  program
+    .command("collect")
+    .requiredOption("--phase <phase>")
+    .action((options) => run(() => collectCommand(context, options), context));
+
+  program
+    .command("verify")
+    .requiredOption("--phase <phase>")
+    .action((options) => run(() => verifyCommand(context, options), context));
+
+  program
+    .command("audit-checkpoint")
+    .requiredOption("--phase <phase>")
+    .action((options) => run(() => auditCheckpointCommand(context, options), context));
+
+  program
+    .command("checkpoint")
+    .requiredOption("--phase <phase>")
+    .option("--status <status>", "terminal status", "blocked")
+    .action((options) => run(() => checkpointCommand(context, options), context));
+
+  program
+    .command("continue")
+    .requiredOption("--phase <phase>")
+    .option("--human-accepted", "record human acceptance for this decision")
+    .action((options) => run(() => continueCommand(context, options), context));
+
+  program
+    .command("emit-instructions")
+    .option("--target <target>", "AGENTS, CLAUDE, GEMINI, CURSOR, WINDSURF, COPILOT, CONTINUE, or all", "all")
+    .action((options) => run(() => emitInstructionsCommand(context, options), context));
+
+  program.command("doctor").action(() => run(() => doctorCommand(context), context));
+
+  program
+    .command("mcp")
+    .option("--stdio", "start stdio server")
+    .option("--mode <mode>", "read-only, workspace-write, checkpoint-write, or dangerous-disabled", "read-only")
+    .action((options) => run(() => mcpCommand(context, options), context));
+
+  return program;
+}
+
+async function run(action: () => Promise<void>, context: { cwd: string }): Promise<void> {
+  try {
+    await action();
+  } catch (error) {
+    emitError(context, (error as Error).message);
+    process.exitCode = 1;
+  }
+}
+
+const isCliEntrypoint =
+  process.argv[1] !== undefined &&
+  path.resolve(process.argv[1]) === path.resolve(fileURLToPath(import.meta.url));
+
+if (isCliEntrypoint) {
+  await buildCli().parseAsync(process.argv);
+}

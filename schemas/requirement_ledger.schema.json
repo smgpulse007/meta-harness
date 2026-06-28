@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://meta-harness.dev/schemas/requirement_ledger.schema.json",
+  "title": "Requirement Ledger",
+  "type": "object",
+  "required": ["protocol_version", "generated_at", "requirements", "limitations"],
+  "properties": {
+    "protocol_version": { "type": "string" },
+    "generated_at": { "type": "string" },
+    "requirements": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "source_file",
+          "source_heading",
+          "source_ref",
+          "implementation_status",
+          "proof_references",
+          "carry_forward_risks"
+        ],
+        "properties": {
+          "id": { "type": "string" },
+          "source_file": { "type": "string" },
+          "source_heading": { "type": "string" },
+          "source_ref": { "type": "string" },
+          "phase_mapping": { "type": "string" },
+          "slice_mapping": { "type": "string" },
+          "acceptance_criteria": { "type": "array", "items": { "type": "string" } },
+          "validation_command": { "type": "string" },
+          "implementation_status": {
+            "enum": ["not_started", "in_progress", "implemented", "blocked"]
+          },
+          "proof_references": { "type": "array", "items": { "type": "string" } },
+          "carry_forward_risks": { "type": "array", "items": { "type": "string" } }
+        },
+        "additionalProperties": false
+      }
+    },
+    "limitations": { "type": "array", "items": { "type": "string" } }
+  },
+  "additionalProperties": false
+}

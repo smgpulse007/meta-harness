@@ -1,0 +1,17 @@
+protocol_version: 0.1.0
+current_phase_id: phase_1
+current_phase_status: complete
+auto_continue_allowed: true
+next_phase_id: phase_2
+human_acceptance_required: false
+human_acceptance_present: false
+required_files_to_read:
+  - docs/implementation_harness/phase_manifest.yaml
+  - docs/checkpoints/phase_1/checkpoint.md
+  - docs/checkpoints/phase_1/proof.json
+  - docs/checkpoints/phase_1/next_action.yaml
+carry_forward_risks: []
+blocking_risks: []
+required_validation_preface:
+  - Run pnpm run ci before continuing.
+allowed_next_transition: continue:phase_2

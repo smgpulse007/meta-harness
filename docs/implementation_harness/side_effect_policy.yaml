@@ -1,0 +1,15 @@
+default_posture: read_only
+dangerous_operations:
+  - production_write
+  - external_api_mutation
+  - financial_transaction
+  - outbound_email
+  - database_migration
+  - secret_rotation
+  - infrastructure_destroy
+  - destructive_file_operation
+  - package_publish
+  - git_push
+allowed_dangerous_operations: []
+authorization_required: true
+audit_required: true
