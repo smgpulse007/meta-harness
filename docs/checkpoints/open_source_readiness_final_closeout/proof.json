@@ -49,17 +49,19 @@
     },
     {
       "id": "final-pages-accessible",
-      "claim": "The GitHub Pages URL is accessible and deployed correctly.",
-      "status": "not_verified",
+      "claim": "The GitHub Pages URL is accessible and deployed correctly from the Actions-based Docs Pages workflow.",
+      "status": "runtime_verified",
       "evidence": [
-        "docs/checkpoints/open_source_readiness_final_closeout/artifacts/pages_blocker.md",
-        "docs/checkpoints/open_source_readiness_final_closeout/commands.md"
+        "https://github.com/smgpulse007/meta-harness/actions/runs/28864857181",
+        "https://smgpulse007.github.io/meta-harness/",
+        "docs/checkpoints/open_source_readiness_final_closeout/commands.md",
+        "docs/checkpoints/open_source_readiness_final_closeout/artifacts/pages_deployment_verified.md"
       ],
       "required": true
     },
     {
       "id": "final-no-unsafe-side-effects",
-      "claim": "No package publish, GitHub release creation, repository visibility change, Azure mutation, email, financial transaction, secret rotation, or infrastructure destruction was performed.",
+      "claim": "No package publish, GitHub release creation, package provenance upload, Azure mutation, email, financial transaction, secret rotation, or infrastructure destruction was performed by Codex; Pages was configured for workflow deployment and the Docs Pages workflow was dispatched with maintainer authorization.",
       "status": "parent_verified",
       "evidence": [
         "docs/checkpoints/open_source_readiness_final_closeout/checkpoint.md",
@@ -69,10 +71,11 @@
     },
     {
       "id": "final-independent-review",
-      "claim": "Final independent reviewer found the closeout aligned, on track, strong evidence quality, no repository-only recovery slices, and identified GitHub Pages plan/visibility authorization as the only remaining blocker.",
+      "claim": "The final independent reviewer found the repository implementation aligned and identified GitHub Pages plan or visibility as the only remaining blocker; that blocker was later resolved by the maintainer making the repository public and the parent coordinator runtime-verifying Pages deployment.",
       "status": "parent_verified",
       "evidence": [
-        "docs/checkpoints/open_source_readiness_final_closeout/artifacts/final_reviewer.md"
+        "docs/checkpoints/open_source_readiness_final_closeout/artifacts/final_reviewer.md",
+        "docs/checkpoints/open_source_readiness_final_closeout/artifacts/pages_deployment_verified.md"
       ],
       "required": true
     }
