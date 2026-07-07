@@ -1,0 +1,80 @@
+{
+  "protocol_version": "0.1.0",
+  "phase_id": "open_source_readiness_final_closeout",
+  "claims": [
+    {
+      "id": "final-all-phases-complete",
+      "claim": "Open-source readiness implementation phases 0 through 8 are complete, reviewed, merged to main, and recorded in checkpoint artifacts.",
+      "status": "parent_verified",
+      "evidence": [
+        "docs/checkpoints/open_source_readiness_final_closeout/checkpoint.md",
+        "docs/checkpoints/open_source_readiness_phase_8/next_action.yaml"
+      ],
+      "required": true
+    },
+    {
+      "id": "final-main-workflows-green",
+      "claim": "Main branch workflows for the final merge commit completed successfully.",
+      "status": "runtime_verified",
+      "evidence": [
+        "https://github.com/smgpulse007/meta-harness/actions/runs/28863134885",
+        "https://github.com/smgpulse007/meta-harness/actions/runs/28863134927",
+        "https://github.com/smgpulse007/meta-harness/actions/runs/28863134914",
+        "https://github.com/smgpulse007/meta-harness/actions/runs/28863134945",
+        "https://github.com/smgpulse007/meta-harness/actions/runs/28863134920",
+        "https://github.com/smgpulse007/meta-harness/actions/runs/28863134896",
+        "https://github.com/smgpulse007/meta-harness/actions/runs/28863134892"
+      ],
+      "required": true
+    },
+    {
+      "id": "final-release-dry-run-hosted",
+      "claim": "The manual Release Dry Run workflow completed successfully on Ubuntu and Windows after Phase 8 merged.",
+      "status": "runtime_verified",
+      "evidence": [
+        "https://github.com/smgpulse007/meta-harness/actions/runs/28863414766",
+        "docs/checkpoints/open_source_readiness_final_closeout/commands.md"
+      ],
+      "required": true
+    },
+    {
+      "id": "final-docs-build-upload",
+      "claim": "The docs site builds and uploads a Pages artifact on main.",
+      "status": "runtime_verified",
+      "evidence": [
+        "https://github.com/smgpulse007/meta-harness/actions/runs/28863134945",
+        "docs/checkpoints/open_source_readiness_final_closeout/commands.md"
+      ],
+      "required": true
+    },
+    {
+      "id": "final-pages-accessible",
+      "claim": "The GitHub Pages URL is accessible and deployed correctly.",
+      "status": "not_verified",
+      "evidence": [
+        "docs/checkpoints/open_source_readiness_final_closeout/artifacts/pages_blocker.md",
+        "docs/checkpoints/open_source_readiness_final_closeout/commands.md"
+      ],
+      "required": true
+    },
+    {
+      "id": "final-no-unsafe-side-effects",
+      "claim": "No package publish, GitHub release creation, repository visibility change, Azure mutation, email, financial transaction, secret rotation, or infrastructure destruction was performed.",
+      "status": "parent_verified",
+      "evidence": [
+        "docs/checkpoints/open_source_readiness_final_closeout/checkpoint.md",
+        "docs/checkpoints/open_source_readiness_final_closeout/commands.md"
+      ],
+      "required": true
+    },
+    {
+      "id": "final-independent-review",
+      "claim": "Final independent reviewer found the closeout aligned, on track, strong evidence quality, no repository-only recovery slices, and identified GitHub Pages plan/visibility authorization as the only remaining blocker.",
+      "status": "parent_verified",
+      "evidence": [
+        "docs/checkpoints/open_source_readiness_final_closeout/artifacts/final_reviewer.md"
+      ],
+      "required": true
+    }
+  ]
+}

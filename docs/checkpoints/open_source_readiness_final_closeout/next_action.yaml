@@ -1,0 +1,21 @@
+protocol_version: 0.1.0
+current_phase_id: open_source_readiness_final_closeout
+current_phase_status: blocked_on_github_pages_plan
+auto_continue_allowed: false
+next_phase_id: null
+human_acceptance_required: true
+human_acceptance_present: false
+required_files_to_read:
+  - docs/checkpoints/open_source_readiness_final_closeout/checkpoint.md
+  - docs/checkpoints/open_source_readiness_final_closeout/proof.json
+  - docs/checkpoints/open_source_readiness_final_closeout/commands.md
+  - docs/checkpoints/open_source_readiness_final_closeout/artifacts/pages_blocker.md
+  - docs/checkpoints/open_source_readiness_final_closeout/artifacts/final_reviewer.md
+carry_forward_risks:
+  - GitHub Pages is not accessible while the repository remains private on a plan that does not support Pages.
+  - Making the repository public, changing GitHub plan, or deploying to an alternate public host requires separate explicit maintainer authorization.
+blocking_risks:
+  - GitHub Pages accessibility is blocked by GitHub plan/repository visibility; the Pages API returned HTTP 422 for Actions-based Pages enablement.
+required_validation_preface:
+  - Resolve the GitHub Pages plan/visibility/hosting decision before claiming the overall goal complete.
+allowed_next_transition: stop_until_pages_hosting_authorized
