@@ -1,0 +1,71 @@
+protocol_version: 0.1.0
+slice_id: phase1_ci_metadata_audit
+status: complete
+planned_owner: explorer
+actual_owner: Hypatia
+changed_files: []
+spec_alignment_refs:
+  - docs/checkpoints/open_source_readiness_phase_0/next_action.yaml
+  - docs/open-source-readiness-goal-prompt.md#phase-1-public-ready-repo-hygiene
+implementation_summary: >
+  Read-only audit of package metadata, Node/pnpm declarations, GitHub Actions workflows,
+  Dependabot/CodeQL/security automation, package dry-run CI coverage, and tracked generated artifacts.
+proof_statements:
+  - id: phase1-node-version-present
+    claim: Node and pnpm version declarations are present after Phase 1 edits.
+    status: static_verified
+    evidence:
+      - .node-version
+      - .nvmrc
+      - package.json
+    required: true
+  - id: phase1-windows-ci-present
+    claim: CI workflow includes ubuntu-latest and windows-latest matrix entries.
+    status: static_verified
+    evidence:
+      - .github/workflows/ci.yml
+    required: true
+  - id: phase1-package-dry-run-ci-present
+    claim: Package dry-run workflow packs all four publishable packages without publishing.
+    status: static_verified
+    evidence:
+      - .github/workflows/package-dry-run.yml
+    required: true
+  - id: phase1-security-automation-present
+    claim: Dependabot, CodeQL, and dependency audit automation exist.
+    status: static_verified
+    evidence:
+      - .github/dependabot.yml
+      - .github/workflows/codeql.yml
+      - .github/workflows/dependency-audit.yml
+    required: true
+validation_command_outputs:
+  - id: node-version
+    command: node --version
+    evidence_kind: command
+    exit_code: 0
+    output_excerpt: v22.16.0
+  - id: pnpm-version
+    command: pnpm --version
+    evidence_kind: command
+    exit_code: 0
+    output_excerpt: 11.7.0
+  - id: tracked-generated-scan
+    command: git ls-files | rg <generated artifact pattern>
+    evidence_kind: command
+    exit_code: 0
+    output_excerpt: NO_TRACKED_GENERATED_ARTIFACT_MATCHES
+side_effect_safety_status: ok
+blockers:
+  - GitHub Actions for unpushed Phase 1 workflow changes are not verified.
+risks:
+  - actionlint is not installed locally.
+  - Root package remains private; README documents scoped packages as publishable artifacts.
+next_dependencies:
+  - Run GitHub Actions after explicit push or PR authorization.
+auto_continue_recommendation: stop
+delegation_metrics:
+  files_edited: 0
+interruptions: []
+takeovers: []
+recovery_events: []

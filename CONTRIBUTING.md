@@ -6,7 +6,7 @@ Meta Harness is built around one rule: no phase advances without verified eviden
 
 ```bash
 pnpm install
-pnpm ci
+pnpm run ci
 ```
 
 Use focused changes, include tests for behavior changes, and update schemas or docs when you change protocol files.

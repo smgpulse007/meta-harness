@@ -1,0 +1,80 @@
+{
+  "protocol_version": "0.1.0",
+  "phase_id": "open_source_readiness_phase_0",
+  "claims": [
+    {
+      "id": "phase0-research-note",
+      "claim": "Phase 0 created a source-backed agent compatibility research note for the requested 2026-07-07 refresh.",
+      "status": "static_verified",
+      "evidence": ["docs/research/agent-compatibility-2026-07-07.md"],
+      "required": true
+    },
+    {
+      "id": "phase0-support-matrix",
+      "claim": "Agent support matrix separates instruction, skill/plugin, MCP, and native/headless dispatch surfaces.",
+      "status": "static_verified",
+      "evidence": ["docs/agent-support-matrix.md"],
+      "required": true
+    },
+    {
+      "id": "phase0-claim-ledger",
+      "claim": "Claim ledger records current support, evidence, planned work, and not-verified surfaces with allowed proof statuses.",
+      "status": "static_verified",
+      "evidence": ["docs/research/agent-support-claim-ledger-2026-07-07.md"],
+      "required": true
+    },
+    {
+      "id": "phase0-codex-partial",
+      "claim": "Codex support is described as partial and conservative: detection, MCP/write-scope hints, and prompt fallback only.",
+      "status": "static_verified",
+      "evidence": [
+        "docs/agent-support-matrix.md",
+        "docs/research/agent-compatibility-2026-07-07.md",
+        "packages/adapters/src/codex.ts"
+      ],
+      "required": true
+    },
+    {
+      "id": "phase0-native-dispatch-unverified",
+      "claim": "Native dispatch remains not verified for Codex, Claude Code, Cursor, Gemini, Copilot, Windsurf, Aider, OpenCode, and Roo/Cline-style agents.",
+      "status": "not_verified",
+      "evidence": [
+        "docs/agent-support-matrix.md",
+        "docs/research/agent-support-claim-ledger-2026-07-07.md",
+        "packages/adapters/src/cli-adapter.ts"
+      ],
+      "required": true
+    },
+    {
+      "id": "phase0-validation-gate",
+      "claim": "Required validation commands for Phase 0 were run without publishing packages or mutating external systems.",
+      "status": "command_verified",
+      "evidence": [
+        "docs/checkpoints/open_source_readiness_phase_0/commands.md",
+        "docs/checkpoints/open_source_readiness_phase_0/artifacts/validation_summary.json"
+      ],
+      "required": true
+    },
+    {
+      "id": "phase0-review-gate",
+      "claim": "Independent reviewer audit ran, recovery blockers were resolved, and the reviewer recommended pause_for_human_review.",
+      "status": "parent_verified",
+      "evidence": ["docs/checkpoints/open_source_readiness_phase_0/alignment_review.md"],
+      "required": true
+    },
+    {
+      "id": "phase0-continuation-contract",
+      "claim": "Phase 0 next_action.yaml exists and records the transition to open_source_readiness_phase_1 after human acceptance.",
+      "status": "static_verified",
+      "evidence": ["docs/checkpoints/open_source_readiness_phase_0/next_action.yaml"],
+      "required": true
+    },
+    {
+      "id": "phase0-human-acceptance",
+      "claim": "Maintainer accepted Phase 0 and authorized autonomous continuation with evidence gates preserved.",
+      "status": "human_verified",
+      "evidence": ["docs/checkpoints/open_source_readiness_phase_0/artifacts/human_acceptance.md"],
+      "required": true
+    }
+  ]
+}

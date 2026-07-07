@@ -1,0 +1,84 @@
+protocol_version: 0.1.0
+phase_id: open_source_readiness_phase_1
+slices:
+  - id: phase1_public_repo_hygiene
+    phase_id: open_source_readiness_phase_1
+    title: Public-ready repo hygiene
+    objective: Add Node metadata, CI/security automation, package dry-run workflow, README first-screen polish, and validation evidence without publishing or pushing.
+    owner: parent_coordinator
+    dependencies:
+      - open_source_readiness_phase_0
+    spec_refs:
+      - docs/open-source-readiness-goal-prompt.md
+      - docs/checkpoints/open_source_readiness_phase_0/next_action.yaml
+    allowed_write_scope:
+      - .node-version
+      - .nvmrc
+      - .github/**
+      - .gitignore
+      - package.json
+      - packages/*/package.json
+      - README.md
+      - CONTRIBUTING.md
+      - docs/checkpoints/open_source_readiness_phase_0/**
+      - docs/checkpoints/open_source_readiness_phase_1/**
+    forbidden_write_scope:
+      - .git/**
+      - node_modules/**
+      - .secrets/**
+      - dist/**
+      - "*.tgz"
+    expected_changed_files:
+      - .node-version
+      - .nvmrc
+      - .github/dependabot.yml
+      - .github/workflows/ci.yml
+      - .github/workflows/package-dry-run.yml
+      - .github/workflows/codeql.yml
+      - .github/workflows/dependency-audit.yml
+      - README.md
+      - package.json
+      - packages/*/package.json
+      - docs/checkpoints/open_source_readiness_phase_1/**
+    validation_commands:
+      - id: install
+        command: pnpm install --frozen-lockfile
+        required: true
+      - id: clean
+        command: pnpm run clean
+        required: true
+      - id: ci
+        command: pnpm run ci
+        required: true
+      - id: audit
+        command: pnpm audit --prod
+        required: true
+      - id: pack-core
+        command: pnpm --filter @meta-harness/core pack --dry-run
+        required: true
+      - id: pack-adapters
+        command: pnpm --filter @meta-harness/adapters pack --dry-run
+        required: true
+      - id: pack-cli
+        command: pnpm --filter @meta-harness/cli pack --dry-run
+        required: true
+      - id: pack-mcp-server
+        command: pnpm --filter @meta-harness/mcp-server pack --dry-run
+        required: true
+      - id: diff-check
+        command: git diff --check
+        required: true
+      - id: status
+        command: git status --short --branch
+        required: true
+    evidence_requirements:
+      - Local CI is command_verified.
+      - Package dry-runs are command_verified and do not publish.
+      - Security automation exists.
+      - README first screen is public-quality and conservative.
+      - GitHub Actions status for changed workflows is explicitly verified or carried as a blocker.
+    side_effect_policy: read_only_external_systems
+    packet_required: true
+    next_dependencies:
+      - Independent reviewer audit.
+      - Explicit push or PR authorization if remote GitHub Actions proof is required before Phase 2.

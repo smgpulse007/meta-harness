@@ -1,0 +1,28 @@
+protocol_version: 0.1.0
+current_phase_id: open_source_readiness_phase_0
+current_phase_status: complete
+auto_continue_allowed: true
+next_phase_id: open_source_readiness_phase_1
+human_acceptance_required: true
+human_acceptance_present: true
+required_files_to_read:
+  - docs/checkpoints/open_source_readiness_phase_0/checkpoint.md
+  - docs/checkpoints/open_source_readiness_phase_0/proof.json
+  - docs/checkpoints/open_source_readiness_phase_0/next_action.yaml
+  - docs/checkpoints/open_source_readiness_phase_0/commands.md
+  - docs/research/agent-compatibility-2026-07-07.md
+  - docs/research/agent-support-claim-ledger-2026-07-07.md
+  - docs/agent-support-matrix.md
+carry_forward_risks:
+  - Repo-wide pnpm run format:check currently fails on broad pre-existing style issues; Phase 0 touched docs pass scoped Prettier.
+  - GitHub Actions current live state was not reverified during Phase 0.
+  - Adapter proof remains mostly static plus integration smoke; adapter package has no direct tests yet.
+  - Copilot path-specific instructions lack applyTo frontmatter.
+  - mh emit-instructions lacks opencode and roo targets.
+  - Native dispatch remains not_verified for non-filesystem/fake adapters.
+  - Filesystem supportsDryRun semantics need audit because dispatch writes prompt files.
+blocking_risks: []
+required_validation_preface:
+  - Run pnpm run ci before continuing.
+  - Run validation commands required by the controlling goal for the next implementation phase.
+allowed_next_transition: open_source_readiness_phase_1

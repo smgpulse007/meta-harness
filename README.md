@@ -1,10 +1,52 @@
 # Meta Harness
 
-Meta Harness is a repo-native execution harness for large coding-agent implementation specs.
+[![CI](https://github.com/smgpulse007/meta-harness/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/smgpulse007/meta-harness/actions/workflows/ci.yml)
+[![Schema Check](https://github.com/smgpulse007/meta-harness/actions/workflows/schema-check.yml/badge.svg?branch=main)](https://github.com/smgpulse007/meta-harness/actions/workflows/schema-check.yml)
+[![Integration Smoke](https://github.com/smgpulse007/meta-harness/actions/workflows/integration-smoke.yml/badge.svg?branch=main)](https://github.com/smgpulse007/meta-harness/actions/workflows/integration-smoke.yml)
+[![Package Dry Run](https://github.com/smgpulse007/meta-harness/actions/workflows/package-dry-run.yml/badge.svg?branch=main)](https://github.com/smgpulse007/meta-harness/actions/workflows/package-dry-run.yml)
+[![Dependency Audit](https://github.com/smgpulse007/meta-harness/actions/workflows/dependency-audit.yml/badge.svg?branch=main)](https://github.com/smgpulse007/meta-harness/actions/workflows/dependency-audit.yml)
+[![CodeQL](https://github.com/smgpulse007/meta-harness/actions/workflows/codeql.yml/badge.svg?branch=main)](https://github.com/smgpulse007/meta-harness/actions/workflows/codeql.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Node](https://img.shields.io/badge/node-%3E%3D22.0.0-brightgreen.svg)](.node-version)
+[![pnpm](https://img.shields.io/badge/pnpm-11.7.0-orange.svg)](package.json)
 
-It is not a coding agent. It is the protocol, state machine, CLI, MCP server, adapter layer, templates, and skill package that coordinate coding agents around one rule:
+Meta Harness turns large coding-agent implementation specs into evidence-gated phases, slices, packets, checkpoints, and continuation state.
+
+It is not an LLM or a coding agent. It is the protocol, state machine, CLI, MCP server, adapter layer, templates, and skill package that coordinate coding agents around one rule:
 
 > No phase advances without verified evidence.
+
+[Getting started](docs/getting-started.md) | [Protocol](docs/protocol.md) | [Agent support](docs/agent-support-matrix.md) | [Security](SECURITY.md) | [Contributing](CONTRIBUTING.md) | [Release plan](docs/release-plan.md)
+
+## Install From Source
+
+Meta Harness is pre-1.0. The source checkout is the supported onboarding path until a maintainer-approved package release.
+The monorepo root is private; publishable artifacts live in the scoped `@meta-harness/*` packages.
+
+Requirements:
+
+- Node.js 22 or newer
+- pnpm 11.7.0
+
+```bash
+corepack enable
+pnpm install --frozen-lockfile
+pnpm run ci
+```
+
+Run the local CLI:
+
+```bash
+pnpm --filter @meta-harness/cli exec mh --help
+```
+
+Start a strict harness workspace:
+
+```bash
+pnpm --filter @meta-harness/cli exec mh init --profile strict
+```
+
+For the full walkthrough, see [Getting started](docs/getting-started.md).
 
 ## What It Does
 
@@ -21,18 +63,27 @@ It is not a coding agent. It is the protocol, state machine, CLI, MCP server, ad
 - It does not publish packages, push Git refs, mutate production systems, send email, rotate secrets, or perform financial transactions by default.
 - It does not claim all adapters have the same level of support.
 
+## Safety Defaults
+
+- External systems are read-only by default.
+- MCP starts in `read-only` mode.
+- Write tools require explicit `checkpoint-write` or `workspace-write` mode.
+- Package publishing, Git pushes, releases, production writes, email, financial transactions, and infrastructure changes require explicit maintainer approval.
+- Fake adapter output is simulation evidence only and cannot satisfy production implementation proof.
+
 ## Integration Tiers
 
 - Tier 0: filesystem protocol. Works with any coding agent by writing prompt and packet files.
 - Tier 1: generated instruction files for tools such as Claude, Gemini, Cursor, Windsurf, Copilot, and Continue.
 - Tier 2: CLI adapter dispatch where a tool is detected and a safe prompt-file flow is configured.
-- Tier 3: MCP/native integration where the host supports structured tool calls.
+- Tier 3: MCP integration and planned native dispatch where the host supports structured tool calls. Native dispatch remains experimental unless explicitly marked verified in the [support matrix](docs/agent-support-matrix.md).
 
 ## Quickstart
 
+The tiny TypeScript example exercises the harness without launching an external coding agent:
+
 ```bash
-pnpm install
-pnpm build
+pnpm install --frozen-lockfile
 pnpm --filter @meta-harness/cli exec mh init --profile strict
 pnpm --filter @meta-harness/cli exec mh ingest --spec docs/implementation_spec.md --manifest docs/implementation_harness/phase_manifest.yaml
 pnpm --filter @meta-harness/cli exec mh compile-spec --spec docs/implementation_spec.md
