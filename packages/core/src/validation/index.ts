@@ -5,13 +5,19 @@ import YAML from "yaml";
 import { analyzeSliceDag, detectWriteScopeOverlaps } from "../dag/index.js";
 import { resolveInsideWorkspace } from "../filesystem/index.js";
 import { evaluateProofGate } from "../proof/index.js";
-import { NextActionSchema, ProofLedgerSchema, SlicePacketSchema, SlicePlanSchema } from "../schemas.js";
+import {
+  NextActionSchema,
+  ProofLedgerSchema,
+  SlicePacketSchema,
+  SlicePlanSchema
+} from "../schemas.js";
 import { NextAction, ProofLedger, SlicePacket, SlicePlan } from "../types.js";
 
 export interface GateFinding {
   severity: "error" | "warning";
   code: string;
   message: string;
+  remediation?: string | undefined;
 }
 
 export interface GateResult {
@@ -28,7 +34,7 @@ export function lintSlicePlan(value: unknown): GateResult {
       code: "schema_invalid",
       message: parsed.error.issues.map((issue) => issue.message).join("; ")
     });
-    return { ok: false, findings };
+    return { ok: false, findings: addRemediation(findings) };
   }
   const plan = parsed.data as SlicePlan;
   const ids = new Set(plan.slices.map((slice) => slice.id));
@@ -51,7 +57,11 @@ export function lintSlicePlan(value: unknown): GateResult {
       }
     }
     if (!slice.owner.trim()) {
-      findings.push({ severity: "error", code: "missing_owner", message: `${slice.id} has no owner` });
+      findings.push({
+        severity: "error",
+        code: "missing_owner",
+        message: `${slice.id} has no owner`
+      });
     }
     if (slice.validation_commands.length === 0) {
       findings.push({
@@ -89,7 +99,10 @@ export function lintSlicePlan(value: unknown): GateResult {
       message: `${overlap.left} and ${overlap.right} can run in parallel and both touch ${overlap.scope}`
     });
   }
-  return { ok: findings.every((finding) => finding.severity !== "error"), findings };
+  return {
+    ok: findings.every((finding) => finding.severity !== "error"),
+    findings: addRemediation(findings)
+  };
 }
 
 export function validatePacket(value: unknown): SlicePacket {
@@ -304,5 +317,67 @@ export async function auditCheckpoint(input: {
   } else if (findings.some((finding) => finding.severity === "warning")) {
     status = "pass_with_risks";
   }
-  return { status, findings };
+  return { status, findings: addRemediation(findings) };
+}
+
+function addRemediation(findings: GateFinding[]): GateFinding[] {
+  return findings.map((finding) => ({
+    ...finding,
+    remediation: finding.remediation ?? remediationFor(finding.code)
+  }));
+}
+
+function remediationFor(code: string): string {
+  switch (code) {
+    case "schema_invalid":
+      return "Validate the YAML or JSON against the published schema and regenerate the artifact if needed.";
+    case "dependency_cycle":
+      return "Remove one dependency edge or split the slices so the phase DAG is acyclic.";
+    case "missing_dependency":
+      return "Add the missing slice to the plan or remove the dependency reference.";
+    case "missing_owner":
+      return "Assign an explicit owner such as parent, worker, reviewer, or recovery.";
+    case "missing_validation":
+      return "Add at least one validation command that can produce command evidence.";
+    case "missing_write_scope":
+      return "Declare a narrow allowed_write_scope before dispatching the slice.";
+    case "missing_spec_refs":
+      return "Reference the controlling spec or checkpoint file that authorizes the slice.";
+    case "packet_not_required":
+      return "Set packet_required true unless this is an explicitly documented parent-only slice.";
+    case "parallel_write_overlap":
+      return "Serialize the overlapping slices or narrow one allowed_write_scope before parallel dispatch.";
+    case "missing_checkpoint_file":
+      return "Create the missing checkpoint file before advancing the phase.";
+    case "missing_checkpoint_dir":
+      return "Create the required checkpoint directory and store packet or artifact evidence in it.";
+    case "invalid_slice_plan":
+      return "Regenerate or repair slice_plan.yaml until it matches the slice plan schema.";
+    case "invalid_slice_packet":
+      return "Repair the packet YAML so it matches the slice packet schema and cites validation evidence.";
+    case "empty_artifacts_dir":
+      return "Store at least one evidence artifact or reviewer output in artifacts/.";
+    case "invalid_proof":
+      return "Repair proof.json so required claims use exact proof statuses and cite evidence.";
+    case "invalid_next_action":
+      return "Repair next_action.yaml and make it the continuation source of truth.";
+    case "proof_gate_failed":
+      return "Run or review the missing evidence, then update required proof claims to verified statuses.";
+    case "proof_risk":
+      return "Carry the weak optional proof forward as a risk or strengthen it with command/review evidence.";
+    case "continuation_without_next_phase":
+      return "Set next_phase_id or disable auto_continue_allowed.";
+    case "human_acceptance_missing":
+      return "Stop at the review gate until human acceptance is recorded.";
+    case "blocking_risks_present":
+      return "Resolve blocking risks or keep the phase blocked with a recovery slice.";
+    case "carry_forward_risks_present":
+      return "Carry these risks into next_action.yaml and the next phase plan.";
+    case "missing_required_packet":
+      return "Collect or create the required slice packet before checkpoint closeout.";
+    case "simulated_command_evidence_for_complete":
+      return "Use pass_with_risks for fake-adapter output or replace simulation with real command evidence.";
+    default:
+      return "Inspect the finding, repair the artifact, rerun validation, and record the command evidence.";
+  }
 }

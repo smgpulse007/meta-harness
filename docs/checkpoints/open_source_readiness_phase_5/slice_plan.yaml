@@ -1,0 +1,35 @@
+protocol_version: 0.1.0
+phase_id: open_source_readiness_phase_5
+phase_objective: Expand technical depth, examples, doctor diagnostics, and remediation messages.
+slices:
+  - id: phase5_tests_examples_doctor
+    objective: Add deeper tests, a command-verified example workflow, structured doctor output, and remediation guidance.
+    status: complete
+    allowed_write_scope:
+      - packages/core/src/**
+      - packages/core/tests/**
+      - packages/adapters/tests/**
+      - packages/cli/src/**
+      - packages/cli/tests/**
+      - packages/mcp-server/tests/**
+      - scripts/**
+      - docs/**
+      - examples/**
+    forbidden_write_scope:
+      - .git/**
+      - node_modules/**
+      - dist/**
+      - .secrets/**
+      - "**/*.tgz"
+    validation:
+      - pnpm run ci
+      - pnpm docs:build
+      - pnpm audit --prod
+      - pnpm --filter @meta-harness/core pack --dry-run
+      - pnpm --filter @meta-harness/adapters pack --dry-run
+      - pnpm --filter @meta-harness/cli pack --dry-run
+      - pnpm --filter @meta-harness/mcp-server pack --dry-run
+      - node packages/cli/dist/index.js doctor --json --phase phase_001
+      - node --test tests/math.node-test.mjs
+      - git diff --check
+    output_packet: docs/checkpoints/open_source_readiness_phase_5/subagent_packets/phase5_tests_examples_doctor.packet.yaml

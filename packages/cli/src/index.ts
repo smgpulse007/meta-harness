@@ -147,7 +147,11 @@ export function buildCli(cwd = process.cwd()): Command {
     )
     .action((options) => run(() => emitInstructionsCommand(context, options), context));
 
-  program.command("doctor").action(() => run(() => doctorCommand(context), context));
+  program
+    .command("doctor")
+    .option("--json", "emit the structured JSON readiness report")
+    .option("--phase <phase>", "phase id for generated budget/context checks")
+    .action((options) => run(() => doctorCommand(context, options), context));
 
   program
     .command("mcp")

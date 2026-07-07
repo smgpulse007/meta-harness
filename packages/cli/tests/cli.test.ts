@@ -8,6 +8,7 @@ import { describe, expect, it } from "vitest";
 import { buildBudgetReport } from "../src/commands/budget.js";
 import { compileSpecCommand } from "../src/commands/compile-spec.js";
 import { contextPackCommand } from "../src/commands/context-pack.js";
+import { buildDoctorReport } from "../src/commands/doctor.js";
 import { emitInstructionsCommand } from "../src/commands/emit-instructions.js";
 import { initCommand } from "../src/commands/init.js";
 import { lintPlanCommand } from "../src/commands/lint-plan.js";
@@ -174,6 +175,59 @@ describe("cli commands", () => {
     expect(report.status).toBe("within_budget");
     expect(report.items.some((item) => item.budget_class === "instruction_index")).toBe(true);
     expect(report.items.some((item) => item.budget_class === "slice_pack")).toBe(true);
+  });
+
+  it("reports missing budget targets before a workspace is initialized", async () => {
+    const cwd = await tempRepo();
+    const context = {
+      cwd,
+      stdout: (_message: string) => undefined,
+      stderr: (_message: string) => undefined
+    };
+
+    const report = await buildBudgetReport(context, { phaseId: "phase_001" });
+    expect(report.status).toBe("over_budget");
+    expect(report.summary.missing).toBeGreaterThan(0);
+    expect(report.items.find((item) => item.status === "missing")?.notes.join(" ")).toContain(
+      "missing"
+    );
+  });
+
+  it("rejects invalid context-pack roles and budgets", async () => {
+    const cwd = await tempRepo();
+    const context = {
+      cwd,
+      stdout: (_message: string) => undefined,
+      stderr: (_message: string) => undefined
+    };
+    await initCommand(context, { profile: "strict" });
+
+    await expect(contextPackCommand(context, { role: "observer" })).rejects.toThrow(
+      /Unknown context-pack role/
+    );
+    await expect(contextPackCommand(context, { budget: "0" })).rejects.toThrow(
+      /Budget must be a positive integer/
+    );
+  });
+
+  it("builds a structured doctor report with remediation", async () => {
+    const cwd = await tempRepo();
+    const context = {
+      cwd,
+      stdout: (_message: string) => undefined,
+      stderr: (_message: string) => undefined
+    };
+    await initCommand(context, { profile: "strict" });
+
+    const report = await buildDoctorReport(context, { phase: "phase_001" });
+    expect(report.protocol_version).toBe("0.1.0");
+    expect(report.environment.phaseId).toBe("phase_001");
+    expect(report.checks.map((check) => check.id)).toContain("budget");
+    expect(report.checks.find((check) => check.id === "harness_initialized")?.status).toBe("ok");
+    expect(report.checks.some((check) => check.remediation)).toBe(true);
+    expect(report.summary.ok + report.summary.warnings + report.summary.errors).toBe(
+      report.checks.length
+    );
   });
 
   it("summarizes and redacts raw command logs", async () => {

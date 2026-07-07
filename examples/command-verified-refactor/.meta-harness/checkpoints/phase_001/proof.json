@@ -1,0 +1,16 @@
+{
+  "protocol_version": "0.1.0",
+  "phase_id": "phase_001",
+  "claims": [
+    {
+      "id": "phase_001_add_command_verified",
+      "claim": "add(a, b) returns the numeric sum and is covered by a local command.",
+      "status": "command_verified",
+      "evidence": [
+        ".meta-harness/checkpoints/phase_001/commands.md",
+        ".meta-harness/checkpoints/phase_001/artifacts/node-test.excerpt.json"
+      ],
+      "required": true
+    }
+  ]
+}

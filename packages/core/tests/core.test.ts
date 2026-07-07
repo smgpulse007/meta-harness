@@ -68,8 +68,12 @@ describe("core gates", () => {
   it("detects dependency cycles", () => {
     const plan = validPlan();
     plan.slices[0]!.dependencies = ["slice_b"];
+    const lint = lintSlicePlan(plan);
     expect(analyzeSliceDag(plan).cycles.length).toBeGreaterThan(0);
-    expect(lintSlicePlan(plan).ok).toBe(false);
+    expect(lint.ok).toBe(false);
+    expect(
+      lint.findings.find((finding) => finding.code === "dependency_cycle")?.remediation
+    ).toContain("acyclic");
   });
 
   it("rejects forbidden write scopes", () => {
@@ -111,7 +115,9 @@ describe("core gates", () => {
     const proof: ProofLedger = {
       protocol_version: HARNESS_PROTOCOL_VERSION,
       phase_id: "phase_001",
-      claims: [{ id: "claim", claim: "claim", status: "not_verified", evidence: [], required: true }]
+      claims: [
+        { id: "claim", claim: "claim", status: "not_verified", evidence: [], required: true }
+      ]
     };
     const result = await auditCheckpoint({
       workspaceRoot: process.cwd(),
@@ -120,6 +126,9 @@ describe("core gates", () => {
       nextAction: buildDefaultNextAction({ phaseId: "phase_001", status: "blocked" })
     });
     expect(result.status).toBe("invalid_checkpoint");
+    expect(
+      result.findings.find((finding) => finding.code === "missing_checkpoint_file")?.remediation
+    ).toContain("checkpoint file");
   });
 
   it("detects write lock overlap", () => {

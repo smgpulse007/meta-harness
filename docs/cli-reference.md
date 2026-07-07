@@ -26,7 +26,7 @@ node packages/cli/dist/index.js --help
 | `mh prompt`            | Alias for `mh context-pack`.                                       | Optional `--target`, `--phase`, `--budget`, and `--format`.                                | Markdown or JSON context pack.                                                                       |
 | `mh summarize-log`     | Convert a raw local log into a bounded evidence excerpt.           | `--input`; optional `--output`, `--command`, `--exit-code`, `--timestamp`, bounds, format. | JSON or Markdown excerpt with hash, timestamp, redaction, truncation, and bounded output.            |
 | `mh emit-instructions` | Generate host instruction files and local compatibility config.    | Optional `--target`.                                                                       | `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, Cursor, Windsurf, Copilot, Continue, OpenCode, and Roo files. |
-| `mh doctor`            | Inspect local harness health.                                      | None.                                                                                      | Health findings.                                                                                     |
+| `mh doctor`            | Inspect local harness health.                                      | Optional `--json` and `--phase`.                                                           | Structured readiness checks with summaries, evidence, and remediation guidance.                      |
 | `mh mcp --stdio`       | Start the MCP server over stdio.                                   | Optional `--mode`.                                                                         | MCP tools, prompts, and resources over stdio.                                                        |
 
 ## Exit And Evidence Expectations
@@ -63,3 +63,15 @@ Use `--role parent|worker|reviewer`, `--slice <id>`, `--format json`, and `--out
 ## Evidence Excerpts
 
 `mh summarize-log --input <path>` reads a workspace-local raw command output file, redacts known secret patterns, records the raw SHA-256 hash, and emits a bounded JSON or Markdown excerpt. Use `--timestamp` when deterministic sample output is needed.
+
+## Doctor Reports
+
+`mh doctor --json` emits a structured readiness report. The source checkout emits JSON by default; `--json` is accepted for scripts that want to be explicit. Use `--phase <id>` when checking generated budget/context-pack health for a phase other than the state file's current phase.
+
+- overall `status`: `ok`, `warning`, or `error`
+- summary counts for ok, warning, and error checks
+- environment data for Node, git, schemas, safety policy, current harness state, and MCP readiness
+- one check per readiness area, each with `id`, `status`, `summary`, `evidence`, and optional `remediation`
+- adapter registry and budget summary details
+
+Use doctor output before dispatching work to catch missing initialization, stale builds, dirty worktrees, missing schemas, and over-budget context artifacts.

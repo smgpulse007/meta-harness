@@ -1,0 +1,79 @@
+{
+  "protocol_version": "0.1.0",
+  "phase_id": "open_source_readiness_phase_5",
+  "status": "command_verified",
+  "commands": [
+    {
+      "command": "pnpm run ci",
+      "exit_code": 0,
+      "summary": "5 test files passed; 25 tests passed; schema-check validated 25 artifacts; build, budget, and integration-smoke passed."
+    },
+    {
+      "command": "pnpm docs:build",
+      "exit_code": 0,
+      "summary": "TypeDoc and VitePress build completed with a non-blocking large-chunk advisory."
+    },
+    {
+      "command": "pnpm audit --prod",
+      "exit_code": 0,
+      "summary": "No known vulnerabilities found."
+    },
+    {
+      "command": "node packages/cli/dist/index.js doctor --json --phase phase_001",
+      "exit_code": 0,
+      "summary": "status=warning, checks=10, errors=0, warnings=1, budget check present, remediation present. Warning is the expected dirty worktree during Phase 5 edits."
+    },
+    {
+      "command": "node --test tests/math.node-test.mjs",
+      "cwd": "examples/command-verified-refactor",
+      "exit_code": 0,
+      "summary": "Node test runner reported 1 passing test and 0 failures."
+    },
+    {
+      "command": "pnpm --filter @meta-harness/core pack --dry-run",
+      "exit_code": 0,
+      "summary": "Dry-run package contents listed; no generated tarball remained."
+    },
+    {
+      "command": "pnpm --filter @meta-harness/adapters pack --dry-run",
+      "exit_code": 0,
+      "summary": "Dry-run package contents listed; no generated tarball remained."
+    },
+    {
+      "command": "pnpm --filter @meta-harness/cli pack --dry-run",
+      "exit_code": 0,
+      "summary": "Dry-run package contents listed; no generated tarball remained."
+    },
+    {
+      "command": "pnpm --filter @meta-harness/mcp-server pack --dry-run",
+      "exit_code": 0,
+      "summary": "Dry-run package contents listed; no generated tarball remained."
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0,
+      "summary": "No whitespace errors."
+    },
+    {
+      "command": "recovery: rg -uu stale command-verified example references",
+      "exit_code": 0,
+      "summary": "No stale command/file references remained after repairing hidden checkpoint artifacts."
+    },
+    {
+      "command": "recovery: node --test tests/math.node-test.mjs",
+      "cwd": "examples/command-verified-refactor",
+      "exit_code": 0,
+      "summary": "Node test runner reported 1 passing test and 0 failures after artifact repair."
+    },
+    {
+      "command": "recovery: pnpm schema-check",
+      "exit_code": 0,
+      "summary": "Validated 13 JSON schemas and 25 artifacts after artifact repair."
+    },
+    {
+      "command": "recovery: node packages/cli/dist/index.js doctor --json --phase phase_001",
+      "exit_code": 0,
+      "summary": "Structured doctor report still had 10 checks, 0 errors, budget and remediation present."
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "protocol_version": "0.1.0",
+  "raw_path": ".meta-harness/checkpoints/phase_001/artifacts/node-test.raw.txt",
+  "raw_sha256": "538daf810d57983ee4f96594537ec1dd4751c5a902a80fcbb8396f799979876d",
+  "command": "node --test tests/math.node-test.mjs",
+  "exit_code": 0,
+  "recorded_at": "2026-07-07T00:00:00.000Z",
+  "excerpt_line_count": 16,
+  "excerpt_bytes": 216,
+  "max_lines": 200,
+  "max_bytes": 12288,
+  "truncated": false,
+  "omitted_lines": 0,
+  "redaction": "secret_patterns",
+  "excerpt": "TAP version 13\n# Subtest: adds two numbers\nok 1 - adds two numbers\n  ---\n  duration_ms: 0.3867\n  type: 'test'\n  ...\n1..1\n# tests 1\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 56.4441"
+}
