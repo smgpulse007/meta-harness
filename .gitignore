@@ -1,6 +1,7 @@
 node_modules/
 dist/
 coverage/
+.vs/
 .DS_Store
 *.log
 *.tsbuildinfo

@@ -3,14 +3,14 @@
   "version": "0.1.0",
   "description": "Meta Harness command-line interface.",
   "license": "MIT",
-  "homepage": "https://github.com/meta-harness/meta-harness#readme",
+  "homepage": "https://github.com/smgpulse007/meta-harness#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/meta-harness/meta-harness.git",
+    "url": "git+https://github.com/smgpulse007/meta-harness.git",
     "directory": "packages/cli"
   },
   "bugs": {
-    "url": "https://github.com/meta-harness/meta-harness/issues"
+    "url": "https://github.com/smgpulse007/meta-harness/issues"
   },
   "type": "module",
   "main": "./dist/index.js",

@@ -3,14 +3,14 @@
   "version": "0.1.0",
   "description": "Core state machine, schemas, safety, proof, and checkpoint engine for Meta Harness.",
   "license": "MIT",
-  "homepage": "https://github.com/meta-harness/meta-harness#readme",
+  "homepage": "https://github.com/smgpulse007/meta-harness#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/meta-harness/meta-harness.git",
+    "url": "git+https://github.com/smgpulse007/meta-harness.git",
     "directory": "packages/core"
   },
   "bugs": {
-    "url": "https://github.com/meta-harness/meta-harness/issues"
+    "url": "https://github.com/smgpulse007/meta-harness/issues"
   },
   "type": "module",
   "main": "./dist/index.js",
