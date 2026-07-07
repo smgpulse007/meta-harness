@@ -1,0 +1,24 @@
+agent: Carson
+role: mandatory_phase_reviewer
+proof_status: parent_verified
+phase_alignment: partially_aligned
+directional_alignment: needs_adjustment
+evidence_quality: adequate
+phase_completion_percent: 90
+overall_goal_completion_percent: 36
+track_completion_percent:
+  Track A: 72
+  Track B: 45
+  Track C: 38
+  Track D: 18
+  Track E: 20
+blockers:
+  - Pages workflow needs remote GitHub Actions verification.
+  - CLI reference table had malformed pipe characters in the mh init row.
+required_recovery_slices:
+  - Fix CLI reference table and rerun scoped Prettier plus docs build.
+  - Verify Docs Pages workflow in GitHub Actions after push or PR.
+next_action_recommendation: recover
+recovery_status:
+  cli_reference_table: command_verified
+  pages_workflow_remote: not_verified

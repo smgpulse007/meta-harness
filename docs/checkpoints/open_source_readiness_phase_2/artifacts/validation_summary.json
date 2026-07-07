@@ -1,0 +1,183 @@
+{
+  "phase_id": "open_source_readiness_phase_2",
+  "status": "blocked",
+  "generated_at": "2026-07-06T23:35:00-04:00",
+  "commands": [
+    {
+      "id": "add-docs-dependencies",
+      "command": "pnpm add -D vitepress@1.6.4 typedoc@0.28.20 typedoc-plugin-markdown@4.12.0",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "Added VitePress, TypeDoc, and typedoc-plugin-markdown as dev dependencies."
+    },
+    {
+      "id": "install-frozen-lockfile",
+      "command": "pnpm install --frozen-lockfile",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "Lockfile was up to date after dependency addition."
+    },
+    {
+      "id": "docs-api-initial-root-tsconfig-failure",
+      "command": "pnpm docs:api",
+      "exit_code": 3,
+      "proof_status": "command_verified",
+      "excerpt": "Initial TypeDoc run failed because root TypeScript compilation reached scripts/schema-check.ts; recovery added tsconfig.typedoc.json."
+    },
+    {
+      "id": "docs-build-dead-link-failure",
+      "command": "pnpm docs:build",
+      "exit_code": 1,
+      "proof_status": "command_verified",
+      "excerpt": "Initial VitePress build found one dead link from docs/security.md to ../SECURITY; recovery changed it to a GitHub URL."
+    },
+    {
+      "id": "scoped-format-check-initial",
+      "command": "pnpm exec prettier --check --ignore-unknown <Phase 2 touched files>",
+      "exit_code": 1,
+      "proof_status": "command_verified",
+      "excerpt": "Initial scoped Prettier found formatting issues in touched docs/config files."
+    },
+    {
+      "id": "scoped-format-write",
+      "command": "pnpm exec prettier --write --ignore-unknown <Phase 2 touched files>",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "Formatted only Phase 2 touched docs/config files."
+    },
+    {
+      "id": "scoped-format-check",
+      "command": "pnpm exec prettier --check --ignore-unknown <Phase 2 touched files>",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "All touched Phase 2 files passed scoped Prettier."
+    },
+    {
+      "id": "workflow-yaml-parse",
+      "command": "node -e \"<parse all workflow YAML>\"",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "Parsed all GitHub Actions workflow YAML files, including pages.yml."
+    },
+    {
+      "id": "diff-check",
+      "command": "git diff --check",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "No whitespace errors; Git emitted LF-to-CRLF warnings only."
+    },
+    {
+      "id": "clean-before-docs",
+      "command": "pnpm run clean",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "Package dist and tsbuildinfo outputs removed before docs build validation."
+    },
+    {
+      "id": "docs-api-clean-tree-failure",
+      "command": "pnpm docs:api",
+      "exit_code": 3,
+      "proof_status": "command_verified",
+      "excerpt": "TypeDoc failed from a clean tree because workspace imports resolved to missing dist; recovery mapped workspace packages to source indexes."
+    },
+    {
+      "id": "docs-api-final",
+      "command": "pnpm docs:api",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "TypeDoc generated Markdown API docs into ignored docs/api."
+    },
+    {
+      "id": "docs-build-final",
+      "command": "pnpm docs:build",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "TypeDoc generated API docs and VitePress built client/server bundles and rendered pages."
+    },
+    {
+      "id": "ci",
+      "command": "pnpm run ci",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "Lint, typecheck/build, Vitest 4 files and 15 tests, schema-check over 17 artifacts, build, and integration smoke passed."
+    },
+    {
+      "id": "audit-prod",
+      "command": "pnpm audit --prod",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "No known vulnerabilities found."
+    },
+    {
+      "id": "pack-core",
+      "command": "pnpm --filter @meta-harness/core pack --dry-run",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "Dry-run package contents reported for @meta-harness/core; no publish performed."
+    },
+    {
+      "id": "pack-adapters",
+      "command": "pnpm --filter @meta-harness/adapters pack --dry-run",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "Dry-run package contents reported for @meta-harness/adapters; no publish performed."
+    },
+    {
+      "id": "pack-cli",
+      "command": "pnpm --filter @meta-harness/cli pack --dry-run",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "Dry-run package contents reported for @meta-harness/cli; no publish performed."
+    },
+    {
+      "id": "pack-mcp-server",
+      "command": "pnpm --filter @meta-harness/mcp-server pack --dry-run",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "Dry-run package contents reported for @meta-harness/mcp-server; no publish performed."
+    },
+    {
+      "id": "generated-artifact-scan",
+      "command": "git ls-files | rg <generated artifact pattern>",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "No tracked generated artifacts found."
+    },
+    {
+      "id": "reviewer-recovery-format-check",
+      "command": "pnpm exec prettier --check --ignore-unknown .github/workflows/pages.yml docs/cli-reference.md",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "Scoped recovery check passed after adding the PR trigger and fixing the CLI reference table."
+    },
+    {
+      "id": "reviewer-recovery-docs-build",
+      "command": "pnpm docs:build",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "Docs build passed after the reviewer-requested CLI reference table fix."
+    }
+  ],
+  "non_command_evidence": [
+    {
+      "id": "docs-ia-audit",
+      "proof_status": "static_verified",
+      "excerpt": "Docs IA auditor confirmed required pages/nav/sidebar, reusable content, and acceptance gaps."
+    },
+    {
+      "id": "package-workflow-audit",
+      "proof_status": "static_verified",
+      "excerpt": "Package/workflow auditor confirmed separate docs scripts, TypeDoc output policy, and narrow Pages workflow permissions."
+    },
+    {
+      "id": "mandatory-review",
+      "proof_status": "parent_verified",
+      "excerpt": "Mandatory reviewer returned partially_aligned, needs_adjustment, adequate evidence, 90 percent phase completion, and required recovery."
+    },
+    {
+      "id": "remote-pages-workflow",
+      "proof_status": "not_verified",
+      "excerpt": "Docs Pages workflow needs GitHub Actions evidence after the Phase 2 branch is pushed."
+    }
+  ]
+}

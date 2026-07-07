@@ -1,0 +1,20 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "baseUrl": ".",
+    "paths": {
+      "@meta-harness/core": ["packages/core/src/index.ts"],
+      "@meta-harness/adapters": ["packages/adapters/src/index.ts"],
+      "@meta-harness/mcp-server": ["packages/mcp-server/src/index.ts"],
+      "@meta-harness/cli": ["packages/cli/src/index.ts"]
+    }
+  },
+  "include": ["packages/*/src/**/*.ts"],
+  "exclude": [
+    "packages/*/tests/**/*.ts",
+    "packages/*/dist/**/*.ts",
+    "scripts/**/*.ts",
+    "examples/**/*.ts"
+  ]
+}

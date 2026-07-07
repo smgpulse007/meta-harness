@@ -1,0 +1,95 @@
+{
+  "protocol_version": "0.1.0",
+  "phase_id": "open_source_readiness_phase_2",
+  "claims": [
+    {
+      "id": "phase2-docs-tooling",
+      "claim": "VitePress and TypeDoc tooling are configured at the repository root without changing runtime behavior.",
+      "status": "static_verified",
+      "evidence": [
+        "package.json",
+        "typedoc.json",
+        "tsconfig.typedoc.json",
+        "docs/.vitepress/config.ts"
+      ],
+      "required": true
+    },
+    {
+      "id": "phase2-docs-build",
+      "claim": "The docs site builds locally with TypeDoc-generated API Markdown and VitePress rendering.",
+      "status": "command_verified",
+      "evidence": [
+        "docs/checkpoints/open_source_readiness_phase_2/commands.md",
+        "docs/checkpoints/open_source_readiness_phase_2/artifacts/validation_summary.json"
+      ],
+      "required": true
+    },
+    {
+      "id": "phase2-docs-ia",
+      "claim": "The docs site includes pages or nav entries for home, quickstart, concepts, CLI, MCP, adapters, agent compatibility, token budgeting, Azure, examples, security, and API reference.",
+      "status": "static_verified",
+      "evidence": [
+        "docs/.vitepress/config.ts",
+        "docs/index.md",
+        "docs/getting-started.md",
+        "docs/cli-reference.md",
+        "docs/mcp-reference.md",
+        "docs/adapters.md",
+        "docs/agent-support-matrix.md",
+        "docs/token-budgeting.md",
+        "docs/azure-enterprise.md",
+        "docs/security.md",
+        "docs/examples/mcp-host.md",
+        "docs/examples/codex-prompt-file.md",
+        "docs/examples/richer-refactor.md"
+      ],
+      "required": true
+    },
+    {
+      "id": "phase2-pages-workflow",
+      "claim": "A GitHub Pages workflow exists, parses, builds docs on pull requests, and deploys only on non-PR events.",
+      "status": "static_verified",
+      "evidence": [
+        ".github/workflows/pages.yml",
+        "docs/checkpoints/open_source_readiness_phase_2/commands.md"
+      ],
+      "required": true
+    },
+    {
+      "id": "phase2-pages-workflow-remote",
+      "claim": "The Docs Pages workflow is verified by GitHub Actions for the Phase 2 branch.",
+      "status": "not_verified",
+      "evidence": [
+        "docs/checkpoints/open_source_readiness_phase_2/artifacts/validation_summary.json"
+      ],
+      "required": true
+    },
+    {
+      "id": "phase2-local-validation",
+      "claim": "Phase 2 local validation passed, including docs build, repo CI, production audit, package dry-runs, workflow YAML parse, formatting, and generated-artifact scan.",
+      "status": "command_verified",
+      "evidence": [
+        "docs/checkpoints/open_source_readiness_phase_2/commands.md",
+        "docs/checkpoints/open_source_readiness_phase_2/artifacts/validation_summary.json"
+      ],
+      "required": true
+    },
+    {
+      "id": "phase2-generated-api-ignored",
+      "claim": "Generated TypeDoc and VitePress outputs are ignored and not tracked.",
+      "status": "command_verified",
+      "evidence": [
+        ".gitignore",
+        "docs/checkpoints/open_source_readiness_phase_2/artifacts/validation_summary.json"
+      ],
+      "required": true
+    },
+    {
+      "id": "phase2-review-gate",
+      "claim": "Independent reviewer audit ran and found remote Pages workflow verification blocking final Phase 2 closeout.",
+      "status": "parent_verified",
+      "evidence": ["docs/checkpoints/open_source_readiness_phase_2/alignment_review.md"],
+      "required": true
+    }
+  ]
+}
