@@ -1,6 +1,6 @@
 # Checkpoint open_source_readiness_phase_2
 
-Status: blocked
+Status: complete
 
 ## Summary
 
@@ -22,8 +22,8 @@ Phase 2 added the docs-site foundation:
 | VitePress and TypeDoc docs tooling exists. | `static_verified`  | `package.json`, `typedoc.json`, `tsconfig.typedoc.json`, `docs/.vitepress/config.ts`.                                                                                                                                                                                          |
 | `pnpm docs:build` passes.                  | `command_verified` | `docs/checkpoints/open_source_readiness_phase_2/commands.md`.                                                                                                                                                                                                                  |
 | Docs site includes the required IA pages.  | `static_verified`  | `docs/index.md`, `docs/getting-started.md`, `docs/cli-reference.md`, `docs/mcp-reference.md`, `docs/adapters.md`, `docs/agent-support-matrix.md`, `docs/token-budgeting.md`, `docs/azure-enterprise.md`, `docs/security.md`, `docs/examples/*.md`, generated `docs/api` route. |
-| Pages workflow exists and parses.          | `static_verified`  | `.github/workflows/pages.yml`, workflow YAML parse command.                                                                                                                                                                                                                    |
-| Pages workflow is verified remotely.       | `not_verified`     | Requires PR GitHub Actions evidence for Phase 2 branch.                                                                                                                                                                                                                        |
+| Pages workflow exists and parses.          | `command_verified` | `.github/workflows/pages.yml`, workflow YAML parse command, and PR #7 Docs Pages run.                                                                                                                                                                                          |
+| Pages workflow is verified remotely.       | `command_verified` | PR #7 head `0b9c4feb1211acd317fd1a19b4aa0632ba976bd5` passed the Docs Pages `Build docs` job.                                                                                                                                                                                  |
 
 ## Reviewer Result
 
@@ -45,11 +45,11 @@ Reviewer blockers:
 
 The malformed CLI reference table was fixed, scoped Prettier passed, and `pnpm docs:build` passed after the fix.
 
-The Pages workflow remote verification remains open. The workflow now runs on `pull_request` for docs-build verification and deploys only on non-PR events.
+The Pages workflow remote verification is closed. The workflow runs on `pull_request` for docs-build verification and deploys only on non-PR events. PR #7 passed `Build docs`; `Deploy docs` skipped as expected on the pull request.
 
 ## Blocking Risk
 
-Phase 2 should not be marked complete until GitHub Actions verifies the Docs Pages workflow on the Phase 2 PR branch.
+None for Phase 2.
 
 ## Required Evidence
 

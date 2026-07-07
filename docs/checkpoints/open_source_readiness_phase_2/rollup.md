@@ -12,10 +12,10 @@ Phase 2 added a VitePress and TypeDoc documentation foundation without changing 
 - Validated local docs build, CI, audit, package dry-runs, formatting, workflow YAML parsing, and generated-artifact cleanup.
 - Fixed the reviewer-identified CLI reference table defect.
 
-## Not Fully Verified
+## Remote Verification
 
-- The new Docs Pages workflow has not yet run in GitHub Actions for the Phase 2 branch.
+PR #7 head `0b9c4feb1211acd317fd1a19b4aa0632ba976bd5` passed the new Docs Pages `Build docs` job and all existing required checks. The `Deploy docs` job skipped as expected on the pull request.
 
 ## Next
 
-Push the Phase 2 branch, open a PR, verify the Docs Pages workflow and existing checks, then update this checkpoint to complete if all remote checks pass.
+Merge PR #7, verify the non-PR Pages deployment run on `main`, then continue to `open_source_readiness_phase_3` from `next_action.yaml`.

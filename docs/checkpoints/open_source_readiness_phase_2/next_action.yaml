@@ -1,6 +1,6 @@
 protocol_version: 0.1.0
 current_phase_id: open_source_readiness_phase_2
-current_phase_status: blocked
+current_phase_status: complete
 auto_continue_allowed: true
 next_phase_id: open_source_readiness_phase_3
 human_acceptance_required: false
@@ -15,10 +15,11 @@ carry_forward_risks:
   - Pages deployment on push to main remains unverified until the workflow runs on GitHub.
   - TypeDoc currently documents package entrypoint exports and may expose APIs that need later curation.
   - Repo-wide format checking remains deferred; Phase 2 touched files pass scoped Prettier.
-blocking_risks:
-  - Docs Pages workflow has not yet been verified remotely on the Phase 2 PR branch.
+blocking_risks: []
 required_validation_preface:
-  - Push the Phase 2 branch and open a PR.
-  - Verify the Docs Pages workflow build job and existing CI workflows on the PR branch.
-  - Update proof.json and this next_action.yaml after remote verification.
-allowed_next_transition: verify_phase2_pages_workflow_on_pr
+  - Read docs/checkpoints/open_source_readiness_phase_2/checkpoint.md.
+  - Read docs/checkpoints/open_source_readiness_phase_2/proof.json.
+  - Read docs/checkpoints/open_source_readiness_phase_2/next_action.yaml.
+  - Read docs/checkpoints/open_source_readiness_phase_2/commands.md.
+  - Read docs/checkpoints/open_source_readiness_phase_2/alignment_review.md.
+allowed_next_transition: begin_open_source_readiness_phase_3

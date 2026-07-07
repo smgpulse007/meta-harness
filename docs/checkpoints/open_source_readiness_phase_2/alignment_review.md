@@ -36,7 +36,7 @@ These estimates are reviewer estimates, not proof:
 
 The CLI reference table was fixed. `pnpm exec prettier --check --ignore-unknown .github/workflows/pages.yml docs/cli-reference.md`, workflow YAML parsing, `git diff --check`, and `pnpm docs:build` all passed after the fix.
 
-The Pages workflow remote verification remains a blocking risk until PR checks run.
+The Pages workflow remote verification is now closed. The initial PR run failed because `configure-pages` tried to read repository Pages configuration during a pull request. Recovery skipped `configure-pages` on pull requests and kept deployment limited to non-PR events. PR #7 head `0b9c4feb1211acd317fd1a19b4aa0632ba976bd5` passed the Docs Pages `Build docs` job.
 
 ## Residual Risks
 

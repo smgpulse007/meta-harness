@@ -48,19 +48,22 @@
     {
       "id": "phase2-pages-workflow",
       "claim": "A GitHub Pages workflow exists, parses, builds docs on pull requests, and deploys only on non-PR events.",
-      "status": "static_verified",
+      "status": "command_verified",
       "evidence": [
         ".github/workflows/pages.yml",
-        "docs/checkpoints/open_source_readiness_phase_2/commands.md"
+        "docs/checkpoints/open_source_readiness_phase_2/commands.md",
+        "docs/checkpoints/open_source_readiness_phase_2/artifacts/github_actions_pr7_remote_evidence.md"
       ],
       "required": true
     },
     {
       "id": "phase2-pages-workflow-remote",
       "claim": "The Docs Pages workflow is verified by GitHub Actions for the Phase 2 branch.",
-      "status": "not_verified",
+      "status": "command_verified",
       "evidence": [
-        "docs/checkpoints/open_source_readiness_phase_2/artifacts/validation_summary.json"
+        "docs/checkpoints/open_source_readiness_phase_2/artifacts/validation_summary.json",
+        "docs/checkpoints/open_source_readiness_phase_2/artifacts/github_actions_pr7_remote_evidence.md",
+        "https://github.com/smgpulse007/meta-harness/pull/7"
       ],
       "required": true
     },
@@ -86,7 +89,7 @@
     },
     {
       "id": "phase2-review-gate",
-      "claim": "Independent reviewer audit ran and found remote Pages workflow verification blocking final Phase 2 closeout.",
+      "claim": "Independent reviewer audit ran, found remote Pages workflow verification blocking final Phase 2 closeout, and parent recovery recorded command evidence that closes the blocker.",
       "status": "parent_verified",
       "evidence": ["docs/checkpoints/open_source_readiness_phase_2/alignment_review.md"],
       "required": true
