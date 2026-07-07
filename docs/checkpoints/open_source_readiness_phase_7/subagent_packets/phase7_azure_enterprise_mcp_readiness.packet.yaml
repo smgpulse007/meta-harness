@@ -1,0 +1,81 @@
+protocol_version: 0.1.0
+slice_id: phase7_azure_enterprise_mcp_readiness
+status: complete
+planned_owner: parent_coordinator
+actual_owner: parent_coordinator
+changed_files:
+  - docs/azure-enterprise.md
+  - docs/examples/enterprise-remote-mcp.md
+  - docs/examples/mcp-configs/README.md
+  - docs/mcp-reference.md
+  - docs/security.md
+  - docs/.vitepress/config.ts
+  - docs/research/agent-compatibility-2026-07-07.md
+  - docs/research/agent-support-claim-ledger-2026-07-07.md
+  - packages/cli/src/commands/mcp.ts
+  - packages/cli/tests/cli.test.ts
+  - docs/checkpoints/open_source_readiness_phase_7/
+spec_alignment_refs:
+  - docs/open-source-readiness-goal-prompt.md#phase-7-azure-and-enterprise-mcp-readiness
+  - docs/checkpoints/open_source_readiness_phase_6/next_action.yaml
+implementation_summary: Added source-backed Azure/enterprise MCP guidance and MCP mode validation without provisioning resources or claiming remote runtime support.
+proof_statements:
+  - id: phase7-docs-readiness
+    claim: Azure and enterprise MCP docs separate Meta Harness MCP, Foundry Agent Service, Azure MCP Server, model providers, and hosting substrate.
+    status: static_verified
+    evidence:
+      - docs/azure-enterprise.md
+      - docs/examples/enterprise-remote-mcp.md
+    required: true
+  - id: phase7-mcp-mode-validation
+    claim: Unknown MCP modes are rejected before server startup.
+    status: command_verified
+    evidence:
+      - packages/cli/src/commands/mcp.ts
+      - packages/cli/tests/cli.test.ts
+      - docs/checkpoints/open_source_readiness_phase_7/commands.md
+    required: true
+  - id: phase7-live-azure-not-verified
+    claim: Live Azure deployment and remote Meta Harness MCP hosting remain not verified because no Azure provisioning was performed.
+    status: not_verified
+    evidence:
+      - docs/checkpoints/open_source_readiness_phase_7/checkpoint.md
+    required: true
+validation_command_outputs:
+  - id: cli-test
+    command: pnpm --filter @meta-harness/cli test
+    evidence_kind: command
+    exit_code: 0
+    output_excerpt: 1 CLI test file passed; 9 tests passed and 1 built-help test skipped.
+  - id: cli-typecheck
+    command: pnpm --filter @meta-harness/cli typecheck
+    evidence_kind: command
+    exit_code: 0
+    output_excerpt: TypeScript typecheck exited 0.
+  - id: docs-build
+    command: pnpm docs:build
+    evidence_kind: command
+    exit_code: 0
+    output_excerpt: TypeDoc and VitePress build completed with the known non-blocking large-chunk advisory.
+  - id: full-validation
+    command: pnpm install --frozen-lockfile; pnpm run clean; pnpm run ci; pnpm docs:build; pnpm audit --prod; package dry-runs; pnpm schema-check; mh budget; mh doctor; prettier; git diff --check
+    evidence_kind: command
+    exit_code: 0
+    output_excerpt: Full Phase 7 local validation completed; see commands.md and artifacts/validation_summary.json.
+side_effect_safety_status: ok
+blockers: []
+risks:
+  - Remote Streamable HTTP MCP remains not implemented.
+  - Azure Foundry runtime connection remains not verified.
+  - Azure MCP Server must remain separate and explicitly gated.
+next_dependencies:
+  - Record independent final reviewer artifact.
+  - If approved, begin Phase 8 release readiness.
+auto_continue_recommendation: human_review
+delegation_metrics:
+  parent_integrated_subagents: 2
+  reviewer_pending: false
+  independent_reviewer_agent: 019f3b8f-1126-7b52-a31c-ae91e0513258
+interruptions: []
+takeovers: []
+recovery_events: []

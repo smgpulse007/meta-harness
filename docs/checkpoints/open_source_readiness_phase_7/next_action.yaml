@@ -1,0 +1,24 @@
+protocol_version: 0.1.0
+current_phase_id: open_source_readiness_phase_7
+current_phase_status: complete
+auto_continue_allowed: true
+next_phase_id: open_source_readiness_phase_8
+human_acceptance_required: false
+human_acceptance_present: true
+required_files_to_read:
+  - docs/checkpoints/open_source_readiness_phase_7/checkpoint.md
+  - docs/checkpoints/open_source_readiness_phase_7/proof.json
+  - docs/checkpoints/open_source_readiness_phase_7/commands.md
+  - docs/checkpoints/open_source_readiness_phase_7/alignment_review.md
+  - docs/checkpoints/open_source_readiness_phase_7/artifacts/final_reviewer.md
+carry_forward_risks:
+  - Actual Pages deployment remains blocked until GitHub Pages is supported for this private repository or the maintainer separately approves making the repository public or changing the GitHub plan.
+  - Remote Streamable HTTP MCP is a future target only; current runtime remains local stdio.
+  - Azure Foundry-to-Meta-Harness MCP runtime was not provisioned or tested.
+  - Azure MCP Server is separate and must not be chained into Meta Harness mutation workflows without explicit policy authorization.
+  - Remote workspace-write is not ready until a dedicated remote authorization and write-scope model exists.
+blocking_risks: []
+required_validation_preface:
+  - Read this checkpoint, proof.json, commands.md, alignment_review.md, and final_reviewer.md before Phase 8 work.
+  - Confirm GitHub PR checks after push.
+allowed_next_transition: begin_open_source_readiness_phase_8
