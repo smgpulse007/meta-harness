@@ -10,7 +10,7 @@ Phase 2 added the docs-site foundation:
 - Added `docs:dev`, `docs:api`, `docs:build`, and `docs:preview` scripts.
 - Added VitePress config with GitHub Pages base path `/meta-harness/`.
 - Added TypeDoc config that generates API Markdown into ignored `docs/api`.
-- Added a GitHub Pages workflow with PR docs-build verification and push-only deployment.
+- Added a GitHub Pages workflow with PR and push docs-build verification plus Pages-enabled-only deployment.
 - Added public docs pages for home, CLI, MCP, adapters, token budgeting, Azure/enterprise MCP, security, continuation contract, and examples.
 - Updated the quickstart to use source-checkout-safe `pnpm --filter @meta-harness/cli exec mh ...` commands.
 - Added a README docs-site link.
@@ -22,8 +22,8 @@ Phase 2 added the docs-site foundation:
 | VitePress and TypeDoc docs tooling exists. | `static_verified`  | `package.json`, `typedoc.json`, `tsconfig.typedoc.json`, `docs/.vitepress/config.ts`.                                                                                                                                                                                          |
 | `pnpm docs:build` passes.                  | `command_verified` | `docs/checkpoints/open_source_readiness_phase_2/commands.md`.                                                                                                                                                                                                                  |
 | Docs site includes the required IA pages.  | `static_verified`  | `docs/index.md`, `docs/getting-started.md`, `docs/cli-reference.md`, `docs/mcp-reference.md`, `docs/adapters.md`, `docs/agent-support-matrix.md`, `docs/token-budgeting.md`, `docs/azure-enterprise.md`, `docs/security.md`, `docs/examples/*.md`, generated `docs/api` route. |
-| Pages workflow exists and parses.          | `command_verified` | `.github/workflows/pages.yml`, workflow YAML parse command, and PR #7 Docs Pages run.                                                                                                                                                                                          |
-| Pages workflow is verified remotely.       | `command_verified` | PR #7 head `0b9c4feb1211acd317fd1a19b4aa0632ba976bd5` passed the Docs Pages `Build docs` job.                                                                                                                                                                                  |
+| Pages workflow exists and parses.          | `command_verified` | `.github/workflows/pages.yml`, workflow YAML parse command, PR #7 Docs Pages run, and main-branch Pages-disabled recovery evidence.                                                                                                                                            |
+| Pages build path is verified remotely.     | `command_verified` | PR #7 head `16080d8882dec66b6c0d35962030236ce7cb8773` passed the Docs Pages `Build docs` job. Main merge commit `3169d29eca4ef6489ca8a9cf817771dad8cb9788` verified that actual deploy needs repository Pages enabled first.                                                   |
 
 ## Reviewer Result
 
@@ -45,11 +45,13 @@ Reviewer blockers:
 
 The malformed CLI reference table was fixed, scoped Prettier passed, and `pnpm docs:build` passed after the fix.
 
-The Pages workflow remote verification is closed. The workflow runs on `pull_request` for docs-build verification and deploys only on non-PR events. PR #7 passed `Build docs`; `Deploy docs` skipped as expected on the pull request.
+The Pages workflow remote verification is closed for docs-build behavior. The workflow runs on `pull_request` and `push` for docs-build verification. It now configures and deploys Pages only when `github.event.repository.has_pages == true`.
+
+PR #7 passed `Build docs`; `Deploy docs` skipped as expected on the pull request. After merge, the `main` Docs Pages run failed because repository Pages is not enabled and `configure-pages` could not create the Pages site from `GITHUB_TOKEN`. Recovery gated configure/deploy on the repository Pages state instead of mutating repository settings from CI. Actual Pages deployment remains `partial` until Pages is enabled in repository settings and a `main` run deploys successfully.
 
 ## Blocking Risk
 
-None for Phase 2.
+None for Phase 2 docs build readiness. Actual Pages deployment remains a non-code repository settings follow-up because this private repository does not currently have Pages enabled.
 
 ## Required Evidence
 

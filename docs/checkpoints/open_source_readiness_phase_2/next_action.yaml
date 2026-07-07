@@ -12,7 +12,7 @@ required_files_to_read:
   - docs/checkpoints/open_source_readiness_phase_2/commands.md
   - docs/checkpoints/open_source_readiness_phase_2/alignment_review.md
 carry_forward_risks:
-  - Pages deployment on push to main remains unverified until the workflow runs on GitHub.
+  - Actual Pages deployment remains unverified until GitHub Pages is enabled for the private repository; the workflow now skips configure/deploy while Pages is disabled.
   - TypeDoc currently documents package entrypoint exports and may expose APIs that need later curation.
   - Repo-wide format checking remains deferred; Phase 2 touched files pass scoped Prettier.
 blocking_risks: []
