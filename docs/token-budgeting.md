@@ -24,17 +24,36 @@ Meta Harness is designed for large implementation programs where raw context dum
 | `evidence_excerpt`  | Command output excerpt.            |          100 to 200 lines or 12 KiB |
 | `raw_artifact`      | Full logs and generated outputs.   |          stored on disk, not pasted |
 
-## Current Commands
+## Commands
 
-Phase 3 adds a minimal bounded pack generator:
+Generate a bounded context pack:
 
 ```bash
-node packages/cli/dist/index.js context-pack --target codex --phase phase_001 --budget 8000 --format markdown
-node packages/cli/dist/index.js context-pack --target roo --format json
+node packages/cli/dist/index.js context-pack --target codex --role worker --phase phase_001 --budget 8000 --format markdown
 ```
 
-`mh prompt` is an alias for `mh context-pack`. The command emits target guidance, exact proof statuses, safety rules, validation commands from the slice plan when available, relevant file paths, bounded excerpts, and an estimated token count.
+`mh prompt` is an alias for `mh context-pack`. Packs include target guidance, current phase/slice, exact proof statuses, required output schema, validation commands, allowed write scope, proof-state summary, known blockers, artifact paths, bounded excerpts with line references, and a budget summary.
 
-## Roadmap
+Run the budget check:
 
-Phase 4 adds stronger machine-checkable budget commands such as `mh budget` and `mh summarize-log`, plus stricter CI budget checks.
+```bash
+node packages/cli/dist/index.js budget --json
+```
+
+`pnpm run ci` runs the budget check after the CLI is built. The first policy fails on missing or hard over-budget required items; `--strict` can also fail warnings.
+
+Summarize raw command output into a bounded evidence excerpt:
+
+```bash
+node packages/cli/dist/index.js summarize-log --input docs/examples/evidence-excerpts/sample-command-output.txt --command "pnpm test" --exit-code 0 --format json
+```
+
+The excerpt records path, command, exit code, timestamp, SHA-256 hash, redaction mode, truncation status, and bounded output. Raw logs stay on disk and are referenced by path/hash instead of pasted into prompts.
+
+## Samples
+
+- `docs/examples/context-packs/codex-worker.md`
+- `docs/examples/context-packs/claude-reviewer.md`
+- `docs/examples/context-packs/generic-filesystem.md`
+- `docs/examples/context-packs/budget-report.sample.json`
+- `docs/examples/evidence-excerpts/sample-command-output.excerpt.json`

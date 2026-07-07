@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://meta-harness.dev/schemas/evidence_excerpt.schema.json",
+  "title": "Evidence Excerpt",
+  "type": "object",
+  "required": [
+    "protocol_version",
+    "raw_path",
+    "raw_sha256",
+    "recorded_at",
+    "excerpt_line_count",
+    "excerpt_bytes",
+    "max_lines",
+    "max_bytes",
+    "truncated",
+    "omitted_lines",
+    "redaction",
+    "excerpt"
+  ],
+  "properties": {
+    "protocol_version": { "type": "string" },
+    "raw_path": { "type": "string" },
+    "raw_sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "command": { "type": "string" },
+    "exit_code": { "type": ["integer", "null"] },
+    "recorded_at": { "type": "string" },
+    "excerpt_line_count": { "type": "integer", "minimum": 0 },
+    "excerpt_bytes": { "type": "integer", "minimum": 0 },
+    "max_lines": { "type": "integer", "minimum": 1 },
+    "max_bytes": { "type": "integer", "minimum": 1 },
+    "truncated": { "type": "boolean" },
+    "omitted_lines": { "type": "integer", "minimum": 0 },
+    "redaction": { "enum": ["secret_patterns"] },
+    "excerpt": { "type": "string" }
+  },
+  "additionalProperties": false
+}

@@ -29,10 +29,18 @@ for (const file of await readdir(schemaDir)) {
 }
 
 const validationTargets: Array<[string, string, "json" | "yaml"]> = [
-  ["https://meta-harness.dev/schemas/phase_manifest.schema.json", "templates/phase_manifest.yaml", "yaml"],
+  [
+    "https://meta-harness.dev/schemas/phase_manifest.schema.json",
+    "templates/phase_manifest.yaml",
+    "yaml"
+  ],
   ["https://meta-harness.dev/schemas/slice_plan.schema.json", "templates/slice_plan.yaml", "yaml"],
   ["https://meta-harness.dev/schemas/proof.schema.json", "templates/proof.json", "json"],
-  ["https://meta-harness.dev/schemas/next_action.schema.json", "templates/next_action.yaml", "yaml"],
+  [
+    "https://meta-harness.dev/schemas/next_action.schema.json",
+    "templates/next_action.yaml",
+    "yaml"
+  ],
   [
     "https://meta-harness.dev/schemas/phase_manifest.schema.json",
     "docs/implementation_harness/phase_manifest.yaml",
@@ -97,6 +105,16 @@ const validationTargets: Array<[string, string, "json" | "yaml"]> = [
     "https://meta-harness.dev/schemas/next_action.schema.json",
     "examples/tiny-typescript-refactor/.meta-harness/checkpoints/phase_001/next_action.yaml",
     "yaml"
+  ],
+  [
+    "https://meta-harness.dev/schemas/budget_report.schema.json",
+    "docs/examples/context-packs/budget-report.sample.json",
+    "json"
+  ],
+  [
+    "https://meta-harness.dev/schemas/evidence_excerpt.schema.json",
+    "docs/examples/evidence-excerpts/sample-command-output.excerpt.json",
+    "json"
   ]
 ];
 
@@ -109,7 +127,9 @@ if (!packetValidator || packetValidator({ protocol_version: "0.1.0" })) {
   throw new Error("Negative slice packet fixture unexpectedly passed schema validation");
 }
 
-process.stdout.write(`Validated ${schemaCount} JSON schemas and ${validationTargets.length} artifacts.\n`);
+process.stdout.write(
+  `Validated ${schemaCount} JSON schemas and ${validationTargets.length} artifacts.\n`
+);
 
 async function validateArtifact(
   schemaId: string,
@@ -123,6 +143,8 @@ async function validateArtifact(
   const text = await readFile(path.join(root, relativePath), "utf8");
   const value = format === "json" ? JSON.parse(text) : YAML.parse(text);
   if (!validator(value)) {
-    throw new Error(`${relativePath} failed ${schemaId}: ${JSON.stringify(validator.errors, null, 2)}`);
+    throw new Error(
+      `${relativePath} failed ${schemaId}: ${JSON.stringify(validator.errors, null, 2)}`
+    );
   }
 }

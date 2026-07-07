@@ -67,6 +67,8 @@ export default defineConfig({
           { text: "Parent Coordinator Flow", link: "/examples/parent-coordinator-flow" },
           { text: "MCP Host Example", link: "/examples/mcp-host" },
           { text: "MCP Config Samples", link: "/examples/mcp-configs/" },
+          { text: "Context Pack Samples", link: "/examples/context-packs/" },
+          { text: "Evidence Excerpts", link: "/examples/evidence-excerpts/" },
           { text: "Codex Prompt-File Flow", link: "/examples/codex-prompt-file" },
           { text: "Richer Refactor Walkthrough", link: "/examples/richer-refactor" }
         ]

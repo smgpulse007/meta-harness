@@ -1,0 +1,16 @@
+{
+  "protocol_version": "0.1.0",
+  "raw_path": "docs/examples/evidence-excerpts/sample-command-output.txt",
+  "raw_sha256": "7b996a51e716bbd00fd73720de6ced352937e4b9a4686c88fd4e4cdb4638f9ee",
+  "command": "pnpm test",
+  "exit_code": 0,
+  "recorded_at": "2026-07-07T00:00:00.000Z",
+  "excerpt_line_count": 4,
+  "excerpt_bytes": 43,
+  "max_lines": 4,
+  "max_bytes": 12288,
+  "truncated": true,
+  "omitted_lines": 3,
+  "redaction": "secret_patterns",
+  "excerpt": "pnpm test\n[REDACTED]\n... [3 lines omitted]\n"
+}

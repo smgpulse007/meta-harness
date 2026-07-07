@@ -1,0 +1,51 @@
+protocol_version: 0.1.0
+phase_id: open_source_readiness_phase_4
+slice_id: phase4_budget_context
+actor: parent_coordinator
+status: complete
+changed_files:
+  - README.md
+  - docs/.vitepress/config.ts
+  - docs/cli-reference.md
+  - docs/token-budgeting.md
+  - docs/examples/context-packs/
+  - docs/examples/evidence-excerpts/
+  - package.json
+  - packages/cli/src/commands/budget.ts
+  - packages/cli/src/commands/context-pack.ts
+  - packages/cli/src/commands/doctor.ts
+  - packages/cli/src/commands/summarize-log.ts
+  - packages/cli/src/index.ts
+  - packages/cli/tests/cli.test.ts
+  - scripts/integration-smoke.ts
+  - scripts/schema-check.ts
+  - schemas/budget_report.schema.json
+  - schemas/evidence_excerpt.schema.json
+proof:
+  - id: budget_command
+    status: command_verified
+    evidence: docs/checkpoints/open_source_readiness_phase_4/commands.md
+  - id: bounded_context_packs
+    status: command_verified
+    evidence: docs/checkpoints/open_source_readiness_phase_4/commands.md
+  - id: evidence_excerpt_generation
+    status: command_verified
+    evidence: docs/checkpoints/open_source_readiness_phase_4/commands.md
+  - id: docs_and_samples
+    status: command_verified
+    evidence: docs/checkpoints/open_source_readiness_phase_4/commands.md
+validation:
+  - command: pnpm run ci
+    exit_code: 0
+  - command: pnpm docs:build
+    exit_code: 0
+  - command: pnpm audit --prod
+    exit_code: 0
+  - command: node packages/cli/dist/index.js budget --json
+    exit_code: 0
+  - command: node packages/cli/dist/index.js summarize-log --input docs/examples/evidence-excerpts/sample-command-output.txt --command "pnpm test" --exit-code 0 --timestamp "2026-07-07T00:00:00.000Z" --format json --max-lines 4
+    exit_code: 0
+risks:
+  - GitHub Pages deployment remains externally blocked by private-repository plan support.
+  - Native dispatch remains unverified and disabled.
+continuation_recommendation: continue_to_phase_5

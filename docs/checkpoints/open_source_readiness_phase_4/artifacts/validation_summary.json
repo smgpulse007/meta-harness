@@ -1,0 +1,120 @@
+{
+  "protocol_version": "0.1.0",
+  "phase_id": "open_source_readiness_phase_4",
+  "status": "command_verified",
+  "commands": [
+    {
+      "command": "pnpm install --frozen-lockfile",
+      "exit_code": 0,
+      "summary": "Already up to date; pnpm v11.7.0."
+    },
+    {
+      "command": "pnpm run clean",
+      "exit_code": 0,
+      "summary": "Workspace package build outputs removed."
+    },
+    {
+      "command": "pnpm run ci",
+      "exit_code": 0,
+      "summary": "Lint, typecheck, tests, schema-check, build, budget, and integration-smoke passed. 19 tests passed. Final budget reported 56/56 within budget."
+    },
+    {
+      "command": "pnpm docs:build",
+      "exit_code": 0,
+      "summary": "TypeDoc and VitePress build completed with a non-blocking large-chunk advisory."
+    },
+    {
+      "command": "pnpm audit --prod",
+      "exit_code": 0,
+      "summary": "No known vulnerabilities found."
+    },
+    {
+      "command": "pnpm --filter @meta-harness/core pack --dry-run",
+      "exit_code": 0,
+      "summary": "Dry-run package contents listed; no generated tarball remained."
+    },
+    {
+      "command": "pnpm --filter @meta-harness/adapters pack --dry-run",
+      "exit_code": 0,
+      "summary": "Dry-run package contents listed; no generated tarball remained."
+    },
+    {
+      "command": "pnpm --filter @meta-harness/cli pack --dry-run",
+      "exit_code": 0,
+      "summary": "Dry-run package contents listed, including new budget and summarize-log commands; no generated tarball remained."
+    },
+    {
+      "command": "pnpm --filter @meta-harness/mcp-server pack --dry-run",
+      "exit_code": 0,
+      "summary": "Dry-run package contents listed; no generated tarball remained."
+    },
+    {
+      "command": "node packages/cli/dist/index.js budget --json",
+      "exit_code": 0,
+      "summary": "Initial pre-checkpoint run: total_items=55, within_budget=55, warnings=0, over_budget=0, missing=0. Post-checkpoint rerun: total_items=56, within_budget=56, warnings=0, over_budget=0, missing=0."
+    },
+    {
+      "command": "node packages/cli/dist/index.js context-pack --target codex --role worker --budget 8000 --format markdown",
+      "exit_code": 0,
+      "summary": "1885/8000 estimated tokens; within_budget; raw artifacts included false."
+    },
+    {
+      "command": "node packages/cli/dist/index.js context-pack --target claude-code --role reviewer --budget 8000 --format markdown",
+      "exit_code": 0,
+      "summary": "2331/8000 estimated tokens; within_budget; raw artifacts included false."
+    },
+    {
+      "command": "node packages/cli/dist/index.js context-pack --target generic --role worker --budget 8000 --format markdown",
+      "exit_code": 0,
+      "summary": "3102/8000 estimated tokens; within_budget; raw artifacts included false."
+    },
+    {
+      "command": "node packages/cli/dist/index.js summarize-log --input docs/examples/evidence-excerpts/sample-command-output.txt --command \"pnpm test\" --exit-code 0 --timestamp \"2026-07-07T00:00:00.000Z\" --format json --max-lines 4",
+      "exit_code": 0,
+      "summary": "truncated=true, omitted_lines=3, redacted=true, secret_present=false."
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0,
+      "summary": "No whitespace errors."
+    },
+    {
+      "command": "pnpm exec prettier --check --ignore-unknown -- <changed files>",
+      "exit_code": 0,
+      "summary": "All matched files use Prettier code style."
+    }
+  ],
+  "budget_summary": {
+    "total_items": 56,
+    "within_budget": 56,
+    "warnings": 0,
+    "over_budget": 0,
+    "missing": 0
+  },
+  "context_pack_smokes": [
+    {
+      "target": "codex",
+      "role": "worker",
+      "estimated_tokens": 1885,
+      "budget_tokens": 8000,
+      "status": "within_budget",
+      "raw_artifacts_included": false
+    },
+    {
+      "target": "claude-code",
+      "role": "reviewer",
+      "estimated_tokens": 2331,
+      "budget_tokens": 8000,
+      "status": "within_budget",
+      "raw_artifacts_included": false
+    },
+    {
+      "target": "generic",
+      "role": "worker",
+      "estimated_tokens": 3102,
+      "budget_tokens": 8000,
+      "status": "within_budget",
+      "raw_artifacts_included": false
+    }
+  ]
+}

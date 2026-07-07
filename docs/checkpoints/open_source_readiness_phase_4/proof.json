@@ -1,0 +1,98 @@
+{
+  "protocol_version": "0.1.0",
+  "phase_id": "open_source_readiness_phase_4",
+  "claims": [
+    {
+      "id": "phase4-budget-command",
+      "claim": "mh budget scans generated instruction files, skills, MCP descriptions, generated context packs, evidence excerpts, and raw artifact references, and emits JSON usable in CI.",
+      "status": "command_verified",
+      "evidence": [
+        "packages/cli/src/commands/budget.ts",
+        "packages/cli/src/index.ts",
+        "package.json",
+        "docs/checkpoints/open_source_readiness_phase_4/commands.md"
+      ],
+      "required": true
+    },
+    {
+      "id": "phase4-context-packs",
+      "claim": "mh context-pack and mh prompt emit bounded role-aware packs with proof state, blockers, artifact paths, required output schema, and raw artifact exclusion.",
+      "status": "command_verified",
+      "evidence": [
+        "packages/cli/src/commands/context-pack.ts",
+        "packages/cli/tests/cli.test.ts",
+        "docs/examples/context-packs/",
+        "docs/checkpoints/open_source_readiness_phase_4/commands.md"
+      ],
+      "required": true
+    },
+    {
+      "id": "phase4-evidence-excerpts",
+      "claim": "mh summarize-log converts raw command output into bounded redacted evidence excerpts with raw path, raw hash, command, exit code, timestamp, truncation metadata, and excerpt text.",
+      "status": "command_verified",
+      "evidence": [
+        "packages/cli/src/commands/summarize-log.ts",
+        "docs/examples/evidence-excerpts/",
+        "scripts/integration-smoke.ts",
+        "docs/checkpoints/open_source_readiness_phase_4/commands.md"
+      ],
+      "required": true
+    },
+    {
+      "id": "phase4-schemas-and-samples",
+      "claim": "Budget report and evidence excerpt schemas exist and sample artifacts validate.",
+      "status": "command_verified",
+      "evidence": [
+        "schemas/budget_report.schema.json",
+        "schemas/evidence_excerpt.schema.json",
+        "scripts/schema-check.ts",
+        "docs/examples/context-packs/budget-report.sample.json",
+        "docs/examples/evidence-excerpts/sample-command-output.excerpt.json"
+      ],
+      "required": true
+    },
+    {
+      "id": "phase4-docs",
+      "claim": "README, CLI reference, token-budgeting docs, and VitePress navigation document the budget, context-pack, and evidence-excerpt workflows.",
+      "status": "command_verified",
+      "evidence": [
+        "README.md",
+        "docs/cli-reference.md",
+        "docs/token-budgeting.md",
+        "docs/.vitepress/config.ts",
+        "docs/checkpoints/open_source_readiness_phase_4/commands.md"
+      ],
+      "required": true
+    },
+    {
+      "id": "phase4-validation",
+      "claim": "Phase 4 local validation passed, including install, clean, CI, docs build, production audit, package dry-runs, budget/context-pack/summarize-log smokes, diff check, and scoped formatting.",
+      "status": "command_verified",
+      "evidence": [
+        "docs/checkpoints/open_source_readiness_phase_4/commands.md",
+        "docs/checkpoints/open_source_readiness_phase_4/artifacts/validation_summary.json"
+      ],
+      "required": true
+    },
+    {
+      "id": "phase4-pages-blocker",
+      "claim": "Actual GitHub Pages deployment remains unverified because enabling Pages for the private repository is blocked by the current GitHub plan.",
+      "status": "partial",
+      "evidence": [
+        "docs/checkpoints/open_source_readiness_phase_4/commands.md",
+        "docs/checkpoints/open_source_readiness_phase_4/artifacts/pages_enablement_attempt.md"
+      ],
+      "required": false
+    },
+    {
+      "id": "phase4-final-review",
+      "claim": "Independent reviewer recheck cleared Phase 4 with aligned direction, strong evidence, no blockers, and recommendation to continue.",
+      "status": "parent_verified",
+      "evidence": [
+        "docs/checkpoints/open_source_readiness_phase_4/artifacts/final_reviewer.md",
+        "docs/checkpoints/open_source_readiness_phase_4/alignment_review.md"
+      ],
+      "required": true
+    }
+  ]
+}

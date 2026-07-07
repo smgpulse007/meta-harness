@@ -111,8 +111,10 @@ Implemented commands:
 - `mh audit-checkpoint`
 - `mh checkpoint`
 - `mh continue`
+- `mh budget`
 - `mh context-pack`
 - `mh prompt`
+- `mh summarize-log`
 - `mh emit-instructions`
 - `mh doctor`
 - `mh mcp --stdio`
@@ -147,6 +149,18 @@ Generate a bounded target-specific prompt pack from local harness state:
 
 ```bash
 node packages/cli/dist/index.js context-pack --target codex --phase phase_001 --budget 8000 --format markdown
+```
+
+Check repository instruction, skill, MCP description, context-pack, and evidence-excerpt budgets:
+
+```bash
+node packages/cli/dist/index.js budget --json
+```
+
+Convert raw command output into a bounded, redacted evidence excerpt:
+
+```bash
+node packages/cli/dist/index.js summarize-log --input docs/examples/evidence-excerpts/sample-command-output.txt --command "pnpm test" --exit-code 0 --format json
 ```
 
 `mh prompt` is an alias for the same pack generator.
