@@ -23,7 +23,7 @@
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "clean": "rimraf dist *.tsbuildinfo",
+    "clean": "rimraf dist .tsbuildinfo",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "vitest run tests"
   },

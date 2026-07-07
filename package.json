@@ -19,7 +19,7 @@
   },
   "scripts": {
     "build": "pnpm -r build",
-    "clean": "pnpm -r clean",
+    "clean": "pnpm -r run clean",
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
@@ -27,7 +27,7 @@
     "test": "vitest run",
     "schema-check": "tsx scripts/schema-check.ts",
     "integration-smoke": "tsx scripts/integration-smoke.ts",
-    "ci": "pnpm lint && pnpm typecheck && pnpm test && pnpm schema-check && pnpm integration-smoke && pnpm build"
+    "ci": "pnpm lint && pnpm typecheck && pnpm test && pnpm schema-check && pnpm build && pnpm integration-smoke"
   },
   "keywords": [
     "coding-agents",
