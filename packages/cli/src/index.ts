@@ -3,6 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { Command } from "commander";
 import { auditCheckpointCommand } from "./commands/audit-checkpoint.js";
+import { budgetCommand } from "./commands/budget.js";
 import { checkpointCommand } from "./commands/checkpoint.js";
 import { collectCommand } from "./commands/collect.js";
 import { compileSpecCommand } from "./commands/compile-spec.js";
@@ -17,6 +18,7 @@ import { initCommand } from "./commands/init.js";
 import { lintPlanCommand } from "./commands/lint-plan.js";
 import { mcpCommand } from "./commands/mcp.js";
 import { planCommand } from "./commands/plan.js";
+import { summarizeLogCommand } from "./commands/summarize-log.js";
 import { verifyCommand } from "./commands/verify.js";
 
 export function buildCli(cwd = process.cwd()): Command {
@@ -94,8 +96,11 @@ export function buildCli(cwd = process.cwd()): Command {
       "generic"
     )
     .option("--phase <phase>", "phase id", "phase_001")
+    .option("--slice <slice>", "slice id")
+    .option("--role <role>", "parent, worker, or reviewer", "worker")
     .option("--budget <tokens>", "token budget", "8000")
     .option("--format <format>", "markdown or json", "markdown")
+    .option("--output <path>", "write the context pack to a workspace-relative path")
     .action((options) => run(() => contextPackCommand(context, options), context));
 
   program
@@ -106,9 +111,32 @@ export function buildCli(cwd = process.cwd()): Command {
       "generic"
     )
     .option("--phase <phase>", "phase id", "phase_001")
+    .option("--slice <slice>", "slice id")
+    .option("--role <role>", "parent, worker, or reviewer", "worker")
     .option("--budget <tokens>", "token budget", "8000")
     .option("--format <format>", "markdown or json", "markdown")
+    .option("--output <path>", "write the prompt pack to a workspace-relative path")
     .action((options) => run(() => contextPackCommand(context, options), context));
+
+  program
+    .command("budget")
+    .option("--json", "emit machine-readable JSON")
+    .option("--strict", "fail on warnings as well as over-budget or missing items")
+    .option("--phase <phase>", "phase id for generated pack checks", "phase_001")
+    .option("--output <path>", "write the budget report to a workspace-relative path")
+    .action((options) => run(() => budgetCommand(context, options), context));
+
+  program
+    .command("summarize-log")
+    .requiredOption("--input <path>", "workspace-relative raw log path")
+    .option("--output <path>", "workspace-relative output path")
+    .option("--command <command>", "command line represented by the log")
+    .option("--exit-code <code>", "command exit code")
+    .option("--timestamp <iso>", "evidence timestamp; defaults to current time")
+    .option("--format <format>", "json or markdown", "json")
+    .option("--max-lines <lines>", "maximum excerpt lines", "200")
+    .option("--max-bytes <bytes>", "maximum excerpt bytes", "12288")
+    .action((options) => run(() => summarizeLogCommand(context, options), context));
 
   program
     .command("emit-instructions")

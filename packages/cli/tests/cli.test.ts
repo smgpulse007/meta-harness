@@ -1,16 +1,18 @@
-import { mkdtemp, readFile, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, writeFile } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import { execFile } from "node:child_process";
 import os from "node:os";
 import path from "node:path";
 import { promisify } from "node:util";
 import { describe, expect, it } from "vitest";
+import { buildBudgetReport } from "../src/commands/budget.js";
 import { compileSpecCommand } from "../src/commands/compile-spec.js";
 import { contextPackCommand } from "../src/commands/context-pack.js";
 import { emitInstructionsCommand } from "../src/commands/emit-instructions.js";
 import { initCommand } from "../src/commands/init.js";
 import { lintPlanCommand } from "../src/commands/lint-plan.js";
 import { planCommand } from "../src/commands/plan.js";
+import { summarizeLogCommand } from "../src/commands/summarize-log.js";
 
 async function tempRepo(): Promise<string> {
   return mkdtemp(path.join(os.tmpdir(), "mh-cli-"));
@@ -44,6 +46,8 @@ describe("cli commands", () => {
     const { stdout } = await execFileAsync(process.execPath, [builtCliPath, "--help"]);
     expect(stdout).toContain("Meta Harness CLI");
     expect(stdout).toContain("mh");
+    expect(stdout).toContain("budget");
+    expect(stdout).toContain("summarize-log");
   });
 
   it("emits target-specific instruction and MCP compatibility files", async () => {
@@ -118,7 +122,11 @@ describe("cli commands", () => {
 
     const pack = JSON.parse(output.join(""));
     expect(pack.target).toBe("roo");
+    expect(pack.role).toBe("worker");
     expect(pack.status).toBe("within_budget");
+    expect(pack.allowed_write_scope).toContain("src/**");
+    expect(pack.proof_state.exists).toBe(false);
+    expect(pack.budget_summary.raw_artifacts_included).toBe(false);
     expect(pack.target_guidance.join("\n")).toContain(
       "Roo support as instruction/MCP compatibility only"
     );
@@ -132,5 +140,71 @@ describe("cli commands", () => {
     });
     expect(output.join("\n")).toContain("# Meta Harness Context Pack");
     expect(output.join("\n")).toContain("Target: copilot");
+    expect(output.join("\n")).toContain("## Proof State");
+  });
+
+  it("builds a budget report for generated instruction and skill files", async () => {
+    const cwd = await tempRepo();
+    const output: string[] = [];
+    const context = {
+      cwd,
+      stdout: (message: string) => output.push(message),
+      stderr: (message: string) => output.push(message)
+    };
+    await initCommand(context, { profile: "strict" });
+    await emitInstructionsCommand(context, { target: "all" });
+    const skillBody = "# Meta Harness\n\nUse this skill for evidence-gated harness work.\n";
+    for (const skillPath of [
+      path.join(cwd, "skills", "meta-harness", "SKILL.md"),
+      path.join(cwd, ".agents", "skills", "meta-harness", "SKILL.md"),
+      path.join(cwd, ".claude", "skills", "meta-harness", "SKILL.md")
+    ]) {
+      await mkdir(path.dirname(skillPath), { recursive: true });
+      await writeFile(skillPath, skillBody, "utf8");
+    }
+    const mcpServerPath = path.join(cwd, "packages", "mcp-server", "src", "server.ts");
+    await mkdir(path.dirname(mcpServerPath), { recursive: true });
+    await writeFile(
+      mcpServerPath,
+      'server.registerTool("status", { description: "Return status." });\n',
+      "utf8"
+    );
+
+    const report = await buildBudgetReport(context, { phaseId: "phase_001" });
+    expect(report.status).toBe("within_budget");
+    expect(report.items.some((item) => item.budget_class === "instruction_index")).toBe(true);
+    expect(report.items.some((item) => item.budget_class === "slice_pack")).toBe(true);
+  });
+
+  it("summarizes and redacts raw command logs", async () => {
+    const cwd = await tempRepo();
+    const output: string[] = [];
+    const context = {
+      cwd,
+      stdout: (message: string) => output.push(message),
+      stderr: (message: string) => output.push(message)
+    };
+    await writeFile(
+      path.join(cwd, "command-output.txt"),
+      "first line\napi_key=supersecretvalue\nmiddle line\nalmost last\nlast line\n",
+      "utf8"
+    );
+
+    await summarizeLogCommand(context, {
+      input: "command-output.txt",
+      command: "pnpm test",
+      exitCode: "0",
+      timestamp: "2026-07-07T00:00:00.000Z",
+      format: "json",
+      maxLines: "4"
+    });
+
+    const excerpt = JSON.parse(output.join(""));
+    expect(excerpt.raw_path).toBe("command-output.txt");
+    expect(excerpt.command).toBe("pnpm test");
+    expect(excerpt.exit_code).toBe(0);
+    expect(excerpt.excerpt).toContain("[REDACTED]");
+    expect(excerpt.excerpt).not.toContain("supersecretvalue");
+    expect(excerpt.truncated).toBe(true);
   });
 });

@@ -2,28 +2,54 @@ import { existsSync } from "node:fs";
 import {
   canonicalAgentInstructions,
   HARNESS_PROTOCOL_VERSION,
+  ProofLedger,
+  readJsonFile,
   readTextFile,
-  resolveInsideWorkspace
+  readYamlFile,
+  resolveInsideWorkspace,
+  SliceDefinition,
+  SlicePlan,
+  writeTextFile
 } from "@meta-harness/core";
 import { checkpointPath, CommandContext, emit } from "./common.js";
 
 export interface ContextPackOptions {
   target?: string;
   phase?: string;
+  slice?: string;
+  role?: string;
   budget?: string | number;
   format?: string;
+  output?: string;
 }
+
+export type ContextPackRole = "parent" | "worker" | "reviewer";
+export type ContextPackClass = "phase_pack" | "slice_pack" | "review_pack";
 
 interface ContextPackFile {
   path: string;
   exists: boolean;
+  line_start?: number;
+  line_end?: number;
+  estimated_tokens?: number;
+  truncated?: boolean;
   excerpt?: string;
 }
 
-interface ContextPack {
+interface ContextPackProofState {
+  path: string;
+  exists: boolean;
+  required_claims: number;
+  statuses: Record<string, number>;
+}
+
+export interface ContextPack {
   protocol_version: string;
   target: string;
+  role: ContextPackRole;
+  pack_class: ContextPackClass;
   phase_id: string;
+  slice_id?: string;
   budget_tokens: number;
   estimated_tokens: number;
   status: "within_budget" | "over_budget";
@@ -31,11 +57,29 @@ interface ContextPack {
   target_guidance: string[];
   required_evidence_statuses: string[];
   validation_commands: string[];
+  allowed_write_scope: string[];
+  required_output_schema: string[];
   files: ContextPackFile[];
+  proof_state: ContextPackProofState;
+  known_blockers: string[];
+  artifact_paths: string[];
   safety: string[];
+  budget_summary: {
+    budget_class: ContextPackClass;
+    max_excerpt_lines: number;
+    max_excerpt_chars: number;
+    raw_artifacts_included: false;
+  };
 }
 
-const defaultBudget = 8000;
+const roleDefaults: Record<ContextPackRole, { packClass: ContextPackClass; budget: number }> = {
+  parent: { packClass: "phase_pack", budget: 12000 },
+  worker: { packClass: "slice_pack", budget: 8000 },
+  reviewer: { packClass: "review_pack", budget: 8000 }
+};
+
+const maxExcerptLines = 80;
+const maxExcerptChars = 6000;
 const validFormats = new Set(["markdown", "json"]);
 
 const targetGuidance: Record<string, string[]> = {
@@ -137,8 +181,9 @@ export async function contextPackCommand(
   context: CommandContext,
   options: ContextPackOptions = {}
 ): Promise<void> {
-  const target = normalizeTarget(options.target ?? "generic");
+  const target = normalizeContextPackTarget(options.target ?? "generic");
   const phaseId = options.phase ?? "phase_001";
+  const role = parseRole(options.role);
   const format = (options.format ?? "markdown").toLowerCase();
   if (!validFormats.has(format)) {
     throw new Error(`Unknown context-pack format ${options.format}`);
@@ -147,54 +192,96 @@ export async function contextPackCommand(
     throw new Error(`Unknown context-pack target ${options.target}`);
   }
 
-  const budget = parseBudget(options.budget);
-  const pack = await buildContextPack(context, { target, phaseId, budget });
-  emit(context, format === "json" ? JSON.stringify(pack, null, 2) : renderMarkdown(pack));
+  const budget = parseBudget(options.budget, role);
+  const pack = await buildContextPack(context, {
+    target,
+    phaseId,
+    role,
+    budget,
+    ...(options.slice ? { sliceId: options.slice } : {})
+  });
+  const rendered = format === "json" ? `${JSON.stringify(pack, null, 2)}\n` : renderMarkdown(pack);
+  if (options.output) {
+    await writeTextFile(context.cwd, options.output, rendered);
+    emit(context, `Wrote context pack to ${options.output}`);
+    return;
+  }
+  emit(context, rendered);
 }
 
-async function buildContextPack(
+export async function buildContextPack(
   context: CommandContext,
-  input: { target: string; phaseId: string; budget: number }
+  input: {
+    target: string;
+    phaseId: string;
+    role: ContextPackRole;
+    budget: number;
+    sliceId?: string;
+  }
 ): Promise<ContextPack> {
   const guidance = targetGuidance[input.target];
   if (!guidance) {
     throw new Error(`Unknown context-pack target ${input.target}`);
   }
+
+  const slicePlanPath = `${checkpointPath(input.phaseId)}/slice_plan.yaml`;
+  const proofPath = `${checkpointPath(input.phaseId)}/proof.json`;
+  const nextActionPath = `${checkpointPath(input.phaseId)}/next_action.yaml`;
+  const slicePlan = await readOptionalYaml<SlicePlan>(context.cwd, slicePlanPath);
+  const selectedSlice = selectSlice(slicePlan, input.sliceId);
+  const sliceId = input.sliceId ?? selectedSlice?.id;
   const baseFiles = [
     "AGENTS.md",
     "docs/implementation_harness/phase_manifest.yaml",
     ".meta-harness/state.json",
-    `${checkpointPath(input.phaseId)}/slice_plan.yaml`,
-    `${checkpointPath(input.phaseId)}/next_action.yaml`,
-    `${checkpointPath(input.phaseId)}/proof.json`,
+    slicePlanPath,
+    nextActionPath,
+    proofPath,
     `${checkpointPath(input.phaseId)}/checkpoint.md`
   ];
-  const paths = [...new Set([...baseFiles, ...(targetFiles[input.target] ?? [])])];
+  const paths = [...new Set([...baseFiles, ...(targetFiles[input.target] ?? [])])].sort();
   const files = await Promise.all(paths.map((filePath) => readExcerpt(context.cwd, filePath)));
-  const validationCommands = files
-    .find((file) => file.path.endsWith("slice_plan.yaml"))
-    ?.excerpt?.match(/command:\s*(.+)/g)
-    ?.map((line) => line.replace(/^command:\s*/, "").trim()) ?? [
-    "Use the phase slice plan validation commands."
-  ];
-
+  const validationCommands = selectedSlice?.validation_commands.map(
+    (command) => command.command
+  ) ?? ["Use the phase slice plan validation commands."];
+  const nextAction = await readOptionalYaml<any>(context.cwd, nextActionPath);
+  const proofState = await summarizeProof(context.cwd, proofPath);
   const draft: Omit<ContextPack, "estimated_tokens" | "status"> = {
     protocol_version: HARNESS_PROTOCOL_VERSION,
     target: input.target,
+    role: input.role,
+    pack_class: roleDefaults[input.role].packClass,
     phase_id: input.phaseId,
+    ...(sliceId ? { slice_id: sliceId } : {}),
     budget_tokens: input.budget,
-    objective:
-      "Execute the current Meta Harness phase or slice with bounded context and evidence-backed proof.",
+    objective: packObjective(input.role),
     target_guidance: guidance,
     required_evidence_statuses: evidenceStatuses,
     validation_commands: validationCommands,
+    allowed_write_scope: selectedSlice?.allowed_write_scope ?? [],
+    required_output_schema: requiredOutputSchema(input.role),
     files,
+    proof_state: proofState,
+    known_blockers: nextAction?.blocking_risks ?? [],
+    artifact_paths: [
+      `${checkpointPath(input.phaseId)}/artifacts/`,
+      `${checkpointPath(input.phaseId)}/commands.md`,
+      `${checkpointPath(input.phaseId)}/proof.json`,
+      `${checkpointPath(input.phaseId)}/next_action.yaml`
+    ],
     safety: [
       "Default external systems to read-only.",
       "Do not claim validation unless a command or review actually ran.",
       "Do not include secrets or full account identifiers in generated artifacts.",
-      "Native dispatch remains unverified unless local command evidence proves it."
-    ]
+      "Native dispatch remains unverified unless local command evidence proves it.",
+      "Use artifact paths and evidence excerpts instead of pasting raw logs."
+    ],
+    budget_summary: {
+      budget_class: roleDefaults[input.role].packClass,
+      max_excerpt_lines: maxExcerptLines,
+      max_excerpt_chars: maxExcerptChars,
+      raw_artifacts_included: false
+    }
   };
   const estimated = estimateTokens(JSON.stringify(draft));
   return {
@@ -210,22 +297,32 @@ async function readExcerpt(workspaceRoot: string, filePath: string): Promise<Con
     return { path: filePath, exists: false };
   }
   const text = await readTextFile(workspaceRoot, filePath);
-  return { path: filePath, exists: true, excerpt: truncate(text) };
+  const excerpt = truncate(text);
+  return {
+    path: filePath,
+    exists: true,
+    line_start: 1,
+    line_end: excerpt.lineEnd,
+    estimated_tokens: estimateTokens(excerpt.text),
+    truncated: excerpt.truncated,
+    excerpt: excerpt.text
+  };
 }
 
-function renderMarkdown(pack: ContextPack): string {
+export function renderMarkdown(pack: ContextPack): string {
   const fileSections = pack.files
     .map((file) =>
       file.exists
-        ? `### ${file.path}\n\n\`\`\`\n${file.excerpt ?? ""}\n\`\`\``
+        ? `### ${file.path} (lines ${file.line_start}-${file.line_end})\n\n\`\`\`\n${file.excerpt ?? ""}\n\`\`\`${file.truncated ? "\n\nExcerpt truncated." : ""}`
         : `### ${file.path}\n\nMissing from workspace.`
     )
     .join("\n\n");
   return `# Meta Harness Context Pack
 
 Target: ${pack.target}
+Role: ${pack.role}
 Phase: ${pack.phase_id}
-Budget: ${pack.estimated_tokens}/${pack.budget_tokens} estimated tokens (${pack.status})
+${pack.slice_id ? `Slice: ${pack.slice_id}\n` : ""}Budget: ${pack.estimated_tokens}/${pack.budget_tokens} estimated tokens (${pack.status})
 
 ## Objective
 
@@ -239,6 +336,10 @@ ${canonicalAgentInstructions.trim()}
 
 ${pack.target_guidance.map((item) => `- ${item}`).join("\n")}
 
+## Required Output Schema
+
+${pack.required_output_schema.map((item) => `- ${item}`).join("\n")}
+
 ## Required Evidence Statuses
 
 ${pack.required_evidence_statuses.map((status) => `- \`${status}\``).join("\n")}
@@ -247,9 +348,37 @@ ${pack.required_evidence_statuses.map((status) => `- \`${status}\``).join("\n")}
 
 ${pack.validation_commands.map((command) => `- \`${command}\``).join("\n")}
 
+## Allowed Write Scope
+
+${pack.allowed_write_scope.length > 0 ? pack.allowed_write_scope.map((scope) => `- \`${scope}\``).join("\n") : "- Use the phase slice plan allowed write scope."}
+
+## Proof State
+
+- Path: \`${pack.proof_state.path}\`
+- Exists: ${pack.proof_state.exists}
+- Required claims: ${pack.proof_state.required_claims}
+- Statuses: ${Object.entries(pack.proof_state.statuses)
+    .map(([status, count]) => `${status}=${count}`)
+    .join(", ")}
+
+## Known Blockers
+
+${pack.known_blockers.length > 0 ? pack.known_blockers.map((blocker) => `- ${blocker}`).join("\n") : "- None recorded in next_action.yaml."}
+
+## Artifact Paths
+
+${pack.artifact_paths.map((artifactPath) => `- \`${artifactPath}\``).join("\n")}
+
 ## Safety
 
 ${pack.safety.map((item) => `- ${item}`).join("\n")}
+
+## Budget Summary
+
+- Class: \`${pack.budget_summary.budget_class}\`
+- Max excerpt lines: ${pack.budget_summary.max_excerpt_lines}
+- Max excerpt chars: ${pack.budget_summary.max_excerpt_chars}
+- Raw artifacts included: ${pack.budget_summary.raw_artifacts_included}
 
 ## Relevant Files
 
@@ -257,9 +386,17 @@ ${fileSections}
 `;
 }
 
-function parseBudget(value: string | number | undefined): number {
+function parseRole(value: string | undefined): ContextPackRole {
+  const normalized = (value ?? "worker").trim().toLowerCase();
+  if (normalized === "parent" || normalized === "worker" || normalized === "reviewer") {
+    return normalized;
+  }
+  throw new Error(`Unknown context-pack role ${value}`);
+}
+
+function parseBudget(value: string | number | undefined, role: ContextPackRole): number {
   if (value === undefined) {
-    return defaultBudget;
+    return roleDefaults[role].budget;
   }
   const parsed = typeof value === "number" ? value : Number.parseInt(value, 10);
   if (!Number.isFinite(parsed) || parsed <= 0) {
@@ -268,7 +405,7 @@ function parseBudget(value: string | number | undefined): number {
   return parsed;
 }
 
-function normalizeTarget(value: string): string {
+export function normalizeContextPackTarget(value: string): string {
   const target = value.trim().toLowerCase().replace(/_/g, "-");
   if (target === "claude") {
     return "claude-code";
@@ -279,12 +416,104 @@ function normalizeTarget(value: string): string {
   return target;
 }
 
-function truncate(text: string): string {
-  const maxChars = 6000;
-  const lines = text.split(/\r?\n/).slice(0, 80).join("\n");
-  return lines.length > maxChars ? `${lines.slice(0, maxChars)}\n... [truncated]` : lines;
+function selectSlice(
+  plan: SlicePlan | undefined,
+  sliceId: string | undefined
+): SliceDefinition | undefined {
+  if (!plan) {
+    return undefined;
+  }
+  if (!sliceId) {
+    return plan.slices[0];
+  }
+  return plan.slices.find((slice) => slice.id === sliceId);
 }
 
-function estimateTokens(text: string): number {
+function packObjective(role: ContextPackRole): string {
+  if (role === "parent") {
+    return "Coordinate the current Meta Harness phase with bounded context, evidence-backed proof, and checkpoint discipline.";
+  }
+  if (role === "reviewer") {
+    return "Review the current Meta Harness phase or slice against the controlling spec, proof, validation, safety, and continuation contract.";
+  }
+  return "Execute the current Meta Harness slice with bounded context and evidence-backed proof.";
+}
+
+function requiredOutputSchema(role: ContextPackRole): string[] {
+  if (role === "reviewer") {
+    return [
+      "phase_alignment: aligned | partially_aligned | misaligned",
+      "directional_alignment: on_track | needs_adjustment | off_track",
+      "evidence_quality: strong | adequate | weak | missing",
+      "blockers and required_recovery_slices"
+    ];
+  }
+  if (role === "parent") {
+    return [
+      "checkpoint.md, proof.json, next_action.yaml, commands.md, alignment_review.md",
+      "proof statuses must use the exact Meta Harness proof status vocabulary"
+    ];
+  }
+  return [
+    "slice packet with changed files, proof statements, validation command outputs, risks, and continuation recommendation",
+    "proof statuses must use the exact Meta Harness proof status vocabulary"
+  ];
+}
+
+async function summarizeProof(
+  workspaceRoot: string,
+  proofPath: string
+): Promise<ContextPackProofState> {
+  const proof = await readOptionalJson<ProofLedger>(workspaceRoot, proofPath);
+  if (!proof) {
+    return { path: proofPath, exists: false, required_claims: 0, statuses: {} };
+  }
+  const statuses: Record<string, number> = {};
+  for (const claim of proof.claims) {
+    statuses[claim.status] = (statuses[claim.status] ?? 0) + 1;
+  }
+  return {
+    path: proofPath,
+    exists: true,
+    required_claims: proof.claims.filter((claim) => claim.required).length,
+    statuses
+  };
+}
+
+async function readOptionalYaml<T>(
+  workspaceRoot: string,
+  filePath: string
+): Promise<T | undefined> {
+  try {
+    return await readYamlFile<T>(workspaceRoot, filePath);
+  } catch {
+    return undefined;
+  }
+}
+
+async function readOptionalJson<T>(
+  workspaceRoot: string,
+  filePath: string
+): Promise<T | undefined> {
+  try {
+    return await readJsonFile<T>(workspaceRoot, filePath);
+  } catch {
+    return undefined;
+  }
+}
+
+function truncate(text: string): { text: string; lineEnd: number; truncated: boolean } {
+  const allLines = text.split(/\r?\n/);
+  const selectedLines = allLines.slice(0, maxExcerptLines);
+  let excerpt = selectedLines.join("\n");
+  let truncated = selectedLines.length < allLines.length;
+  if (excerpt.length > maxExcerptChars) {
+    excerpt = `${excerpt.slice(0, maxExcerptChars)}\n... [truncated]`;
+    truncated = true;
+  }
+  return { text: excerpt, lineEnd: selectedLines.length, truncated };
+}
+
+export function estimateTokens(text: string): number {
   return Math.ceil(text.length / 4);
 }

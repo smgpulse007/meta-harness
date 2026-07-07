@@ -33,9 +33,10 @@
     "docs:build": "pnpm docs:api && vitepress build docs",
     "docs:preview": "vitepress preview docs",
     "docs:api": "typedoc",
+    "budget": "node packages/cli/dist/index.js budget --json",
     "schema-check": "tsx scripts/schema-check.ts",
     "integration-smoke": "tsx scripts/integration-smoke.ts",
-    "ci": "pnpm lint && pnpm typecheck && pnpm test && pnpm schema-check && pnpm build && pnpm integration-smoke"
+    "ci": "pnpm lint && pnpm typecheck && pnpm test && pnpm schema-check && pnpm build && pnpm budget && pnpm integration-smoke"
   },
   "keywords": [
     "coding-agents",

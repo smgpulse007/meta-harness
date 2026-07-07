@@ -1,0 +1,712 @@
+{
+  "protocol_version": "0.1.0",
+  "status": "within_budget",
+  "summary": {
+    "total_items": 55,
+    "within_budget": 55,
+    "warnings": 0,
+    "over_budget": 0,
+    "missing": 0
+  },
+  "items": [
+    {
+      "budget_class": "instruction_index",
+      "path": "AGENTS.md",
+      "status": "within_budget",
+      "bytes": 1389,
+      "lines": 28,
+      "estimated_tokens": 348,
+      "target": 16384,
+      "warning": 32768,
+      "metric": "bytes",
+      "notes": []
+    },
+    {
+      "budget_class": "instruction_index",
+      "path": "CLAUDE.md",
+      "status": "within_budget",
+      "bytes": 1389,
+      "lines": 28,
+      "estimated_tokens": 348,
+      "target": 16384,
+      "warning": 32768,
+      "metric": "bytes",
+      "notes": []
+    },
+    {
+      "budget_class": "instruction_index",
+      "path": "GEMINI.md",
+      "status": "within_budget",
+      "bytes": 1389,
+      "lines": 28,
+      "estimated_tokens": 348,
+      "target": 16384,
+      "warning": 32768,
+      "metric": "bytes",
+      "notes": []
+    },
+    {
+      "budget_class": "instruction_index",
+      "path": ".cursor/rules/meta-harness.mdc",
+      "status": "within_budget",
+      "bytes": 1547,
+      "lines": 35,
+      "estimated_tokens": 387,
+      "target": 16384,
+      "warning": 32768,
+      "metric": "bytes",
+      "notes": []
+    },
+    {
+      "budget_class": "instruction_index",
+      "path": ".github/copilot-instructions.md",
+      "status": "within_budget",
+      "bytes": 1501,
+      "lines": 30,
+      "estimated_tokens": 376,
+      "target": 16384,
+      "warning": 32768,
+      "metric": "bytes",
+      "notes": []
+    },
+    {
+      "budget_class": "instruction_index",
+      "path": ".github/instructions/meta-harness.instructions.md",
+      "status": "within_budget",
+      "bytes": 1520,
+      "lines": 34,
+      "estimated_tokens": 380,
+      "target": 16384,
+      "warning": 32768,
+      "metric": "bytes",
+      "notes": []
+    },
+    {
+      "budget_class": "instruction_index",
+      "path": ".windsurf/rules/meta-harness.md",
+      "status": "within_budget",
+      "bytes": 1481,
+      "lines": 30,
+      "estimated_tokens": 371,
+      "target": 16384,
+      "warning": 32768,
+      "metric": "bytes",
+      "notes": []
+    },
+    {
+      "budget_class": "instruction_index",
+      "path": ".continue/rules/meta-harness.md",
+      "status": "within_budget",
+      "bytes": 1486,
+      "lines": 30,
+      "estimated_tokens": 372,
+      "target": 16384,
+      "warning": 32768,
+      "metric": "bytes",
+      "notes": []
+    },
+    {
+      "budget_class": "instruction_index",
+      "path": ".opencode/instructions/meta-harness.md",
+      "status": "within_budget",
+      "bytes": 1480,
+      "lines": 30,
+      "estimated_tokens": 370,
+      "target": 16384,
+      "warning": 32768,
+      "metric": "bytes",
+      "notes": []
+    },
+    {
+      "budget_class": "instruction_index",
+      "path": ".roo/rules/meta-harness.md",
+      "status": "within_budget",
+      "bytes": 1485,
+      "lines": 30,
+      "estimated_tokens": 372,
+      "target": 16384,
+      "warning": 32768,
+      "metric": "bytes",
+      "notes": []
+    },
+    {
+      "budget_class": "skill_body",
+      "path": "skills/meta-harness/SKILL.md",
+      "status": "within_budget",
+      "bytes": 2118,
+      "lines": 54,
+      "estimated_tokens": 530,
+      "target": 5000,
+      "warning": 6000,
+      "metric": "tokens",
+      "notes": []
+    },
+    {
+      "budget_class": "skill_metadata",
+      "path": "skills/meta-harness/SKILL.md",
+      "label": "metadata",
+      "status": "within_budget",
+      "bytes": 239,
+      "lines": 6,
+      "estimated_tokens": 60,
+      "target": 100,
+      "warning": 150,
+      "metric": "tokens",
+      "notes": []
+    },
+    {
+      "budget_class": "skill_body",
+      "path": ".agents/skills/meta-harness/SKILL.md",
+      "status": "within_budget",
+      "bytes": 1570,
+      "lines": 34,
+      "estimated_tokens": 393,
+      "target": 5000,
+      "warning": 6000,
+      "metric": "tokens",
+      "notes": []
+    },
+    {
+      "budget_class": "skill_metadata",
+      "path": ".agents/skills/meta-harness/SKILL.md",
+      "label": "metadata",
+      "status": "within_budget",
+      "bytes": 288,
+      "lines": 9,
+      "estimated_tokens": 72,
+      "target": 100,
+      "warning": 150,
+      "metric": "tokens",
+      "notes": []
+    },
+    {
+      "budget_class": "skill_body",
+      "path": ".claude/skills/meta-harness/SKILL.md",
+      "status": "within_budget",
+      "bytes": 1010,
+      "lines": 21,
+      "estimated_tokens": 253,
+      "target": 5000,
+      "warning": 6000,
+      "metric": "tokens",
+      "notes": []
+    },
+    {
+      "budget_class": "skill_metadata",
+      "path": ".claude/skills/meta-harness/SKILL.md",
+      "label": "metadata",
+      "status": "within_budget",
+      "bytes": 279,
+      "lines": 9,
+      "estimated_tokens": 70,
+      "target": 100,
+      "warning": 150,
+      "metric": "tokens",
+      "notes": []
+    },
+    {
+      "budget_class": "mcp_instructions",
+      "path": "packages/mcp-server/src/server.ts",
+      "label": "description_1",
+      "status": "within_budget",
+      "bytes": 41,
+      "lines": 1,
+      "estimated_tokens": 11,
+      "target": 512,
+      "warning": 512,
+      "metric": "chars",
+      "notes": ["Each MCP tool description must fit in a compact host-visible description."]
+    },
+    {
+      "budget_class": "mcp_instructions",
+      "path": "packages/mcp-server/src/server.ts",
+      "label": "description_2",
+      "status": "within_budget",
+      "bytes": 30,
+      "lines": 1,
+      "estimated_tokens": 8,
+      "target": 512,
+      "warning": 512,
+      "metric": "chars",
+      "notes": ["Each MCP tool description must fit in a compact host-visible description."]
+    },
+    {
+      "budget_class": "mcp_instructions",
+      "path": "packages/mcp-server/src/server.ts",
+      "label": "description_3",
+      "status": "within_budget",
+      "bytes": 42,
+      "lines": 1,
+      "estimated_tokens": 11,
+      "target": 512,
+      "warning": 512,
+      "metric": "chars",
+      "notes": ["Each MCP tool description must fit in a compact host-visible description."]
+    },
+    {
+      "budget_class": "mcp_instructions",
+      "path": "packages/mcp-server/src/server.ts",
+      "label": "description_4",
+      "status": "within_budget",
+      "bytes": 34,
+      "lines": 1,
+      "estimated_tokens": 9,
+      "target": 512,
+      "warning": 512,
+      "metric": "chars",
+      "notes": ["Each MCP tool description must fit in a compact host-visible description."]
+    },
+    {
+      "budget_class": "mcp_instructions",
+      "path": "packages/mcp-server/src/server.ts",
+      "label": "description_5",
+      "status": "within_budget",
+      "bytes": 28,
+      "lines": 1,
+      "estimated_tokens": 7,
+      "target": 512,
+      "warning": 512,
+      "metric": "chars",
+      "notes": ["Each MCP tool description must fit in a compact host-visible description."]
+    },
+    {
+      "budget_class": "mcp_instructions",
+      "path": "packages/mcp-server/src/server.ts",
+      "label": "description_6",
+      "status": "within_budget",
+      "bytes": 43,
+      "lines": 1,
+      "estimated_tokens": 11,
+      "target": 512,
+      "warning": 512,
+      "metric": "chars",
+      "notes": ["Each MCP tool description must fit in a compact host-visible description."]
+    },
+    {
+      "budget_class": "mcp_instructions",
+      "path": "packages/mcp-server/src/server.ts",
+      "label": "description_7",
+      "status": "within_budget",
+      "bytes": 48,
+      "lines": 1,
+      "estimated_tokens": 12,
+      "target": 512,
+      "warning": 512,
+      "metric": "chars",
+      "notes": ["Each MCP tool description must fit in a compact host-visible description."]
+    },
+    {
+      "budget_class": "mcp_instructions",
+      "path": "packages/mcp-server/src/server.ts",
+      "label": "description_8",
+      "status": "within_budget",
+      "bytes": 41,
+      "lines": 1,
+      "estimated_tokens": 11,
+      "target": 512,
+      "warning": 512,
+      "metric": "chars",
+      "notes": ["Each MCP tool description must fit in a compact host-visible description."]
+    },
+    {
+      "budget_class": "mcp_instructions",
+      "path": "packages/mcp-server/src/server.ts",
+      "label": "description_9",
+      "status": "within_budget",
+      "bytes": 45,
+      "lines": 1,
+      "estimated_tokens": 12,
+      "target": 512,
+      "warning": 512,
+      "metric": "chars",
+      "notes": ["Each MCP tool description must fit in a compact host-visible description."]
+    },
+    {
+      "budget_class": "mcp_instructions",
+      "path": "packages/mcp-server/src/server.ts",
+      "label": "description_10",
+      "status": "within_budget",
+      "bytes": 61,
+      "lines": 1,
+      "estimated_tokens": 16,
+      "target": 512,
+      "warning": 512,
+      "metric": "chars",
+      "notes": ["Each MCP tool description must fit in a compact host-visible description."]
+    },
+    {
+      "budget_class": "mcp_instructions",
+      "path": "packages/mcp-server/src/server.ts",
+      "label": "description_11",
+      "status": "within_budget",
+      "bytes": 42,
+      "lines": 1,
+      "estimated_tokens": 11,
+      "target": 512,
+      "warning": 512,
+      "metric": "chars",
+      "notes": ["Each MCP tool description must fit in a compact host-visible description."]
+    },
+    {
+      "budget_class": "mcp_instructions",
+      "path": "packages/mcp-server/src/server.ts",
+      "label": "description_12",
+      "status": "within_budget",
+      "bytes": 42,
+      "lines": 1,
+      "estimated_tokens": 11,
+      "target": 512,
+      "warning": 512,
+      "metric": "chars",
+      "notes": ["Each MCP tool description must fit in a compact host-visible description."]
+    },
+    {
+      "budget_class": "mcp_instructions",
+      "path": "packages/mcp-server/src/server.ts",
+      "label": "description_13",
+      "status": "within_budget",
+      "bytes": 39,
+      "lines": 1,
+      "estimated_tokens": 10,
+      "target": 512,
+      "warning": 512,
+      "metric": "chars",
+      "notes": ["Each MCP tool description must fit in a compact host-visible description."]
+    },
+    {
+      "budget_class": "mcp_instructions",
+      "path": "packages/mcp-server/src/server.ts",
+      "label": "description_14",
+      "status": "within_budget",
+      "bytes": 50,
+      "lines": 1,
+      "estimated_tokens": 13,
+      "target": 512,
+      "warning": 512,
+      "metric": "chars",
+      "notes": ["Each MCP tool description must fit in a compact host-visible description."]
+    },
+    {
+      "budget_class": "mcp_instructions",
+      "path": "packages/mcp-server/src/server.ts",
+      "label": "description_15",
+      "status": "within_budget",
+      "bytes": 32,
+      "lines": 1,
+      "estimated_tokens": 8,
+      "target": 512,
+      "warning": 512,
+      "metric": "chars",
+      "notes": ["Each MCP tool description must fit in a compact host-visible description."]
+    },
+    {
+      "budget_class": "mcp_instructions",
+      "path": "packages/mcp-server/src/server.ts",
+      "label": "description_16",
+      "status": "within_budget",
+      "bytes": 31,
+      "lines": 1,
+      "estimated_tokens": 8,
+      "target": 512,
+      "warning": 512,
+      "metric": "chars",
+      "notes": ["Each MCP tool description must fit in a compact host-visible description."]
+    },
+    {
+      "budget_class": "mcp_instructions",
+      "path": "packages/mcp-server/src/server.ts",
+      "label": "description_17",
+      "status": "within_budget",
+      "bytes": 75,
+      "lines": 1,
+      "estimated_tokens": 19,
+      "target": 512,
+      "warning": 512,
+      "metric": "chars",
+      "notes": ["Each MCP tool description must fit in a compact host-visible description."]
+    },
+    {
+      "budget_class": "mcp_instructions",
+      "path": "packages/mcp-server/src/server.ts",
+      "label": "description_18",
+      "status": "within_budget",
+      "bytes": 22,
+      "lines": 1,
+      "estimated_tokens": 6,
+      "target": 512,
+      "warning": 512,
+      "metric": "chars",
+      "notes": ["Each MCP tool description must fit in a compact host-visible description."]
+    },
+    {
+      "budget_class": "mcp_instructions",
+      "path": "packages/mcp-server/src/server.ts",
+      "label": "description_19",
+      "status": "within_budget",
+      "bytes": 35,
+      "lines": 1,
+      "estimated_tokens": 9,
+      "target": 512,
+      "warning": 512,
+      "metric": "chars",
+      "notes": ["Each MCP tool description must fit in a compact host-visible description."]
+    },
+    {
+      "budget_class": "mcp_instructions",
+      "path": "packages/mcp-server/src/server.ts",
+      "label": "description_20",
+      "status": "within_budget",
+      "bytes": 42,
+      "lines": 1,
+      "estimated_tokens": 11,
+      "target": 512,
+      "warning": 512,
+      "metric": "chars",
+      "notes": ["Each MCP tool description must fit in a compact host-visible description."]
+    },
+    {
+      "budget_class": "mcp_instructions",
+      "path": "packages/mcp-server/src/server.ts",
+      "label": "description_21",
+      "status": "within_budget",
+      "bytes": 31,
+      "lines": 1,
+      "estimated_tokens": 8,
+      "target": 512,
+      "warning": 512,
+      "metric": "chars",
+      "notes": ["Each MCP tool description must fit in a compact host-visible description."]
+    },
+    {
+      "budget_class": "mcp_instructions",
+      "path": "packages/mcp-server/src/server.ts",
+      "label": "description_22",
+      "status": "within_budget",
+      "bytes": 27,
+      "lines": 1,
+      "estimated_tokens": 7,
+      "target": 512,
+      "warning": 512,
+      "metric": "chars",
+      "notes": ["Each MCP tool description must fit in a compact host-visible description."]
+    },
+    {
+      "budget_class": "mcp_instructions",
+      "path": "packages/mcp-server/src/server.ts",
+      "label": "description_23",
+      "status": "within_budget",
+      "bytes": 64,
+      "lines": 1,
+      "estimated_tokens": 16,
+      "target": 512,
+      "warning": 512,
+      "metric": "chars",
+      "notes": ["Each MCP tool description must fit in a compact host-visible description."]
+    },
+    {
+      "budget_class": "slice_pack",
+      "path": "generated:codex:worker",
+      "status": "within_budget",
+      "estimated_tokens": 1885,
+      "target": 7200,
+      "warning": 8000,
+      "metric": "tokens",
+      "notes": ["9 file references; raw artifacts included: false"]
+    },
+    {
+      "budget_class": "review_pack",
+      "path": "generated:claude-code:reviewer",
+      "status": "within_budget",
+      "estimated_tokens": 2331,
+      "target": 7200,
+      "warning": 8000,
+      "metric": "tokens",
+      "notes": ["10 file references; raw artifacts included: false"]
+    },
+    {
+      "budget_class": "phase_pack",
+      "path": "generated:generic:parent",
+      "status": "within_budget",
+      "estimated_tokens": 3099,
+      "target": 10800,
+      "warning": 12000,
+      "metric": "tokens",
+      "notes": ["8 file references; raw artifacts included: false"]
+    },
+    {
+      "budget_class": "evidence_excerpt",
+      "path": "docs/checkpoints/open_source_readiness_phase_0/commands.md",
+      "status": "within_budget",
+      "bytes": 3718,
+      "lines": 22,
+      "estimated_tokens": 930,
+      "target": 200,
+      "warning": 200,
+      "metric": "lines",
+      "notes": [
+        "Checkpoint command summaries should stay excerpt-sized; raw logs belong in artifacts."
+      ]
+    },
+    {
+      "budget_class": "evidence_excerpt",
+      "path": "docs/checkpoints/open_source_readiness_phase_1/commands.md",
+      "status": "within_budget",
+      "bytes": 10171,
+      "lines": 33,
+      "estimated_tokens": 2543,
+      "target": 200,
+      "warning": 200,
+      "metric": "lines",
+      "notes": [
+        "Checkpoint command summaries should stay excerpt-sized; raw logs belong in artifacts."
+      ]
+    },
+    {
+      "budget_class": "evidence_excerpt",
+      "path": "docs/checkpoints/open_source_readiness_phase_2/commands.md",
+      "status": "within_budget",
+      "bytes": 11845,
+      "lines": 48,
+      "estimated_tokens": 2962,
+      "target": 200,
+      "warning": 200,
+      "metric": "lines",
+      "notes": [
+        "Checkpoint command summaries should stay excerpt-sized; raw logs belong in artifacts."
+      ]
+    },
+    {
+      "budget_class": "evidence_excerpt",
+      "path": "docs/checkpoints/open_source_readiness_phase_3/commands.md",
+      "status": "within_budget",
+      "bytes": 7511,
+      "lines": 35,
+      "estimated_tokens": 1878,
+      "target": 200,
+      "warning": 200,
+      "metric": "lines",
+      "notes": [
+        "Checkpoint command summaries should stay excerpt-sized; raw logs belong in artifacts."
+      ]
+    },
+    {
+      "budget_class": "evidence_excerpt",
+      "path": "docs/checkpoints/phase_0/commands.md",
+      "status": "within_budget",
+      "bytes": 76,
+      "lines": 4,
+      "estimated_tokens": 19,
+      "target": 200,
+      "warning": 200,
+      "metric": "lines",
+      "notes": [
+        "Checkpoint command summaries should stay excerpt-sized; raw logs belong in artifacts."
+      ]
+    },
+    {
+      "budget_class": "evidence_excerpt",
+      "path": "docs/checkpoints/phase_1/commands.md",
+      "status": "within_budget",
+      "bytes": 76,
+      "lines": 4,
+      "estimated_tokens": 19,
+      "target": 200,
+      "warning": 200,
+      "metric": "lines",
+      "notes": [
+        "Checkpoint command summaries should stay excerpt-sized; raw logs belong in artifacts."
+      ]
+    },
+    {
+      "budget_class": "evidence_excerpt",
+      "path": "docs/checkpoints/phase_2/commands.md",
+      "status": "within_budget",
+      "bytes": 76,
+      "lines": 4,
+      "estimated_tokens": 19,
+      "target": 200,
+      "warning": 200,
+      "metric": "lines",
+      "notes": [
+        "Checkpoint command summaries should stay excerpt-sized; raw logs belong in artifacts."
+      ]
+    },
+    {
+      "budget_class": "evidence_excerpt",
+      "path": "docs/checkpoints/phase_3/commands.md",
+      "status": "within_budget",
+      "bytes": 76,
+      "lines": 4,
+      "estimated_tokens": 19,
+      "target": 200,
+      "warning": 200,
+      "metric": "lines",
+      "notes": [
+        "Checkpoint command summaries should stay excerpt-sized; raw logs belong in artifacts."
+      ]
+    },
+    {
+      "budget_class": "evidence_excerpt",
+      "path": "docs/checkpoints/phase_4/commands.md",
+      "status": "within_budget",
+      "bytes": 76,
+      "lines": 4,
+      "estimated_tokens": 19,
+      "target": 200,
+      "warning": 200,
+      "metric": "lines",
+      "notes": [
+        "Checkpoint command summaries should stay excerpt-sized; raw logs belong in artifacts."
+      ]
+    },
+    {
+      "budget_class": "evidence_excerpt",
+      "path": "docs/checkpoints/phase_5/commands.md",
+      "status": "within_budget",
+      "bytes": 76,
+      "lines": 4,
+      "estimated_tokens": 19,
+      "target": 200,
+      "warning": 200,
+      "metric": "lines",
+      "notes": [
+        "Checkpoint command summaries should stay excerpt-sized; raw logs belong in artifacts."
+      ]
+    },
+    {
+      "budget_class": "evidence_excerpt",
+      "path": "docs/checkpoints/phase_6/commands.md",
+      "status": "within_budget",
+      "bytes": 76,
+      "lines": 4,
+      "estimated_tokens": 19,
+      "target": 200,
+      "warning": 200,
+      "metric": "lines",
+      "notes": [
+        "Checkpoint command summaries should stay excerpt-sized; raw logs belong in artifacts."
+      ]
+    },
+    {
+      "budget_class": "evidence_excerpt",
+      "path": "docs/checkpoints/phase_7/commands.md",
+      "status": "within_budget",
+      "bytes": 337,
+      "lines": 8,
+      "estimated_tokens": 85,
+      "target": 200,
+      "warning": 200,
+      "metric": "lines",
+      "notes": [
+        "Checkpoint command summaries should stay excerpt-sized; raw logs belong in artifacts."
+      ]
+    },
+    {
+      "budget_class": "raw_artifact",
+      "path": ".meta-harness/command_log.jsonl",
+      "status": "within_budget",
+      "metric": "stored_only",
+      "notes": ["Raw artifacts are referenced by path and are not included in context packs."]
+    }
+  ]
+}
