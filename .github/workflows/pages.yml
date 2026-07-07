@@ -28,7 +28,7 @@ jobs:
         with:
           node-version-file: .node-version
           cache: pnpm
-      - uses: actions/configure-pages@v5
+      - uses: actions/configure-pages@v6
         if: github.event_name != 'pull_request' && github.event.repository.has_pages == true
         with:
           enablement: false
