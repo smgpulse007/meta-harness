@@ -1,7 +1,7 @@
 {
   "phase_id": "open_source_readiness_phase_1",
-  "status": "blocked",
-  "generated_at": "2026-07-06T22:22:38-04:00",
+  "status": "complete",
+  "generated_at": "2026-07-06T23:08:30-04:00",
   "commands": [
     {
       "id": "phase1-preface-ci",
@@ -114,6 +114,48 @@
       "exit_code": 1,
       "proof_status": "not_verified",
       "excerpt": "actionlint is not installed in this environment; workflow validation is limited to YAML parse plus future GitHub Actions run."
+    },
+    {
+      "id": "codeql-recovery-format-check",
+      "command": "pnpm exec prettier --check --ignore-unknown .github/workflows/codeql.yml",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "Scoped Prettier check passed for the CodeQL workflow recovery edits."
+    },
+    {
+      "id": "codeql-recovery-yaml-parse",
+      "command": "node -e \"const fs=require('fs'); const yaml=require('yaml'); yaml.parse(fs.readFileSync('.github/workflows/codeql.yml','utf8')); console.log('yaml parse ok')\"",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "CodeQL workflow YAML parsed successfully after the recovery edits."
+    },
+    {
+      "id": "codeql-recovery-diff-check",
+      "command": "git diff --check",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "No whitespace errors after CodeQL recovery edits; Git emitted LF-to-CRLF warnings only."
+    },
+    {
+      "id": "codeql-failed-log-inspection",
+      "command": "gh run view 28838328843 --repo smgpulse007/meta-harness --job 85526731299 --log-failed",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "The second CodeQL run completed analysis but failed with Resource not accessible by integration when reading workflow-run metadata; recovery restored actions: read."
+    },
+    {
+      "id": "phase1-pr-checks-final",
+      "command": "gh pr checks 1 --repo smgpulse007/meta-harness --watch --interval 10",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "PR #1 head 7fafee7738bc7dca077384d1cfb1de6896cc61ae passed CodeQL, CI on Ubuntu and Windows, package dry-run on Ubuntu and Windows, dependency-audit, integration-smoke, and schema-check."
+    },
+    {
+      "id": "phase1-checkpoint-closeout-ci",
+      "command": "pnpm run ci",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "Local CI passed after Phase 1 checkpoint recovery edits: ESLint, typecheck/build, Vitest 4 files and 15 tests, schema check validating 11 schemas and 17 artifacts, build, and integration smoke."
     }
   ],
   "non_command_evidence": [
@@ -124,8 +166,13 @@
     },
     {
       "id": "remote-ci-for-phase1-changes",
-      "proof_status": "not_verified",
-      "excerpt": "The changed workflows are not pushed, and the goal forbids pushing Git refs without separate maintainer authorization."
+      "proof_status": "command_verified",
+      "excerpt": "PR #1 verifies the pushed Phase 1 workflow changes on head 7fafee7738bc7dca077384d1cfb1de6896cc61ae. Detailed check URLs are recorded in artifacts/github_actions_pr1_remote_evidence.md."
+    },
+    {
+      "id": "post-recovery-review",
+      "proof_status": "parent_verified",
+      "excerpt": "Mandatory post-recovery reviewer returned aligned, on_track, strong evidence, 100 percent phase completion, no blockers, and next_action_recommendation continue."
     }
   ]
 }

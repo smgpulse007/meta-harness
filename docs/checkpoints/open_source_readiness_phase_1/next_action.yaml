@@ -1,7 +1,7 @@
 protocol_version: 0.1.0
 current_phase_id: open_source_readiness_phase_1
-current_phase_status: blocked
-auto_continue_allowed: false
+current_phase_status: complete
+auto_continue_allowed: true
 next_phase_id: open_source_readiness_phase_2
 human_acceptance_required: false
 human_acceptance_present: true
@@ -14,10 +14,11 @@ required_files_to_read:
 carry_forward_risks:
   - Repo-wide pnpm run format:check still fails on broad pre-existing formatting issues; Phase 1 touched files pass scoped Prettier.
   - actionlint is not installed locally; workflow validation is limited to YAML parsing and future GitHub Actions runs.
-  - New workflow badges will not reflect green status until workflows run remotely.
-blocking_risks:
-  - GitHub Actions have not yet verified the pushed Phase 1 workflow changes.
+blocking_risks: []
 required_validation_preface:
-  - Push or open a PR for the Phase 1 branch using the recorded maintainer authorization.
-  - Verify GitHub Actions for the Phase 1 workflow changes before Phase 2.
-allowed_next_transition: verify_github_actions_for_phase_1_branch
+  - Read docs/checkpoints/open_source_readiness_phase_1/checkpoint.md.
+  - Read docs/checkpoints/open_source_readiness_phase_1/proof.json.
+  - Read docs/checkpoints/open_source_readiness_phase_1/next_action.yaml.
+  - Read docs/checkpoints/open_source_readiness_phase_1/commands.md.
+  - Read docs/checkpoints/open_source_readiness_phase_1/alignment_review.md.
+allowed_next_transition: begin_open_source_readiness_phase_2

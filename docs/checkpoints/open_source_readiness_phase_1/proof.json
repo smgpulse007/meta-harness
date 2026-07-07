@@ -80,18 +80,34 @@
     },
     {
       "id": "phase1-github-ci-for-phase-changes",
-      "claim": "GitHub Actions are green for the unpushed Phase 1 workflow changes.",
-      "status": "not_verified",
+      "claim": "GitHub Actions are green for the pushed Phase 1 workflow changes on PR #1 head 7fafee7738bc7dca077384d1cfb1de6896cc61ae.",
+      "status": "command_verified",
       "evidence": [
-        "docs/checkpoints/open_source_readiness_phase_1/artifacts/validation_summary.json"
+        "docs/checkpoints/open_source_readiness_phase_1/artifacts/validation_summary.json",
+        "docs/checkpoints/open_source_readiness_phase_1/artifacts/github_actions_pr1_remote_evidence.md",
+        "https://github.com/smgpulse007/meta-harness/pull/1"
+      ],
+      "required": true
+    },
+    {
+      "id": "phase1-codeql-private-repo-recovery",
+      "claim": "CodeQL analysis runs in the private repository without requiring code scanning upload by keeping workflow metadata read permission and setting analyze upload to never.",
+      "status": "command_verified",
+      "evidence": [
+        ".github/workflows/codeql.yml",
+        "docs/checkpoints/open_source_readiness_phase_1/artifacts/github_actions_pr1_remote_evidence.md",
+        "https://github.com/smgpulse007/meta-harness/actions/runs/28838494479/job/85527237108"
       ],
       "required": true
     },
     {
       "id": "phase1-review-gate",
-      "claim": "Independent reviewer audit ran and found remote GitHub Actions proof for unpushed Phase 1 changes is blocking.",
+      "claim": "Independent reviewer audit ran, found remote GitHub Actions proof blocking at the time, and parent recovery recorded command evidence that closes the blocker.",
       "status": "parent_verified",
-      "evidence": ["docs/checkpoints/open_source_readiness_phase_1/alignment_review.md"],
+      "evidence": [
+        "docs/checkpoints/open_source_readiness_phase_1/alignment_review.md",
+        "docs/checkpoints/open_source_readiness_phase_1/artifacts/post_recovery_review.md"
+      ],
       "required": true
     },
     {
@@ -100,6 +116,15 @@
       "status": "human_verified",
       "evidence": [
         "docs/checkpoints/open_source_readiness_phase_1/artifacts/push_pr_authorization.md"
+      ],
+      "required": true
+    },
+    {
+      "id": "phase1-checkpoint-closeout-ci",
+      "claim": "Local CI passed after Phase 1 checkpoint recovery edits.",
+      "status": "command_verified",
+      "evidence": [
+        "docs/checkpoints/open_source_readiness_phase_1/artifacts/validation_summary.json"
       ],
       "required": true
     }
