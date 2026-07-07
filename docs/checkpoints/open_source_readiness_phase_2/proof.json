@@ -47,25 +47,37 @@
     },
     {
       "id": "phase2-pages-workflow",
-      "claim": "A GitHub Pages workflow exists, parses, builds docs on pull requests, and deploys only on non-PR events.",
+      "claim": "A GitHub Pages workflow exists, parses, builds docs on pull requests and pushes, and only configures or deploys Pages when repository Pages is enabled.",
       "status": "command_verified",
       "evidence": [
         ".github/workflows/pages.yml",
         "docs/checkpoints/open_source_readiness_phase_2/commands.md",
-        "docs/checkpoints/open_source_readiness_phase_2/artifacts/github_actions_pr7_remote_evidence.md"
+        "docs/checkpoints/open_source_readiness_phase_2/artifacts/github_actions_pr7_remote_evidence.md",
+        "docs/checkpoints/open_source_readiness_phase_2/artifacts/github_actions_main_pages_recovery.md"
       ],
       "required": true
     },
     {
       "id": "phase2-pages-workflow-remote",
-      "claim": "The Docs Pages workflow is verified by GitHub Actions for the Phase 2 branch.",
+      "claim": "The Docs Pages build path is verified by GitHub Actions for Phase 2, and the main-branch recovery records the repository Pages-disabled condition.",
       "status": "command_verified",
       "evidence": [
         "docs/checkpoints/open_source_readiness_phase_2/artifacts/validation_summary.json",
         "docs/checkpoints/open_source_readiness_phase_2/artifacts/github_actions_pr7_remote_evidence.md",
+        "docs/checkpoints/open_source_readiness_phase_2/artifacts/github_actions_main_pages_recovery.md",
         "https://github.com/smgpulse007/meta-harness/pull/7"
       ],
       "required": true
+    },
+    {
+      "id": "phase2-pages-deploy-runtime",
+      "claim": "Actual GitHub Pages deployment is not runtime verified because the private repository does not have Pages enabled; no repository Pages setting was mutated by this phase.",
+      "status": "partial",
+      "evidence": [
+        "docs/checkpoints/open_source_readiness_phase_2/artifacts/github_actions_main_pages_recovery.md",
+        "https://github.com/smgpulse007/meta-harness/actions/runs/28840261599"
+      ],
+      "required": false
     },
     {
       "id": "phase2-local-validation",

@@ -29,9 +29,9 @@ jobs:
           node-version-file: .node-version
           cache: pnpm
       - uses: actions/configure-pages@v5
-        if: github.event_name != 'pull_request'
+        if: github.event_name != 'pull_request' && github.event.repository.has_pages == true
         with:
-          enablement: true
+          enablement: false
       - run: pnpm install --frozen-lockfile
       - run: pnpm docs:build
       - uses: actions/upload-pages-artifact@v3
@@ -41,7 +41,7 @@ jobs:
   deploy:
     name: Deploy docs
     needs: build
-    if: github.event_name != 'pull_request'
+    if: github.event_name != 'pull_request' && github.event.repository.has_pages == true
     runs-on: ubuntu-latest
     environment:
       name: github-pages

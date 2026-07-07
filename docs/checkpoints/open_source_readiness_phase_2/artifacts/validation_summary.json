@@ -170,6 +170,97 @@
       "exit_code": 0,
       "proof_status": "command_verified",
       "excerpt": "PR #7 head 0b9c4feb1211acd317fd1a19b4aa0632ba976bd5 passed Docs Pages Build docs, CodeQL, CI on Ubuntu and Windows, package dry-run on Ubuntu and Windows, dependency-audit, integration-smoke, and schema-check. Deploy docs skipped as expected on pull_request."
+    },
+    {
+      "id": "phase2-pr7-merge",
+      "command": "gh pr merge 7 --repo smgpulse007/meta-harness --merge ...",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "PR #7 merged with merge commit 3169d29eca4ef6489ca8a9cf817771dad8cb9788."
+    },
+    {
+      "id": "main-docs-pages-deploy-failure",
+      "command": "gh run watch 28840261599 --repo smgpulse007/meta-harness --interval 10 --exit-status",
+      "exit_code": 1,
+      "proof_status": "command_verified",
+      "excerpt": "Main Docs Pages run failed in actions/configure-pages@v5 because Pages was disabled and the action could not create the Pages site."
+    },
+    {
+      "id": "main-docs-pages-failure-log",
+      "command": "gh run view 28840261599 --repo smgpulse007/meta-harness --log-failed",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "Confirmed Create Pages site failed with Resource not accessible by integration."
+    },
+    {
+      "id": "repo-pages-state",
+      "command": "gh api repos/smgpulse007/meta-harness/pages",
+      "exit_code": 1,
+      "proof_status": "command_verified",
+      "excerpt": "Confirmed the repository Pages endpoint returns 404 Not Found, so Pages is not enabled."
+    },
+    {
+      "id": "repo-visibility-state",
+      "command": "gh repo view smgpulse007/meta-harness --json nameWithOwner,visibility,viewerPermission,homepageUrl,url",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "Confirmed repository visibility is PRIVATE, viewer permission is ADMIN, and no homepage URL is set."
+    },
+    {
+      "id": "pages-disabled-recovery-format-check",
+      "command": "pnpm exec prettier --check --ignore-unknown <Phase 2 Pages recovery files>",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "Scoped formatting check passed after the Pages-disabled recovery update."
+    },
+    {
+      "id": "pages-disabled-recovery-json-parse",
+      "command": "node -e \"<parse proof and validation summary JSON>\"",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "Parsed proof.json and validation_summary.json after the Pages-disabled recovery update."
+    },
+    {
+      "id": "pages-disabled-recovery-yaml-parse",
+      "command": "node -e \"<parse pages workflow and next_action YAML>\"",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "Parsed .github/workflows/pages.yml and next_action.yaml after the Pages-disabled recovery update."
+    },
+    {
+      "id": "pages-disabled-recovery-diff-check",
+      "command": "git diff --check",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "No whitespace errors after the Pages-disabled recovery update."
+    },
+    {
+      "id": "pages-disabled-recovery-docs-build",
+      "command": "pnpm docs:build",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "Docs build passed after gating Pages configure/deploy on github.event.repository.has_pages == true."
+    },
+    {
+      "id": "pages-disabled-recovery-ci",
+      "command": "pnpm run ci",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "Repo CI passed after the Pages-disabled recovery update: lint, typecheck/build, Vitest 4 files and 15 tests, schema-check over 17 artifacts, build, and smoke."
+    },
+    {
+      "id": "pages-disabled-recovery-schema-check",
+      "command": "pnpm schema-check",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "Checkpoint and JSON artifacts still passed schema validation after recording the recovery validation evidence."
+    },
+    {
+      "id": "pages-disabled-recovery-pr-checks",
+      "command": "gh pr checks 8 --repo smgpulse007/meta-harness --watch --interval 10",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "PR #8 head 4534090521bdf2a45e54f3b569a2bf32891fbe36 passed all checks; Docs Pages Build docs passed and Deploy docs skipped on pull_request."
     }
   ],
   "non_command_evidence": [
@@ -191,7 +282,12 @@
     {
       "id": "remote-pages-workflow",
       "proof_status": "command_verified",
-      "excerpt": "Docs Pages Build docs passed on PR #7 head 0b9c4feb1211acd317fd1a19b4aa0632ba976bd5. Deploy docs skipped as expected on pull_request."
+      "excerpt": "Docs Pages Build docs passed on PR #7 head 16080d8882dec66b6c0d35962030236ce7cb8773. Deploy docs skipped as expected on pull_request."
+    },
+    {
+      "id": "pages-deploy-runtime",
+      "proof_status": "partial",
+      "excerpt": "Actual GitHub Pages deployment is not runtime verified because the private repository does not have Pages enabled; recovery gates configure/deploy on repository.has_pages."
     }
   ]
 }
