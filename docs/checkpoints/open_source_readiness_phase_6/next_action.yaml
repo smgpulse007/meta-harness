@@ -1,0 +1,23 @@
+protocol_version: 0.1.0
+current_phase_id: open_source_readiness_phase_6
+current_phase_status: complete
+auto_continue_allowed: true
+next_phase_id: open_source_readiness_phase_7
+human_acceptance_required: false
+human_acceptance_present: true
+required_files_to_read:
+  - docs/checkpoints/open_source_readiness_phase_6/checkpoint.md
+  - docs/checkpoints/open_source_readiness_phase_6/proof.json
+  - docs/checkpoints/open_source_readiness_phase_6/commands.md
+  - docs/checkpoints/open_source_readiness_phase_6/alignment_review.md
+  - docs/checkpoints/open_source_readiness_phase_6/artifacts/final_reviewer.md
+carry_forward_risks:
+  - Actual Pages deployment remains blocked until GitHub Pages is supported for this private repository or the maintainer separately approves making the repository public or changing the GitHub plan.
+  - WindowsApps codex.exe remains blocked with Access is denied; npm Codex CLI evidence is command-verified but stable native dispatch remains disabled.
+  - Claude Code native packet handoff remains unverified until a local claude command and Anthropic authentication are available and an auth-backed schema-output packet handoff is reviewed.
+  - Experimental native dispatch remains opt-in and must not be treated as worker validation proof without packet command evidence and parent review.
+blocking_risks: []
+required_validation_preface:
+  - Read this checkpoint, proof.json, commands.md, alignment_review.md, and final_reviewer.md before Phase 7 work.
+  - Confirm GitHub PR checks after push.
+allowed_next_transition: begin_open_source_readiness_phase_7

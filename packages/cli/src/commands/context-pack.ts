@@ -85,7 +85,7 @@ const validFormats = new Set(["markdown", "json"]);
 const targetGuidance: Record<string, string[]> = {
   codex: [
     "Use AGENTS.md as the durable instruction surface.",
-    "Use filesystem prompts or MCP read tools until codex exec dispatch is locally verified."
+    "Use filesystem prompts or MCP read tools for stable work; codex-experimental remains feature-gated."
   ],
   "claude-code": [
     "Use CLAUDE.md and .claude/skills/meta-harness/SKILL.md where available.",

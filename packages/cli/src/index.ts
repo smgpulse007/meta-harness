@@ -59,6 +59,7 @@ export function buildCli(cwd = process.cwd()): Command {
     .command("dispatch")
     .requiredOption("--phase <phase>")
     .requiredOption("--agent <adapter>")
+    .option("--experimental-native", "opt in to feature-gated experimental native dispatch")
     .action((options) => run(() => dispatchCommand(context, options), context));
 
   program

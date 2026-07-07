@@ -5,9 +5,13 @@ import { checkpointPath, CommandContext, emit, readSlicePlan } from "./common.js
 export interface DispatchOptions {
   phase: string;
   agent: string;
+  experimentalNative?: boolean | undefined;
 }
 
-export async function dispatchCommand(context: CommandContext, options: DispatchOptions): Promise<void> {
+export async function dispatchCommand(
+  context: CommandContext,
+  options: DispatchOptions
+): Promise<void> {
   const adapter = getAdapter(options.agent);
   if (!adapter) {
     throw new Error(`Unknown adapter ${options.agent}`);
@@ -22,10 +26,15 @@ export async function dispatchCommand(context: CommandContext, options: Dispatch
         phaseId: options.phase,
         slice,
         slicePlan: plan,
-        checkpointPath: checkpointPath(options.phase)
+        checkpointPath: checkpointPath(options.phase),
+        experimentalNative: options.experimentalNative
       })
     );
   }
-  await writeJsonFile(context.cwd, `${checkpointPath(options.phase)}/artifacts/dispatch_results.json`, results);
+  await writeJsonFile(
+    context.cwd,
+    `${checkpointPath(options.phase)}/artifacts/dispatch_results.json`,
+    results
+  );
   emit(context, `Dispatched ${results.length} ready slices with ${adapter.id}.`);
 }

@@ -1,0 +1,96 @@
+protocol_version: 0.1.0
+slice_id: phase6_native_dispatch_experiments
+status: complete
+planned_owner: parent_coordinator
+actual_owner: parent_coordinator
+changed_files:
+  - packages/adapters/src/native-dispatch.ts
+  - packages/adapters/src/cli-adapter.ts
+  - packages/adapters/src/index.ts
+  - packages/adapters/src/types.ts
+  - packages/adapters/tests/adapters.test.ts
+  - packages/cli/src/commands/context-pack.ts
+  - packages/cli/src/commands/dispatch.ts
+  - packages/cli/src/index.ts
+  - docs/adapters.md
+  - docs/agent-support-matrix.md
+  - docs/cli-reference.md
+  - docs/examples/codex-prompt-file.md
+  - docs/examples/context-packs/claude-reviewer.md
+  - docs/examples/context-packs/codex-worker.md
+  - docs/examples/context-packs/generic-filesystem.md
+  - docs/examples/context-packs/generic-parent.md
+  - docs/research/agent-compatibility-2026-07-07.md
+  - docs/research/agent-support-claim-ledger-2026-07-07.md
+  - docs/checkpoints/open_source_readiness_phase_6/
+spec_alignment_refs:
+  - docs/open-source-readiness-goal-prompt.md#phase-6-native-dispatch-experiments
+  - docs/checkpoints/open_source_readiness_phase_5/next_action.yaml
+implementation_summary: Added feature-gated native dispatch experiments for Codex and Claude Code while keeping stable adapters conservative and evidence claims explicit.
+proof_statements:
+  - id: phase6-gated-native-dispatch
+    claim: Experimental adapters require explicit flag and environment gate before native launch.
+    status: command_verified
+    evidence:
+      - packages/adapters/tests/adapters.test.ts
+      - packages/adapters/src/native-dispatch.ts
+      - docs/checkpoints/open_source_readiness_phase_6/commands.md
+    required: true
+  - id: phase6-codex-smoke
+    claim: npm Codex CLI schema-output smoke ran locally and emitted usage metadata.
+    status: command_verified
+    evidence:
+      - docs/checkpoints/open_source_readiness_phase_6/commands.md
+      - docs/checkpoints/open_source_readiness_phase_6/artifacts/local_command_evidence.md
+    required: true
+  - id: phase6-claude-surface
+    claim: Claude Code npx help/version confirms structured-output flags, but auth-backed packet handoff remains unverified.
+    status: partial
+    evidence:
+      - docs/checkpoints/open_source_readiness_phase_6/commands.md
+      - docs/checkpoints/open_source_readiness_phase_6/artifacts/local_command_evidence.md
+    required: true
+validation_command_outputs:
+  - id: adapters-test
+    command: pnpm --filter @meta-harness/adapters test
+    evidence_kind: command
+    exit_code: 0
+    output_excerpt: 1 test file passed; 10 tests passed.
+  - id: ci
+    command: pnpm run ci
+    evidence_kind: command
+    exit_code: 0
+    output_excerpt: 5 test files passed; 32 tests passed; build, budget, schema-check, and integration smoke exited 0.
+  - id: docs-build
+    command: pnpm docs:build
+    evidence_kind: command
+    exit_code: 0
+    output_excerpt: TypeDoc and VitePress build completed with known non-blocking large-chunk advisory.
+  - id: schema-check
+    command: pnpm schema-check
+    evidence_kind: command
+    exit_code: 0
+    output_excerpt: Validated 13 JSON schemas and 25 artifacts.
+  - id: diff-check
+    command: git diff --check
+    evidence_kind: command
+    exit_code: 0
+    output_excerpt: No whitespace errors.
+side_effect_safety_status: ok
+blockers: []
+risks:
+  - Claude auth-backed structured output remains not_verified.
+  - WindowsApps codex.exe is detected but not executable.
+  - Experimental native dispatch must not be treated as stable worker validation proof.
+next_dependencies:
+  - Record independent final reviewer artifact.
+  - If approved, begin Phase 7 Azure and enterprise MCP readiness.
+auto_continue_recommendation: continue
+delegation_metrics:
+  parent_integrated_subagents: 2
+  reviewer_pending: false
+  independent_reviewer: Meitner
+  phase_completion_percent: 92
+interruptions: []
+takeovers: []
+recovery_events: []

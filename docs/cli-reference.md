@@ -15,7 +15,7 @@ node packages/cli/dist/index.js --help
 | `mh compile-spec`      | Convert a spec into a requirement ledger for a phase.              | `--spec`, optional `--phase`.                                                              | Requirements artifacts under `.meta-harness`.                                                        |
 | `mh plan`              | Build a slice plan for a phase.                                    | `--phase`.                                                                                 | Slice DAG and task contracts.                                                                        |
 | `mh lint-plan`         | Validate slice dependencies and plan shape.                        | `--phase`.                                                                                 | Findings list, with nonzero exit on blocking plan errors.                                            |
-| `mh dispatch`          | Dispatch ready slices through an adapter.                          | `--phase`, `--agent`.                                                                      | Prompt files or adapter packet handoff artifacts.                                                    |
+| `mh dispatch`          | Dispatch ready slices through an adapter.                          | `--phase`, `--agent`; optional `--experimental-native`.                                    | Prompt files or adapter packet handoff artifacts.                                                    |
 | `mh collect`           | Collect worker packets for a phase.                                | `--phase`.                                                                                 | Normalized packet inventory.                                                                         |
 | `mh verify`            | Verify packets, write scopes, proof, and safety.                   | `--phase`.                                                                                 | Verification findings and proof status updates.                                                      |
 | `mh audit-checkpoint`  | Check checkpoint completeness.                                     | `--phase`.                                                                                 | Checkpoint audit findings.                                                                           |
@@ -40,6 +40,26 @@ Do not write `passed` in a proof ledger unless a command or review actually ran.
 `mh emit-instructions --target all` emits every supported instruction target. Individual target values are `agents`, `claude`, `gemini`, `cursor`, `windsurf`, `copilot`, `copilot-custom`, `continue`, `opencode`, and `roo`.
 
 OpenCode and Roo targets include local MCP compatibility config. They do not enable native agent dispatch.
+
+## Experimental Native Dispatch
+
+Stable dispatch remains prompt-file first. The default `codex` and `claude-code` adapters still write prompt files and do not launch external agents.
+
+Phase 6 adds separate experimental adapter IDs:
+
+- `codex-experimental`
+- `claude-code-experimental`
+
+These adapters are disabled by default. A live native launch requires both:
+
+```bash
+META_HARNESS_EXPERIMENTAL_NATIVE_DISPATCH=1 \
+node packages/cli/dist/index.js dispatch --phase phase_001 --agent codex-experimental --experimental-native
+```
+
+The experimental Codex path builds `codex exec --json --output-schema --output-last-message` commands with an explicit sandbox and parses JSONL usage events into validated slice packets. The experimental Claude path builds `claude --bare -p --output-format json --json-schema` commands and parses structured output into validated slice packets.
+
+Do not treat experimental native dispatch as stable implementation evidence until the resulting packet, raw native output, validation commands, and checkpoint proof are reviewed. The local WindowsApps `codex.exe` command was present but blocked by Windows `Access is denied`; an npm Codex CLI smoke succeeded for schema-conforming JSON output. `npx --yes @anthropic-ai/claude-code --help` confirmed the Claude structured-output flags, but `claude` was not on PATH and no Anthropic API key was configured for an auth-backed packet handoff.
 
 ## Context Pack Targets
 

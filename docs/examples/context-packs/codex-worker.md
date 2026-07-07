@@ -3,7 +3,7 @@
 Target: codex
 Role: worker
 Phase: phase_001
-Budget: 1885/8000 estimated tokens (within_budget)
+Budget: 1907/8000 estimated tokens (within_budget)
 
 ## Objective
 
@@ -38,7 +38,7 @@ No phase advances without verified evidence.
 ## Target Guidance
 
 - Use AGENTS.md as the durable instruction surface.
-- Use filesystem prompts or MCP read tools until codex exec dispatch is locally verified.
+- Use filesystem prompts or MCP read tools for stable work; codex-experimental remains feature-gated.
 
 ## Required Output Schema
 
@@ -190,7 +190,7 @@ node packages/cli/dist/index.js dispatch --phase phase_001 --agent filesystem
 
 Use `--target all` to refresh every host instruction/config surface, including OpenCode and Roo compatibility files, after building the local CLI.
 
-Native `codex exec` dispatch remains planned until local command evidence proves JSON event capture, packet schema enforcement, sandbox and approval settings, and token usage capture.
+Experimental `codex-experimental` dispatch is feature-gated and disabled by default. Phase 6 verified an npm Codex CLI schema-output smoke with JSONL usage, but the stable Codex flow remains prompt-file fallback until full slice dispatch evidence is reviewed.
 
 ```
 
