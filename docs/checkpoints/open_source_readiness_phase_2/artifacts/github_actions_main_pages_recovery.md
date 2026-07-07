@@ -53,3 +53,30 @@ Repository metadata checked with `gh repo view smgpulse007/meta-harness --json n
 The workflow now keeps docs build validation active on pull requests and pushes, but only runs `actions/configure-pages@v5` and `actions/deploy-pages@v4` when `github.event.repository.has_pages == true`.
 
 This avoids mutating repository Pages settings from CI for a private repository whose Pages site is disabled. Actual Pages deployment remains `partial` until Pages is enabled through repository settings and a `main` run deploys successfully.
+
+## Recovery PR Verification
+
+PR: https://github.com/smgpulse007/meta-harness/pull/8
+
+Verified head: `4534090521bdf2a45e54f3b569a2bf32891fbe36`
+
+Command:
+
+```bash
+gh pr checks 8 --repo smgpulse007/meta-harness --watch --interval 10
+```
+
+Exit code: 0
+
+| Check                             | Status  | Evidence URL                                                                         |
+| --------------------------------- | ------- | ------------------------------------------------------------------------------------ |
+| Build docs                        | pass    | https://github.com/smgpulse007/meta-harness/actions/runs/28840675155/job/85533866232 |
+| Deploy docs                       | skipped | https://github.com/smgpulse007/meta-harness/actions/runs/28840675155/job/85533961111 |
+| Analyze JavaScript and TypeScript | pass    | https://github.com/smgpulse007/meta-harness/actions/runs/28840675100/job/85533866156 |
+| CI (ubuntu-latest)                | pass    | https://github.com/smgpulse007/meta-harness/actions/runs/28840675121/job/85533866052 |
+| CI (windows-latest)               | pass    | https://github.com/smgpulse007/meta-harness/actions/runs/28840675121/job/85533866059 |
+| Package dry-run (ubuntu-latest)   | pass    | https://github.com/smgpulse007/meta-harness/actions/runs/28840675111/job/85533866081 |
+| Package dry-run (windows-latest)  | pass    | https://github.com/smgpulse007/meta-harness/actions/runs/28840675111/job/85533866031 |
+| dependency-audit                  | pass    | https://github.com/smgpulse007/meta-harness/actions/runs/28840675116/job/85533866118 |
+| integration-smoke                 | pass    | https://github.com/smgpulse007/meta-harness/actions/runs/28840675079/job/85533865880 |
+| schema-check                      | pass    | https://github.com/smgpulse007/meta-harness/actions/runs/28840675113/job/85533866040 |

@@ -254,6 +254,13 @@
       "exit_code": 0,
       "proof_status": "command_verified",
       "excerpt": "Checkpoint and JSON artifacts still passed schema validation after recording the recovery validation evidence."
+    },
+    {
+      "id": "pages-disabled-recovery-pr-checks",
+      "command": "gh pr checks 8 --repo smgpulse007/meta-harness --watch --interval 10",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "PR #8 head 4534090521bdf2a45e54f3b569a2bf32891fbe36 passed all checks; Docs Pages Build docs passed and Deploy docs skipped on pull_request."
     }
   ],
   "non_command_evidence": [
