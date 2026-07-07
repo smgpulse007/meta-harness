@@ -1,0 +1,13 @@
+agent: Arendt
+role: package_workflow_integration_auditor
+proof_status: static_verified
+summary: >
+  Read package, workspace, TypeScript, workflow, and objective context, then produced implementation guidance
+  for adding VitePress, TypeDoc, docs scripts, and a GitHub Pages workflow without changing existing CI behavior.
+key_findings:
+  - Keep VitePress and TypeDoc at the root and use existing docs as the VitePress root.
+  - Keep docs build separate from pnpm run ci in the first pass.
+  - Generate TypeDoc output into docs/api and avoid committing generated API output.
+  - Use official GitHub Pages configure/upload/deploy actions with narrow permissions.
+changed_files: []
+blockers: []

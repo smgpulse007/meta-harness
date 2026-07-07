@@ -29,6 +29,10 @@
     "format:check": "prettier --check .",
     "typecheck": "pnpm --filter @meta-harness/core typecheck && pnpm --filter @meta-harness/core build && pnpm --filter @meta-harness/adapters typecheck && pnpm --filter @meta-harness/adapters build && pnpm --filter @meta-harness/mcp-server typecheck && pnpm --filter @meta-harness/mcp-server build && pnpm --filter @meta-harness/cli typecheck && pnpm --filter @meta-harness/cli build",
     "test": "vitest run",
+    "docs:dev": "pnpm docs:api && vitepress dev docs",
+    "docs:build": "pnpm docs:api && vitepress build docs",
+    "docs:preview": "vitepress preview docs",
+    "docs:api": "typedoc",
     "schema-check": "tsx scripts/schema-check.ts",
     "integration-smoke": "tsx scripts/integration-smoke.ts",
     "ci": "pnpm lint && pnpm typecheck && pnpm test && pnpm schema-check && pnpm build && pnpm integration-smoke"
@@ -57,8 +61,11 @@
     "eslint": "^9.18.0",
     "prettier": "^3.4.2",
     "tsx": "^4.19.2",
+    "typedoc": "0.28.20",
+    "typedoc-plugin-markdown": "4.12.0",
     "typescript": "^5.7.3",
     "typescript-eslint": "^8.20.0",
+    "vitepress": "1.6.4",
     "vitest": "^2.1.8",
     "yaml": "^2.7.0"
   }

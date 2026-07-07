@@ -1,0 +1,41 @@
+protocol_version: 0.1.0
+phase_id: open_source_readiness_phase_2
+phase_name: Docs Site Foundation
+status: blocked_pending_remote_verification
+slices:
+  - id: phase2_docs_tooling
+    objective: Add VitePress and TypeDoc tooling without changing runtime behavior.
+    allowed_write_scope:
+      - package.json
+      - pnpm-lock.yaml
+      - typedoc.json
+      - tsconfig.typedoc.json
+      - docs/.vitepress/config.ts
+      - .gitignore
+    validation_commands:
+      - pnpm install --frozen-lockfile
+      - pnpm docs:api
+      - pnpm docs:build
+  - id: phase2_docs_information_architecture
+    objective: Add a public docs IA covering the required Phase 2 topics.
+    allowed_write_scope:
+      - docs/**/*.md
+      - docs/public/logo.svg
+      - README.md
+    validation_commands:
+      - pnpm docs:build
+      - pnpm exec prettier --check --ignore-unknown <Phase 2 touched files>
+  - id: phase2_pages_workflow
+    objective: Add a GitHub Pages workflow with PR build verification and push-only deployment.
+    allowed_write_scope:
+      - .github/workflows/pages.yml
+    validation_commands:
+      - node -e "<parse workflow YAML>"
+      - gh pr checks <phase 2 PR>
+  - id: phase2_checkpoint
+    objective: Record proof, reviewer output, local recovery, and the remaining remote verification gate.
+    allowed_write_scope:
+      - docs/checkpoints/open_source_readiness_phase_2/**
+    validation_commands:
+      - pnpm run ci
+      - git diff --check

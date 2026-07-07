@@ -6,3 +6,6 @@ coverage/
 *.log
 *.tsbuildinfo
 *.tgz
+docs/.vitepress/cache/
+docs/.vitepress/dist/
+docs/api/

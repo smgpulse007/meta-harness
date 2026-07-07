@@ -16,7 +16,7 @@ It is not an LLM or a coding agent. It is the protocol, state machine, CLI, MCP 
 
 > No phase advances without verified evidence.
 
-[Getting started](docs/getting-started.md) | [Protocol](docs/protocol.md) | [Agent support](docs/agent-support-matrix.md) | [Security](SECURITY.md) | [Contributing](CONTRIBUTING.md) | [Release plan](docs/release-plan.md)
+[Docs site](https://smgpulse007.github.io/meta-harness/) | [Getting started](docs/getting-started.md) | [Protocol](docs/protocol.md) | [Agent support](docs/agent-support-matrix.md) | [Security](SECURITY.md) | [Contributing](CONTRIBUTING.md) | [Release plan](docs/release-plan.md)
 
 ## Install From Source
 

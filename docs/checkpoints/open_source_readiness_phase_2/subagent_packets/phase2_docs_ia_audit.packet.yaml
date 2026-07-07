@@ -1,0 +1,14 @@
+agent: Confucius
+role: docs_information_architecture_auditor
+proof_status: static_verified
+summary: >
+  Read the controlling objective and existing docs, then produced the Phase 2 docs IA checklist:
+  VitePress config, docs scripts, TypeDoc route, Pages workflow, README link, top nav, sidebar shape,
+  reusable content, and acceptance gaps.
+key_findings:
+  - Required top nav should include Home, Quickstart, Concepts, CLI, MCP, Adapters, Agent Compatibility, Examples, API, and Security.
+  - Existing README, getting-started, protocol, concepts, examples, support matrix, threat model, security, and release docs can seed the site.
+  - Agent support must remain surface-based and Codex/native dispatch must remain partial or planned unless local command evidence exists.
+  - Pages workflow acceptance needs actual GitHub Actions evidence.
+changed_files: []
+blockers: []
