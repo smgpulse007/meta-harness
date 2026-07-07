@@ -1,0 +1,87 @@
+{
+  "protocol_version": "0.1.0",
+  "phase_id": "open_source_readiness_phase_7",
+  "status": "command_verified",
+  "branch": "open-source-readiness-phase-7",
+  "commands": [
+    {
+      "command": "pnpm install --frozen-lockfile",
+      "exit_code": 0,
+      "excerpt": "Workspace install was already up to date with pnpm v11.7.0."
+    },
+    {
+      "command": "pnpm run clean",
+      "exit_code": 0,
+      "excerpt": "Recursive package clean removed package build outputs."
+    },
+    {
+      "command": "pnpm run ci",
+      "exit_code": 0,
+      "excerpt": "5 test files and 33 tests completed; 13 JSON schemas and 25 artifacts validated; package builds completed; budget stayed within limits; integration smoke completed."
+    },
+    {
+      "command": "pnpm docs:build",
+      "exit_code": 0,
+      "excerpt": "TypeDoc generated Markdown at docs/api; VitePress rendered pages and completed with the known non-blocking chunk-size advisory."
+    },
+    {
+      "command": "pnpm audit --prod",
+      "exit_code": 0,
+      "excerpt": "No known vulnerabilities found."
+    },
+    {
+      "command": "pnpm --filter @meta-harness/core pack --dry-run",
+      "exit_code": 0,
+      "excerpt": "Package dry-run completed for @meta-harness/core."
+    },
+    {
+      "command": "pnpm --filter @meta-harness/adapters pack --dry-run",
+      "exit_code": 0,
+      "excerpt": "Package dry-run completed for @meta-harness/adapters."
+    },
+    {
+      "command": "pnpm --filter @meta-harness/cli pack --dry-run",
+      "exit_code": 0,
+      "excerpt": "Package dry-run completed for @meta-harness/cli."
+    },
+    {
+      "command": "pnpm --filter @meta-harness/mcp-server pack --dry-run",
+      "exit_code": 0,
+      "excerpt": "Package dry-run completed for @meta-harness/mcp-server."
+    },
+    {
+      "command": "pnpm schema-check",
+      "exit_code": 0,
+      "excerpt": "Validated 13 JSON schemas and 25 artifacts."
+    },
+    {
+      "command": "node packages/cli/dist/index.js budget --json",
+      "exit_code": 0,
+      "excerpt": "Budget status within_budget; 59/59 items within budget; 0 warnings."
+    },
+    {
+      "command": "node packages/cli/dist/index.js doctor --json --phase phase_001",
+      "exit_code": 0,
+      "excerpt": "Doctor reported 0 errors and 1 expected dirty-worktree warning; 12 adapter registry entries detected."
+    },
+    {
+      "command": "pnpm exec prettier --check --ignore-unknown -- <changed files>",
+      "exit_code": 0,
+      "excerpt": "25 changed files matched Prettier style."
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0,
+      "excerpt": "No whitespace errors reported; Git emitted expected CRLF normalization warnings for tracked text files."
+    }
+  ],
+  "package_artifacts": {
+    "tarballs_remaining": 0,
+    "evidence": "Get-ChildItem -File -Filter \"meta-harness-*.tgz\" returned no files after dry-runs."
+  },
+  "known_warnings": [
+    "VitePress emitted the existing non-blocking chunk-size advisory.",
+    "Doctor reported the expected dirty-worktree warning while Phase 7 files were still uncommitted.",
+    "Git emitted expected CRLF normalization warnings for tracked text files."
+  ]
+}

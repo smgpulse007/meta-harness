@@ -68,6 +68,7 @@ export default defineConfig({
           { text: "Parent Coordinator Flow", link: "/examples/parent-coordinator-flow" },
           { text: "MCP Host Example", link: "/examples/mcp-host" },
           { text: "MCP Config Samples", link: "/examples/mcp-configs/" },
+          { text: "Enterprise Remote MCP Sketch", link: "/examples/enterprise-remote-mcp" },
           { text: "Context Pack Samples", link: "/examples/context-packs/" },
           { text: "Evidence Excerpts", link: "/examples/evidence-excerpts/" },
           { text: "Codex Prompt-File Flow", link: "/examples/codex-prompt-file" },

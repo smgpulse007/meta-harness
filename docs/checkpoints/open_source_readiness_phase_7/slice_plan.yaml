@@ -1,0 +1,59 @@
+protocol_version: 0.1.0
+phase_id: open_source_readiness_phase_7
+slices:
+  - id: phase7_azure_enterprise_mcp_readiness
+    phase_id: open_source_readiness_phase_7
+    title: Azure and enterprise MCP readiness
+    objective: Add source-backed Azure/enterprise MCP guidance and small MCP mode hardening without provisioning resources.
+    owner: parent_coordinator
+    dependencies: []
+    spec_refs:
+      - docs/open-source-readiness-goal-prompt.md
+      - docs/checkpoints/open_source_readiness_phase_6/next_action.yaml
+    allowed_write_scope:
+      - docs/azure-enterprise.md
+      - docs/mcp-reference.md
+      - docs/security.md
+      - docs/examples/**
+      - docs/research/**
+      - docs/.vitepress/config.ts
+      - docs/checkpoints/open_source_readiness_phase_7/**
+      - packages/cli/src/commands/mcp.ts
+      - packages/cli/tests/cli.test.ts
+    forbidden_write_scope:
+      - .secrets/**
+      - node_modules/**
+      - dist/**
+      - .github/workflows/**
+    expected_changed_files:
+      - docs/azure-enterprise.md
+      - docs/examples/enterprise-remote-mcp.md
+      - docs/mcp-reference.md
+      - docs/security.md
+      - packages/cli/src/commands/mcp.ts
+      - packages/cli/tests/cli.test.ts
+    validation_commands:
+      - id: cli-test
+        command: pnpm --filter @meta-harness/cli test
+        required: true
+      - id: docs-build
+        command: pnpm docs:build
+        required: true
+      - id: full-ci
+        command: pnpm run ci
+        required: true
+      - id: audit
+        command: pnpm audit --prod
+        required: true
+      - id: diff-check
+        command: git diff --check
+        required: true
+    evidence_requirements:
+      - Azure/Foundry/MCP source refresh.
+      - MCP control matrix and remote-readiness gaps.
+      - No-provisioning safety statement.
+      - Validation command evidence.
+    side_effect_policy: default_read_only_external
+    packet_required: true
+    next_dependencies:
+      - independent reviewer approval

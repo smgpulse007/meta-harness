@@ -19,6 +19,8 @@ node packages/cli/dist/index.js mcp --stdio
 
 The server does not expose arbitrary shell execution by default.
 
+The CLI validates mode names before startup. For enterprise remote designs, treat `workspace-write` as not ready until a dedicated remote authorization and scope model exists. `dangerous-disabled` is a compatibility/no-danger marker, not a substitute for authentication, authorization, or audit logging.
+
 ## Tool Surface
 
 The MCP server is intended to expose stable harness state:
@@ -36,6 +38,27 @@ Write-capable tools must preserve path containment, safe IDs, and explicit mode 
 Use local stdio MCP for workstation development. Use remote Streamable HTTP only after an explicit auth, audit, and deployment design review.
 
 Keep the first 512 characters of MCP server instructions self-contained for hosts that truncate or summarize server instructions.
+
+## Remote Transport Readiness
+
+The current Meta Harness CLI only starts MCP over stdio:
+
+```bash
+node packages/cli/dist/index.js mcp --stdio --mode read-only
+```
+
+Remote Streamable HTTP is a future target, not a current runtime. Before adding or recommending a remote endpoint, the implementation must include:
+
+- HTTP POST/GET MCP endpoint behavior compatible with the current MCP transport specification
+- authentication for every connection
+- Origin validation for browser-reachable HTTP endpoints
+- local development binding to `127.0.0.1` rather than public interfaces
+- audit logs for tool calls and approval decisions
+- read-only default mode with explicit policy gates for `checkpoint-write` and `workspace-write`
+- tool allowlists for autonomous hosts
+- redaction and retention rules for request/response evidence
+
+For Azure and enterprise designs, see [Azure And Enterprise MCP](./azure-enterprise.md).
 
 ## Sample Configs
 

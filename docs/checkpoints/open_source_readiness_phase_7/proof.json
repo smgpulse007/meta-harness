@@ -1,0 +1,67 @@
+{
+  "protocol_version": "0.1.0",
+  "phase_id": "open_source_readiness_phase_7",
+  "claims": [
+    {
+      "id": "phase7-azure-boundaries",
+      "claim": "Azure guidance clearly separates Meta Harness MCP, remote MCP gateway design, Azure Foundry Agent Service, Azure MCP Server, model provider configuration, and Azure hosting substrate.",
+      "status": "static_verified",
+      "evidence": [
+        "docs/azure-enterprise.md",
+        "docs/examples/enterprise-remote-mcp.md",
+        "docs/checkpoints/open_source_readiness_phase_7/artifacts/source_refresh.md"
+      ],
+      "required": true
+    },
+    {
+      "id": "phase7-remote-mcp-controls",
+      "claim": "Remote MCP guidance includes authentication, Origin validation, tool allowlists, approval policy, audit logging, redaction/retention, network review, and read-only defaults.",
+      "status": "static_verified",
+      "evidence": [
+        "docs/azure-enterprise.md",
+        "docs/mcp-reference.md",
+        "docs/security.md",
+        "docs/checkpoints/open_source_readiness_phase_7/artifacts/mcp_control_matrix.md"
+      ],
+      "required": true
+    },
+    {
+      "id": "phase7-mcp-mode-validation",
+      "claim": "The CLI rejects unknown MCP modes before server startup while preserving read-only default behavior.",
+      "status": "command_verified",
+      "evidence": [
+        "packages/cli/src/commands/mcp.ts",
+        "packages/cli/tests/cli.test.ts",
+        "docs/checkpoints/open_source_readiness_phase_7/commands.md"
+      ],
+      "required": true
+    },
+    {
+      "id": "phase7-live-azure-not-verified",
+      "claim": "Live Azure deployment, Azure MCP Server invocation, Foundry-to-Meta-Harness runtime connection, and remote Meta Harness MCP hosting remain not verified because Phase 7 intentionally did not provision or mutate cloud resources.",
+      "status": "not_verified",
+      "evidence": [
+        "docs/checkpoints/open_source_readiness_phase_7/checkpoint.md",
+        "docs/examples/enterprise-remote-mcp.md"
+      ],
+      "required": true
+    },
+    {
+      "id": "phase7-validation",
+      "claim": "Phase 7 local validation completed across install, clean, CI, docs build, production audit, package dry-runs, schema check, budget, doctor, formatting, diff hygiene, and tarball cleanup checks.",
+      "status": "command_verified",
+      "evidence": [
+        "docs/checkpoints/open_source_readiness_phase_7/commands.md",
+        "docs/checkpoints/open_source_readiness_phase_7/artifacts/validation_summary.json"
+      ],
+      "required": true
+    },
+    {
+      "id": "phase7-independent-review",
+      "claim": "Independent reviewer found Phase 7 aligned, on track, strong evidence quality, no blockers, no recovery slices, and recommended continuation.",
+      "status": "parent_verified",
+      "evidence": ["docs/checkpoints/open_source_readiness_phase_7/artifacts/final_reviewer.md"],
+      "required": true
+    }
+  ]
+}

@@ -12,6 +12,7 @@ import { buildDoctorReport } from "../src/commands/doctor.js";
 import { emitInstructionsCommand } from "../src/commands/emit-instructions.js";
 import { initCommand } from "../src/commands/init.js";
 import { lintPlanCommand } from "../src/commands/lint-plan.js";
+import { mcpCommand } from "../src/commands/mcp.js";
 import { planCommand } from "../src/commands/plan.js";
 import { summarizeLogCommand } from "../src/commands/summarize-log.js";
 
@@ -227,6 +228,19 @@ describe("cli commands", () => {
     expect(report.checks.some((check) => check.remediation)).toBe(true);
     expect(report.summary.ok + report.summary.warnings + report.summary.errors).toBe(
       report.checks.length
+    );
+  });
+
+  it("rejects unknown MCP modes before server startup", async () => {
+    const cwd = await tempRepo();
+    const context = {
+      cwd,
+      stdout: (_message: string) => undefined,
+      stderr: (_message: string) => undefined
+    };
+
+    await expect(mcpCommand(context, { stdio: true, mode: "remote-write" })).rejects.toThrow(
+      /Unknown MCP mode remote-write/
     );
   });
 

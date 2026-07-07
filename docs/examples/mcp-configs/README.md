@@ -10,6 +10,8 @@ node packages/cli/dist/index.js mcp --stdio
 
 Use host-specific approval and allowlist controls before enabling write-capable MCP modes. Do not add secrets to these files. Remote MCP deployments require an auth and audit design review before use.
 
+For remote enterprise design guidance, see `docs/examples/enterprise-remote-mcp.md`.
+
 ## Samples
 
 - `codex-config.toml`: Codex CLI config snippet.
