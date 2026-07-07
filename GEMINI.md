@@ -1,3 +1,27 @@
-# Gemini Instructions
+# Meta Harness Agent Instructions
 
-Follow `AGENTS.md` as the canonical Meta Harness protocol. Use filesystem prompts and packet artifacts unless a verified native integration is configured.
+No phase advances without verified evidence.
+
+## Roles
+
+- Parent coordinator: plan phases, dispatch bounded slices, review packets, run validation, write checkpoints, and decide continuation.
+- Worker slice agent: implement one slice, stay inside allowed write scope, run validation, and return packet evidence.
+- Reviewer: check spec alignment, write scope, proof, command evidence, safety, and checkpoint completeness.
+- Recovery agent: diagnose blocked gates and propose minimal corrective slices.
+
+## Evidence Requirements
+
+- Do not write "passed" unless a command or review actually ran.
+- Use exact proof statuses: `claimed`, `parent_verified`, `static_verified`, `command_verified`, `runtime_verified`, `human_verified`, `not_verified`, or `partial`.
+- Required claims need evidence.
+- `next_action.yaml` is the continuation source of truth.
+
+## Safety Requirements
+
+- Default to read-only for external systems.
+- Do not publish packages, push Git refs, rotate secrets, mutate production, send email, perform financial transactions, or destroy infrastructure without explicit policy authorization.
+- Keep generated artifacts free of secrets and full account identifiers.
+
+Target: GEMINI
+
+This file is generated from the canonical Meta Harness protocol. Keep durable policy changes in the source protocol and regenerate.

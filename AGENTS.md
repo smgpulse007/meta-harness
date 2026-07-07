@@ -21,3 +21,7 @@ No phase advances without verified evidence.
 - Default to read-only for external systems.
 - Do not publish packages, push Git refs, rotate secrets, mutate production, send email, perform financial transactions, or destroy infrastructure without explicit policy authorization.
 - Keep generated artifacts free of secrets and full account identifiers.
+
+Target: AGENTS
+
+This file is generated from the canonical Meta Harness protocol. Keep durable policy changes in the source protocol and regenerate.

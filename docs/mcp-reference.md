@@ -5,7 +5,7 @@ Meta Harness includes a read-only-first MCP server for host tools that support t
 Start it over stdio:
 
 ```bash
-pnpm --filter @meta-harness/cli exec mh mcp --stdio
+node packages/cli/dist/index.js mcp --stdio
 ```
 
 ## Modes
@@ -36,3 +36,21 @@ Write-capable tools must preserve path containment, safe IDs, and explicit mode 
 Use local stdio MCP for workstation development. Use remote Streamable HTTP only after an explicit auth, audit, and deployment design review.
 
 Keep the first 512 characters of MCP server instructions self-contained for hosts that truncate or summarize server instructions.
+
+## Sample Configs
+
+Docs-only sample configs live in `docs/examples/mcp-configs/`.
+
+| Host                          | Sample                                                  |
+| ----------------------------- | ------------------------------------------------------- |
+| Codex                         | `docs/examples/mcp-configs/codex-config.toml`           |
+| Claude Code                   | `docs/examples/mcp-configs/claude.mcp.json`             |
+| Cursor                        | `docs/examples/mcp-configs/cursor.mcp.json`             |
+| Gemini CLI                    | `docs/examples/mcp-configs/gemini.settings.json`        |
+| GitHub Copilot repository MCP | `docs/examples/mcp-configs/copilot-repository-mcp.json` |
+| Windsurf / Cascade            | `docs/examples/mcp-configs/windsurf-mcp_config.json`    |
+| Continue                      | `docs/examples/mcp-configs/continue-mcpServers.yaml`    |
+| OpenCode                      | `docs/examples/mcp-configs/opencode.json`               |
+| Roo Code                      | `docs/examples/mcp-configs/roo-mcp.json`                |
+
+For hosts that can use tools autonomously, prefer a read-only tool allowlist. The Copilot, Gemini, and Roo samples intentionally expose read-oriented tools such as `get_current_phase`, `get_ready_slices`, `get_validation_plan`, `get_checkpoint`, and `get_next_action`; they do not enable checkpoint-write or workspace-write modes.

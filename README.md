@@ -37,13 +37,13 @@ pnpm run ci
 Run the local CLI:
 
 ```bash
-pnpm --filter @meta-harness/cli exec mh --help
+node packages/cli/dist/index.js --help
 ```
 
 Start a strict harness workspace:
 
 ```bash
-pnpm --filter @meta-harness/cli exec mh init --profile strict
+node packages/cli/dist/index.js init --profile strict
 ```
 
 For the full walkthrough, see [Getting started](docs/getting-started.md).
@@ -74,7 +74,7 @@ For the full walkthrough, see [Getting started](docs/getting-started.md).
 ## Integration Tiers
 
 - Tier 0: filesystem protocol. Works with any coding agent by writing prompt and packet files.
-- Tier 1: generated instruction files for tools such as Claude, Gemini, Cursor, Windsurf, Copilot, and Continue.
+- Tier 1: generated instruction files for tools such as Codex, Claude, Gemini, Cursor, Windsurf, Copilot, Continue, OpenCode, and Roo.
 - Tier 2: CLI adapter dispatch where a tool is detected and a safe prompt-file flow is configured.
 - Tier 3: MCP integration and planned native dispatch where the host supports structured tool calls. Native dispatch remains experimental unless explicitly marked verified in the [support matrix](docs/agent-support-matrix.md).
 
@@ -84,12 +84,12 @@ The tiny TypeScript example exercises the harness without launching an external 
 
 ```bash
 pnpm install --frozen-lockfile
-pnpm --filter @meta-harness/cli exec mh init --profile strict
-pnpm --filter @meta-harness/cli exec mh ingest --spec docs/implementation_spec.md --manifest docs/implementation_harness/phase_manifest.yaml
-pnpm --filter @meta-harness/cli exec mh compile-spec --spec docs/implementation_spec.md
-pnpm --filter @meta-harness/cli exec mh plan --phase phase_001
-pnpm --filter @meta-harness/cli exec mh lint-plan --phase phase_001
-pnpm --filter @meta-harness/cli exec mh dispatch --phase phase_001 --agent filesystem
+node packages/cli/dist/index.js init --profile strict
+node packages/cli/dist/index.js ingest --spec docs/implementation_spec.md --manifest docs/implementation_harness/phase_manifest.yaml
+node packages/cli/dist/index.js compile-spec --spec docs/implementation_spec.md
+node packages/cli/dist/index.js plan --phase phase_001
+node packages/cli/dist/index.js lint-plan --phase phase_001
+node packages/cli/dist/index.js dispatch --phase phase_001 --agent filesystem
 ```
 
 Use `--agent fake` for deterministic tests and examples. Fake adapter packets are simulation evidence only.
@@ -111,6 +111,8 @@ Implemented commands:
 - `mh audit-checkpoint`
 - `mh checkpoint`
 - `mh continue`
+- `mh context-pack`
+- `mh prompt`
 - `mh emit-instructions`
 - `mh doctor`
 - `mh mcp --stdio`
@@ -120,24 +122,34 @@ Implemented commands:
 Start the server over stdio:
 
 ```bash
-mh mcp --stdio
+node packages/cli/dist/index.js mcp --stdio
 ```
 
 Default mode is `read-only`. Write tools require `--mode checkpoint-write` or `--mode workspace-write`. Dangerous operations are not exposed by default.
 
 ## Skill Usage
 
-The reusable skill lives in `skills/meta-harness/SKILL.md`. It tells a compatible agent how to ingest a spec, build a manifest, plan slices, validate packets, write checkpoints, produce proof, and stop or continue according to `next_action.yaml`.
+The reusable skill lives in `skills/meta-harness/SKILL.md`. Host-specific copies are available at `.agents/skills/meta-harness/SKILL.md` and `.claude/skills/meta-harness/SKILL.md`. They tell a compatible agent how to ingest a spec, build a manifest, plan slices, validate packets, write checkpoints, produce proof, and stop or continue according to `next_action.yaml`.
 
 ## Instruction Emitters
 
 Generate agent instructions:
 
 ```bash
-mh emit-instructions --target all
+node packages/cli/dist/index.js emit-instructions --target all
 ```
 
-Generated targets include `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, Cursor rules, Windsurf rules, Copilot instructions, and Continue rules. They are derived from the canonical protocol text.
+Generated targets include `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, Cursor rules, Windsurf rules, Copilot repository and path-specific instructions, Continue rules, OpenCode instructions/config, and Roo rules/MCP config. They are derived from the canonical protocol text.
+
+## Context Packs
+
+Generate a bounded target-specific prompt pack from local harness state:
+
+```bash
+node packages/cli/dist/index.js context-pack --target codex --phase phase_001 --budget 8000 --format markdown
+```
+
+`mh prompt` is an alias for the same pack generator.
 
 ## Example Workflow
 

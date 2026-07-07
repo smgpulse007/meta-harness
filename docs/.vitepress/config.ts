@@ -66,6 +66,7 @@ export default defineConfig({
           { text: "Tiny Refactor", link: "/examples/tiny-refactor" },
           { text: "Parent Coordinator Flow", link: "/examples/parent-coordinator-flow" },
           { text: "MCP Host Example", link: "/examples/mcp-host" },
+          { text: "MCP Config Samples", link: "/examples/mcp-configs/" },
           { text: "Codex Prompt-File Flow", link: "/examples/codex-prompt-file" },
           { text: "Richer Refactor Walkthrough", link: "/examples/richer-refactor" }
         ]

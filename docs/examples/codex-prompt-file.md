@@ -10,8 +10,10 @@ Stable use today:
 4. Collect and verify the packet with Meta Harness.
 
 ```bash
-pnpm --filter @meta-harness/cli exec mh emit-instructions --target AGENTS
-pnpm --filter @meta-harness/cli exec mh dispatch --phase phase_001 --agent filesystem
+node packages/cli/dist/index.js emit-instructions --target agents
+node packages/cli/dist/index.js dispatch --phase phase_001 --agent filesystem
 ```
+
+Use `--target all` to refresh every host instruction/config surface, including OpenCode and Roo compatibility files, after building the local CLI.
 
 Native `codex exec` dispatch remains planned until local command evidence proves JSON event capture, packet schema enforcement, sandbox and approval settings, and token usage capture.

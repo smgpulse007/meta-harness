@@ -38,7 +38,7 @@ Meta Harness is pre-1.0. The source checkout is the supported onboarding path un
 corepack enable
 pnpm install --frozen-lockfile
 pnpm run ci
-pnpm --filter @meta-harness/cli exec mh --help
+node packages/cli/dist/index.js --help
 ```
 
 ## What To Read Next

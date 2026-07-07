@@ -24,6 +24,17 @@ Meta Harness is designed for large implementation programs where raw context dum
 | `evidence_excerpt`  | Command output excerpt.            |          100 to 200 lines or 12 KiB |
 | `raw_artifact`      | Full logs and generated outputs.   |          stored on disk, not pasted |
 
+## Current Commands
+
+Phase 3 adds a minimal bounded pack generator:
+
+```bash
+node packages/cli/dist/index.js context-pack --target codex --phase phase_001 --budget 8000 --format markdown
+node packages/cli/dist/index.js context-pack --target roo --format json
+```
+
+`mh prompt` is an alias for `mh context-pack`. The command emits target guidance, exact proof statuses, safety rules, validation commands from the slice plan when available, relevant file paths, bounded excerpts, and an estimated token count.
+
 ## Roadmap
 
-Phase 4 adds machine-checkable budget commands such as `mh budget`, `mh context-pack`, `mh prompt`, and `mh summarize-log`.
+Phase 4 adds stronger machine-checkable budget commands such as `mh budget` and `mh summarize-log`, plus stricter CI budget checks.

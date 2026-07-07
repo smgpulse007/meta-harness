@@ -1,0 +1,138 @@
+{
+  "phase_id": "open_source_readiness_phase_3",
+  "status": "complete",
+  "commands": [
+    {
+      "id": "install",
+      "command": "pnpm install --frozen-lockfile",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "Already up to date."
+    },
+    {
+      "id": "clean",
+      "command": "pnpm run clean",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "Package clean scripts completed."
+    },
+    {
+      "id": "cli-test-before-pretest-recovery",
+      "command": "pnpm --filter @meta-harness/cli test",
+      "exit_code": 1,
+      "proof_status": "partial",
+      "excerpt": "After pnpm run clean, Vitest could not resolve @meta-harness/core because workspace package dist outputs were absent."
+    },
+    {
+      "id": "cli-test-after-pretest-recovery",
+      "command": "pnpm --filter @meta-harness/cli test",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "Dependency closure built first through package pretest; 3 passed, 1 skipped."
+    },
+    {
+      "id": "ci",
+      "command": "pnpm run ci",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "17 tests passed; schema check, build, and integration smoke completed."
+    },
+    {
+      "id": "docs-build",
+      "command": "pnpm docs:build",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "TypeDoc generated Markdown and VitePress build completed."
+    },
+    {
+      "id": "audit-prod",
+      "command": "pnpm audit --prod",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "No known vulnerabilities found."
+    },
+    {
+      "id": "package-dry-runs",
+      "command": "pnpm --filter @meta-harness/{core,adapters,cli,mcp-server} pack --dry-run",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "All four package dry-runs completed; generated .tgz artifacts were removed."
+    },
+    {
+      "id": "emit-all",
+      "command": "node packages/cli/dist/index.js emit-instructions --target all",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "Wrote 12 instruction file(s)."
+    },
+    {
+      "id": "context-pack-codex",
+      "command": "node packages/cli/dist/index.js context-pack --target codex --phase phase_001 --budget 8000 --format json",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "Codex JSON pack parsed with within_budget status and AGENTS.md root excerpt present."
+    },
+    {
+      "id": "prompt-roo-json",
+      "command": "node packages/cli/dist/index.js prompt --target roo --format json",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "JSON parsed; target roo; within_budget; 10 files."
+    },
+    {
+      "id": "mcp-filter-wrapper-failed",
+      "command": "pnpm --filter @meta-harness/mcp-server exec node ... with transport cwd process.cwd()",
+      "exit_code": 1,
+      "proof_status": "partial",
+      "excerpt": "Recovery finding: filtered exec changed cwd to packages/mcp-server and broke root-relative CLI command resolution."
+    },
+    {
+      "id": "mcp-root-smoke",
+      "command": "MCP SDK client calling node packages/cli/dist/index.js mcp --stdio get_harness_status with explicit repo-root transport cwd",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "Returned root harness state with current_phase_id phase_7."
+    },
+    {
+      "id": "sample-parse",
+      "command": "JSON/YAML parse checks for MCP samples",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "9 JSON files and Continue YAML sample parsed."
+    },
+    {
+      "id": "diff-check",
+      "command": "git diff --check",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "No whitespace errors."
+    },
+    {
+      "id": "targeted-prettier",
+      "command": "pnpm exec prettier --check --ignore-unknown <Phase 3 touched files>",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "All matched touched files use Prettier style."
+    },
+    {
+      "id": "repo-wide-format",
+      "command": "pnpm format:check",
+      "exit_code": 1,
+      "proof_status": "partial",
+      "excerpt": "Failed on broad pre-existing formatting debt outside this slice; not used as Phase 3 gate."
+    }
+  ],
+  "reviewer": {
+    "initial_agent": "019f3add-b8d9-7441-a6c8-c50602ce1aee",
+    "initial_recommendation": "recover",
+    "recheck_agent": "019f3ae9-fa22-7bd0-90be-49c8c35c634b",
+    "recheck_recommendation": "recover",
+    "final_agent": "019f3afa-5808-7520-b7c8-58c3a9b2f6b2",
+    "final_recommendation": "continue",
+    "final_status": "complete",
+    "final_phase_alignment": "aligned",
+    "final_directional_alignment": "on_track",
+    "final_evidence_quality": "strong",
+    "final_blockers": []
+  }
+}

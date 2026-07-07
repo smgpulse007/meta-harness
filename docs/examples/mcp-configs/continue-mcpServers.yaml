@@ -1,0 +1,11 @@
+name: Meta Harness MCP
+version: 0.0.1
+schema: v1
+mcpServers:
+  - name: Meta Harness
+    type: stdio
+    command: node
+    args:
+      - "packages/cli/dist/index.js"
+      - "mcp"
+      - "--stdio"

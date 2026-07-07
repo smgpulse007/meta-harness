@@ -7,6 +7,7 @@ import { checkpointCommand } from "./commands/checkpoint.js";
 import { collectCommand } from "./commands/collect.js";
 import { compileSpecCommand } from "./commands/compile-spec.js";
 import { continueCommand } from "./commands/continue.js";
+import { contextPackCommand } from "./commands/context-pack.js";
 import { dispatchCommand } from "./commands/dispatch.js";
 import { doctorCommand } from "./commands/doctor.js";
 import { emitError } from "./commands/common.js";
@@ -86,8 +87,36 @@ export function buildCli(cwd = process.cwd()): Command {
     .action((options) => run(() => continueCommand(context, options), context));
 
   program
+    .command("context-pack")
+    .option(
+      "--target <target>",
+      "codex, claude-code, cursor, gemini, copilot, windsurf, continue, aider, opencode, roo, or generic",
+      "generic"
+    )
+    .option("--phase <phase>", "phase id", "phase_001")
+    .option("--budget <tokens>", "token budget", "8000")
+    .option("--format <format>", "markdown or json", "markdown")
+    .action((options) => run(() => contextPackCommand(context, options), context));
+
+  program
+    .command("prompt")
+    .option(
+      "--target <target>",
+      "codex, claude-code, cursor, gemini, copilot, windsurf, continue, aider, opencode, roo, or generic",
+      "generic"
+    )
+    .option("--phase <phase>", "phase id", "phase_001")
+    .option("--budget <tokens>", "token budget", "8000")
+    .option("--format <format>", "markdown or json", "markdown")
+    .action((options) => run(() => contextPackCommand(context, options), context));
+
+  program
     .command("emit-instructions")
-    .option("--target <target>", "AGENTS, CLAUDE, GEMINI, CURSOR, WINDSURF, COPILOT, CONTINUE, or all", "all")
+    .option(
+      "--target <target>",
+      "agents, claude, gemini, cursor, windsurf, copilot, copilot-custom, continue, opencode, roo, or all",
+      "all"
+    )
     .action((options) => run(() => emitInstructionsCommand(context, options), context));
 
   program.command("doctor").action(() => run(() => doctorCommand(context), context));
@@ -95,7 +124,11 @@ export function buildCli(cwd = process.cwd()): Command {
   program
     .command("mcp")
     .option("--stdio", "start stdio server")
-    .option("--mode <mode>", "read-only, workspace-write, checkpoint-write, or dangerous-disabled", "read-only")
+    .option(
+      "--mode <mode>",
+      "read-only, workspace-write, checkpoint-write, or dangerous-disabled",
+      "read-only"
+    )
     .action((options) => run(() => mcpCommand(context, options), context));
 
   return program;

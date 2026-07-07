@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "meta-harness": {
+      "command": "node",
+      "args": ["packages/cli/dist/index.js", "mcp", "--stdio"]
+    }
+  }
+}
