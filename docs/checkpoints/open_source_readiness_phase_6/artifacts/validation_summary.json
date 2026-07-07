@@ -1,0 +1,67 @@
+{
+  "protocol_version": "0.1.0",
+  "phase_id": "open_source_readiness_phase_6",
+  "status": "command_verified",
+  "commands": [
+    {
+      "command": "pnpm --filter @meta-harness/adapters test",
+      "exit_code": 0,
+      "summary": "1 test file passed; 10 adapter tests passed."
+    },
+    {
+      "command": "pnpm --filter @meta-harness/adapters typecheck",
+      "exit_code": 0,
+      "summary": "TypeScript typecheck exited 0."
+    },
+    {
+      "command": "pnpm --filter @meta-harness/cli typecheck",
+      "exit_code": 0,
+      "summary": "TypeScript typecheck exited 0."
+    },
+    {
+      "command": "pnpm run ci",
+      "exit_code": 0,
+      "summary": "5 test files passed; 32 tests passed; schema-check validated 13 schemas and 25 artifacts; build, budget, and integration smoke exited 0. Post-checkpoint rerun reported 58/58 budget items within budget."
+    },
+    {
+      "command": "pnpm docs:build",
+      "exit_code": 0,
+      "summary": "TypeDoc and VitePress build completed with the known non-blocking large-chunk advisory."
+    },
+    {
+      "command": "pnpm audit --prod",
+      "exit_code": 0,
+      "summary": "No known vulnerabilities found."
+    },
+    {
+      "command": "pnpm schema-check",
+      "exit_code": 0,
+      "summary": "Validated 13 JSON schemas and 25 artifacts."
+    },
+    {
+      "command": "node packages/cli/dist/index.js budget --json",
+      "exit_code": 0,
+      "summary": "Pre-final-review run reported 57/57; after Phase 6 checkpoint command evidence was added, CI reported status=within_budget, total_items=58, within_budget=58, warnings=0, over_budget=0, missing=0."
+    },
+    {
+      "command": "node packages/cli/dist/index.js doctor --json --phase phase_001",
+      "exit_code": 0,
+      "summary": "status=warning, ok=9, warnings=1, errors=0, adapter_count=12; only warning was dirty worktree."
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0,
+      "summary": "No whitespace errors."
+    },
+    {
+      "command": "package dry-runs for core, adapters, cli, and mcp-server",
+      "exit_code": 0,
+      "summary": "All package dry-runs exited 0; no generated .tgz files remained."
+    },
+    {
+      "command": "independent reviewer",
+      "exit_code": 0,
+      "summary": "Reviewer reported aligned, on track, adequate evidence, 92 percent phase completion, no blockers, no recovery slices, and continue."
+    }
+  ]
+}

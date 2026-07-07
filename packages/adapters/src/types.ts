@@ -32,6 +32,7 @@ export interface RenderedPrompt {
 
 export interface DispatchInput extends SlicePromptInput {
   dryRun?: boolean | undefined;
+  experimentalNative?: boolean | undefined;
 }
 
 export interface DispatchResult {

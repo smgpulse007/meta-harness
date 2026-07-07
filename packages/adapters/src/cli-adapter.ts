@@ -82,7 +82,7 @@ export class ConfigurableCliAdapter implements AgentAdapter {
   }
 }
 
-async function findCommand(candidates: string[]): Promise<string | undefined> {
+export async function findCommand(candidates: string[]): Promise<string | undefined> {
   const pathValue = process.env.PATH ?? "";
   const extensions =
     process.platform === "win32" ? (process.env.PATHEXT ?? ".EXE;.CMD;.BAT").split(";") : [""];

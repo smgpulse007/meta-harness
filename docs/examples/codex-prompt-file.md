@@ -16,4 +16,4 @@ node packages/cli/dist/index.js dispatch --phase phase_001 --agent filesystem
 
 Use `--target all` to refresh every host instruction/config surface, including OpenCode and Roo compatibility files, after building the local CLI.
 
-Native `codex exec` dispatch remains planned until local command evidence proves JSON event capture, packet schema enforcement, sandbox and approval settings, and token usage capture.
+Experimental `codex-experimental` dispatch is feature-gated and disabled by default. Phase 6 verified an npm Codex CLI schema-output smoke with JSONL usage, but the stable Codex flow remains prompt-file fallback until full slice dispatch evidence is reviewed.

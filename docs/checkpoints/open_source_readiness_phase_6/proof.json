@@ -1,0 +1,84 @@
+{
+  "protocol_version": "0.1.0",
+  "phase_id": "open_source_readiness_phase_6",
+  "claims": [
+    {
+      "id": "phase6-experimental-gates",
+      "claim": "Experimental Codex and Claude Code native adapters require both the CLI flag and the environment gate before launching a native process.",
+      "status": "command_verified",
+      "evidence": [
+        "packages/adapters/src/native-dispatch.ts",
+        "packages/cli/src/index.ts",
+        "packages/adapters/tests/adapters.test.ts",
+        "docs/checkpoints/open_source_readiness_phase_6/commands.md"
+      ],
+      "required": true
+    },
+    {
+      "id": "phase6-native-parsers",
+      "claim": "Experimental native dispatch parses Codex JSONL and Claude structured output into strict slice packets and rejects malformed, mismatched, or extra-field packets.",
+      "status": "command_verified",
+      "evidence": [
+        "packages/adapters/src/native-dispatch.ts",
+        "packages/adapters/tests/adapters.test.ts",
+        "docs/checkpoints/open_source_readiness_phase_6/commands.md"
+      ],
+      "required": true
+    },
+    {
+      "id": "phase6-codex-command-evidence",
+      "claim": "The npm Codex CLI command surface and read-only schema-output smoke were verified locally, including JSONL usage metadata.",
+      "status": "command_verified",
+      "evidence": [
+        "docs/research/agent-support-claim-ledger-2026-07-07.md",
+        "docs/checkpoints/open_source_readiness_phase_6/commands.md",
+        "docs/checkpoints/open_source_readiness_phase_6/artifacts/local_command_evidence.md"
+      ],
+      "required": true
+    },
+    {
+      "id": "phase6-claude-command-surface",
+      "claim": "The npm Claude Code package help/version confirmed the headless structured-output command surface, but local auth-backed packet handoff was not verified.",
+      "status": "partial",
+      "evidence": [
+        "docs/research/agent-support-claim-ledger-2026-07-07.md",
+        "docs/checkpoints/open_source_readiness_phase_6/commands.md",
+        "docs/checkpoints/open_source_readiness_phase_6/artifacts/local_command_evidence.md"
+      ],
+      "required": true
+    },
+    {
+      "id": "phase6-stable-adapter-nonclaim",
+      "claim": "Stable Codex and Claude Code adapters still use prompt-file fallback and do not claim native dispatch.",
+      "status": "command_verified",
+      "evidence": [
+        "packages/adapters/src/codex.ts",
+        "packages/adapters/src/claude-code.ts",
+        "packages/adapters/tests/adapters.test.ts",
+        "docs/adapters.md",
+        "docs/agent-support-matrix.md"
+      ],
+      "required": true
+    },
+    {
+      "id": "phase6-validation",
+      "claim": "Phase 6 local validation passed before independent review, including CI, docs build, audit, package dry-runs, schema validation, budget, doctor, and diff check.",
+      "status": "command_verified",
+      "evidence": [
+        "docs/checkpoints/open_source_readiness_phase_6/commands.md",
+        "docs/checkpoints/open_source_readiness_phase_6/artifacts/validation_summary.json"
+      ],
+      "required": true
+    },
+    {
+      "id": "phase6-independent-review",
+      "claim": "Independent reviewer found Phase 6 aligned, on track, adequately evidenced, above the 90 percent completion threshold, and clear to continue with no recovery slices.",
+      "status": "parent_verified",
+      "evidence": [
+        "docs/checkpoints/open_source_readiness_phase_6/artifacts/final_reviewer.md",
+        "docs/checkpoints/open_source_readiness_phase_6/checkpoint.md"
+      ],
+      "required": true
+    }
+  ]
+}

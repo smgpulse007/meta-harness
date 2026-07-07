@@ -1,0 +1,56 @@
+protocol_version: 0.1.0
+phase_id: open_source_readiness_phase_6
+slices:
+  - id: phase6_native_dispatch_experiments
+    phase_id: open_source_readiness_phase_6
+    title: Feature-gated native dispatch experiments
+    objective: Add bounded Codex and Claude Code experimental native dispatch surfaces without upgrading stable adapter claims.
+    owner: parent_coordinator
+    dependencies: []
+    spec_refs:
+      - docs/open-source-readiness-goal-prompt.md
+      - docs/checkpoints/open_source_readiness_phase_5/next_action.yaml
+    allowed_write_scope:
+      - packages/adapters/**
+      - packages/cli/**
+      - docs/adapters.md
+      - docs/agent-support-matrix.md
+      - docs/cli-reference.md
+      - docs/examples/**
+      - docs/research/**
+      - docs/checkpoints/open_source_readiness_phase_6/**
+    forbidden_write_scope:
+      - .secrets/**
+      - node_modules/**
+      - dist/**
+    expected_changed_files:
+      - packages/adapters/src/native-dispatch.ts
+      - packages/adapters/tests/adapters.test.ts
+      - docs/adapters.md
+      - docs/agent-support-matrix.md
+      - docs/research/agent-support-claim-ledger-2026-07-07.md
+    validation_commands:
+      - id: adapters-test
+        command: pnpm --filter @meta-harness/adapters test
+        required: true
+      - id: full-ci
+        command: pnpm run ci
+        required: true
+      - id: docs-build
+        command: pnpm docs:build
+        required: true
+      - id: package-dry-runs
+        command: pnpm --filter @meta-harness/core pack --dry-run; pnpm --filter @meta-harness/adapters pack --dry-run; pnpm --filter @meta-harness/cli pack --dry-run; pnpm --filter @meta-harness/mcp-server pack --dry-run
+        required: true
+      - id: diff-check
+        command: git diff --check
+        required: true
+    evidence_requirements:
+      - Feature-gated native launch evidence.
+      - Stable adapter non-claim evidence.
+      - Command evidence for Codex and Claude local surfaces.
+      - Docs claim alignment evidence.
+    side_effect_policy: default_read_only_external
+    packet_required: true
+    next_dependencies:
+      - independent reviewer approval

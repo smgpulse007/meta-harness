@@ -10,6 +10,7 @@ export * from "./copilot.js";
 export * from "./windsurf.js";
 export * from "./aider.js";
 export * from "./opencode.js";
+export * from "./native-dispatch.js";
 
 import { AgentAdapter } from "./types.js";
 import { FilesystemAdapter } from "./filesystem.js";
@@ -22,6 +23,7 @@ import { copilotAdapter } from "./copilot.js";
 import { windsurfAdapter } from "./windsurf.js";
 import { aiderAdapter } from "./aider.js";
 import { opencodeAdapter } from "./opencode.js";
+import { claudeCodeExperimentalAdapter, codexExperimentalAdapter } from "./native-dispatch.js";
 
 export function createDefaultAdapters(): AgentAdapter[] {
   return [
@@ -34,7 +36,9 @@ export function createDefaultAdapters(): AgentAdapter[] {
     copilotAdapter,
     windsurfAdapter,
     aiderAdapter,
-    opencodeAdapter
+    opencodeAdapter,
+    codexExperimentalAdapter,
+    claudeCodeExperimentalAdapter
   ];
 }
 
