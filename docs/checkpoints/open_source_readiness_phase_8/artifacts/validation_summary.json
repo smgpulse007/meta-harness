@@ -1,0 +1,46 @@
+{
+  "protocol_version": "0.1.0",
+  "phase_id": "open_source_readiness_phase_8",
+  "status": "command_verified",
+  "branch": "open-source-readiness-phase-8",
+  "commands": [
+    {
+      "command": "pnpm run release:dry-run",
+      "exit_code": 0,
+      "excerpt": "Clean, CI, docs build, production audit, package dry-runs, and Changesets status all completed. CI included 5 test files and 33 tests."
+    },
+    {
+      "command": "pnpm run package:dry-run",
+      "exit_code": 0,
+      "excerpt": "Dry-runs for all four publishable packages completed; package contents were limited to dist, LICENSE, README.md, and package.json."
+    },
+    {
+      "command": "pnpm run changeset:status",
+      "exit_code": 0,
+      "excerpt": "Changesets listed @meta-harness/core, @meta-harness/adapters, @meta-harness/cli, and @meta-harness/mcp-server for patch bump."
+    },
+    {
+      "command": "pnpm schema-check",
+      "exit_code": 0,
+      "excerpt": "Validated 13 JSON schemas and 25 artifacts after adding Phase 8 checkpoint bundle."
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0,
+      "excerpt": "No whitespace errors reported."
+    }
+  ],
+  "side_effects_not_performed": [
+    "npm publish",
+    "changeset publish",
+    "GitHub release creation",
+    "package provenance upload",
+    "registry write",
+    "repository visibility change"
+  ],
+  "known_warnings": [
+    "VitePress emitted the existing non-blocking chunk-size advisory.",
+    "PowerShell log redirection recorded pnpm progress as NativeCommandError text even though the command exit code was 0.",
+    "Git emitted expected CRLF normalization warnings for tracked text files."
+  ]
+}

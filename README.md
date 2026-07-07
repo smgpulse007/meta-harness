@@ -183,4 +183,4 @@ See `docs/threat-model.md`. The core posture is read-only unless explicitly conf
 
 ## Roadmap
 
-See `docs/release-plan.md`.
+Release readiness is verified with `pnpm run release:dry-run` or the manual `Release Dry Run` workflow. See `docs/release-plan.md`.

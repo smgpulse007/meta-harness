@@ -1,0 +1,31 @@
+protocol_version: 0.1.0
+phase_id: open_source_readiness_phase_8
+slices:
+  - id: phase8_release_readiness
+    title: Release readiness and dry-run gates
+    objective: Add Changesets, manual release dry-run workflow, package file allowlists, and command-verified release dry-run evidence without publishing.
+    allowed_write_scope:
+      - .changeset/
+      - .github/workflows/package-dry-run.yml
+      - .github/workflows/release-dry-run.yml
+      - package.json
+      - pnpm-lock.yaml
+      - scripts/package-dry-run.ts
+      - docs/release-plan.md
+      - docs/release-checklist.md
+      - README.md
+      - packages/*/package.json
+      - packages/*/README.md
+      - packages/*/LICENSE
+      - docs/checkpoints/open_source_readiness_phase_8/
+    validation_commands:
+      - id: release-dry-run
+        command: pnpm run release:dry-run
+        required: true
+      - id: schema-check
+        command: pnpm schema-check
+        required: true
+      - id: diff-check
+        command: git diff --check
+        required: true
+    status: complete_pending_independent_review
