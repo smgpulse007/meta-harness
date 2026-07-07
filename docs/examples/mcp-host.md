@@ -3,7 +3,7 @@
 This example shows the local stdio server shape. It does not require a remote deployment.
 
 ```bash
-pnpm --filter @meta-harness/cli exec mh mcp --stdio --mode read-only
+node packages/cli/dist/index.js mcp --stdio --mode read-only
 ```
 
 Use host-specific MCP configuration to point at the command above. Keep the mode `read-only` unless the task explicitly needs checkpoint or workspace writes.

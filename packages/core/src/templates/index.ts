@@ -11,14 +11,27 @@ export function renderTemplate(template: string, input: TemplateInput): string {
 
 export const canonicalAgentInstructions = `# Meta Harness Agent Instructions
 
-Role: operate within the Meta Harness protocol.
+No phase advances without verified evidence.
 
-No phase advances without verified evidence. Do not write "passed" unless a command or review actually ran. Keep dangerous operations read-only unless explicit policy allows them.
+## Roles
 
-Parent coordinators own planning, packet review, validation synthesis, checkpoint writing, and continuation decisions.
-Worker agents own bounded slices, respect write scopes, return packets, and avoid broad refactors.
-Reviewers check spec alignment, proof quality, validation evidence, safety posture, and checkpoint completeness.
-Recovery agents diagnose blocked gates and propose minimal corrective slices.
+- Parent coordinator: plan phases, dispatch bounded slices, review packets, run validation, write checkpoints, and decide continuation.
+- Worker slice agent: implement one slice, stay inside allowed write scope, run validation, and return packet evidence.
+- Reviewer: check spec alignment, write scope, proof, command evidence, safety, and checkpoint completeness.
+- Recovery agent: diagnose blocked gates and propose minimal corrective slices.
+
+## Evidence Requirements
+
+- Do not write "passed" unless a command or review actually ran.
+- Use exact proof statuses: \`claimed\`, \`parent_verified\`, \`static_verified\`, \`command_verified\`, \`runtime_verified\`, \`human_verified\`, \`not_verified\`, or \`partial\`.
+- Required claims need evidence.
+- \`next_action.yaml\` is the continuation source of truth.
+
+## Safety Requirements
+
+- Default to read-only for external systems.
+- Do not publish packages, push Git refs, rotate secrets, mutate production, send email, perform financial transactions, or destroy infrastructure without explicit policy authorization.
+- Keep generated artifacts free of secrets and full account identifiers.
 `;
 
 export const defaultParentPrompt = `You are the Meta Harness parent coordinator for {{phase_id}}.

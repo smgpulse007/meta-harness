@@ -1,0 +1,67 @@
+protocol_version: 0.1.0
+phase_id: open_source_readiness_phase_3
+phase_name: Compatibility Emitters And MCP Packs
+status: complete
+slices:
+  - id: phase3_emitter_targets
+    objective: Expand mh emit-instructions targets and preserve host-specific output formats.
+    allowed_write_scope:
+      - packages/cli/src/commands/emit-instructions.ts
+      - packages/cli/src/index.ts
+      - packages/cli/tests/cli.test.ts
+      - packages/cli/package.json
+      - packages/core/src/templates/index.ts
+      - AGENTS.md
+      - CLAUDE.md
+      - GEMINI.md
+      - .cursor/**
+      - .github/**
+      - .windsurf/**
+      - .continue/**
+      - .opencode/**
+      - .roo/**
+      - opencode.json
+    validation_commands:
+      - pnpm --filter @meta-harness/cli test
+      - pnpm --filter @meta-harness/cli build
+      - node packages/cli/dist/index.js emit-instructions --target all
+  - id: phase3_skills_mcp_samples
+    objective: Add host skill placements and docs-only MCP config samples.
+    allowed_write_scope:
+      - .agents/skills/meta-harness/SKILL.md
+      - .claude/skills/meta-harness/SKILL.md
+      - docs/examples/mcp-configs/**
+      - docs/**/*.md
+    validation_commands:
+      - node -e "<parse docs/examples/mcp-configs JSON files>"
+      - node -e "<parse docs/examples/mcp-configs/continue-mcpServers.yaml>"
+      - pnpm docs:build
+  - id: phase3_context_pack_recovery
+    objective: Add minimal target-specific context-pack generation after reviewer recovery.
+    allowed_write_scope:
+      - packages/cli/src/commands/context-pack.ts
+      - packages/cli/src/index.ts
+      - packages/cli/tests/cli.test.ts
+      - docs/token-budgeting.md
+      - README.md
+      - docs/cli-reference.md
+    validation_commands:
+      - pnpm --filter @meta-harness/cli test
+      - pnpm --filter @meta-harness/cli build
+      - node packages/cli/dist/index.js context-pack --target codex --phase phase_001 --budget 8000 --format markdown
+      - node packages/cli/dist/index.js prompt --target roo --format json
+  - id: phase3_validation_checkpoint
+    objective: Run final validation and record checkpoint evidence.
+    allowed_write_scope:
+      - docs/checkpoints/open_source_readiness_phase_3/**
+    validation_commands:
+      - pnpm install --frozen-lockfile
+      - pnpm run clean
+      - pnpm run ci
+      - pnpm docs:build
+      - pnpm audit --prod
+      - pnpm --filter @meta-harness/core pack --dry-run
+      - pnpm --filter @meta-harness/adapters pack --dry-run
+      - pnpm --filter @meta-harness/cli pack --dry-run
+      - pnpm --filter @meta-harness/mcp-server pack --dry-run
+      - git diff --check

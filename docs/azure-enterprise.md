@@ -16,7 +16,7 @@ Meta Harness can be used locally today. Enterprise and Azure-hosted workflows sh
 Use stdio MCP locally while designing and testing:
 
 ```bash
-pnpm --filter @meta-harness/cli exec mh mcp --stdio --mode read-only
+node packages/cli/dist/index.js mcp --stdio --mode read-only
 ```
 
 ## Remote MCP Target

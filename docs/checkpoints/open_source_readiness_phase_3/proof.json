@@ -1,0 +1,102 @@
+{
+  "protocol_version": "0.1.0",
+  "phase_id": "open_source_readiness_phase_3",
+  "claims": [
+    {
+      "id": "phase3-emitter-targets",
+      "claim": "mh emit-instructions supports agents, claude, gemini, cursor, windsurf, copilot, copilot-custom, continue, opencode, roo, and all.",
+      "status": "command_verified",
+      "evidence": [
+        "packages/cli/src/commands/emit-instructions.ts",
+        "packages/cli/tests/cli.test.ts",
+        "docs/checkpoints/open_source_readiness_phase_3/commands.md"
+      ],
+      "required": true
+    },
+    {
+      "id": "phase3-host-format-files",
+      "claim": "Generated host files preserve target-specific formats for Cursor, Copilot path-specific instructions, OpenCode, and Roo.",
+      "status": "command_verified",
+      "evidence": [
+        ".cursor/rules/meta-harness.mdc",
+        ".github/instructions/meta-harness.instructions.md",
+        "opencode.json",
+        ".roo/mcp.json",
+        "packages/cli/tests/cli.test.ts"
+      ],
+      "required": true
+    },
+    {
+      "id": "phase3-skills",
+      "claim": "Repo-local Meta Harness skill packages exist for Agent Skills-compatible hosts and Claude Code.",
+      "status": "static_verified",
+      "evidence": [".agents/skills/meta-harness/SKILL.md", ".claude/skills/meta-harness/SKILL.md"],
+      "required": true
+    },
+    {
+      "id": "phase3-mcp-samples",
+      "claim": "Docs-only MCP config samples exist and parse for Codex, Claude Code, Cursor, Gemini CLI, Copilot, Windsurf/Cascade, Continue, OpenCode, and Roo.",
+      "status": "command_verified",
+      "evidence": [
+        "docs/examples/mcp-configs/",
+        "docs/checkpoints/open_source_readiness_phase_3/commands.md"
+      ],
+      "required": true
+    },
+    {
+      "id": "phase3-context-pack",
+      "claim": "mh context-pack and mh prompt generate bounded target-specific Markdown/JSON packs.",
+      "status": "command_verified",
+      "evidence": [
+        "packages/cli/src/commands/context-pack.ts",
+        "packages/cli/tests/cli.test.ts",
+        "docs/token-budgeting.md",
+        "docs/checkpoints/open_source_readiness_phase_3/commands.md"
+      ],
+      "required": true
+    },
+    {
+      "id": "phase3-native-dispatch-not-enabled",
+      "claim": "Native dispatch is not enabled or claimed by Phase 3 for agent hosts without local command evidence.",
+      "status": "static_verified",
+      "evidence": [
+        "docs/agent-support-matrix.md",
+        "docs/research/agent-compatibility-2026-07-07.md",
+        "docs/research/agent-support-claim-ledger-2026-07-07.md"
+      ],
+      "required": true
+    },
+    {
+      "id": "phase3-local-validation",
+      "claim": "Phase 3 local validation passed after recovery, including package-local CLI tests from a cleaned workspace, CI, docs build, audit, package dry-runs, sample parsing, context-pack smoke, MCP root smoke, formatting, and diff checks.",
+      "status": "command_verified",
+      "evidence": [
+        "docs/checkpoints/open_source_readiness_phase_3/commands.md",
+        "docs/checkpoints/open_source_readiness_phase_3/artifacts/validation_summary.json"
+      ],
+      "required": true
+    },
+    {
+      "id": "phase3-initial-review-and-recovery",
+      "claim": "Independent reviewers found blockers, parent recovery addressed them, and final reviewer recheck cleared Phase 3 with no blockers.",
+      "status": "parent_verified",
+      "evidence": [
+        "docs/checkpoints/open_source_readiness_phase_3/alignment_review.md",
+        "docs/checkpoints/open_source_readiness_phase_3/artifacts/initial_reviewer.md",
+        "docs/checkpoints/open_source_readiness_phase_3/artifacts/recheck_reviewer.md",
+        "docs/checkpoints/open_source_readiness_phase_3/artifacts/final_reviewer.md"
+      ],
+      "required": true
+    },
+    {
+      "id": "phase3-continuation-contract",
+      "claim": "Phase 3 next_action.yaml authorizes continuation to open_source_readiness_phase_4 with no blocking risks.",
+      "status": "parent_verified",
+      "evidence": [
+        "docs/checkpoints/open_source_readiness_phase_3/next_action.yaml",
+        "docs/checkpoints/open_source_readiness_phase_3/artifacts/final_reviewer.md"
+      ],
+      "required": true
+    }
+  ]
+}

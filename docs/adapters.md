@@ -13,14 +13,14 @@ The filesystem adapter is the reliable universal fallback. Fake adapter output i
 
 ## Conservative Host Adapters
 
-Codex, Claude Code, Cursor, Gemini CLI, GitHub Copilot, Windsurf/Cascade, Aider, and OpenCode support is currently conservative. Meta Harness may detect local CLIs, emit instruction files, document MCP configuration, or generate prompt files, but native process dispatch remains disabled unless local command evidence proves the behavior.
+Codex, Claude Code, Cursor, Gemini CLI, GitHub Copilot, Windsurf/Cascade, Aider, OpenCode, and Roo Code support is currently conservative. Meta Harness may detect local CLIs, emit instruction files, document MCP configuration, or generate prompt files, but native process dispatch remains disabled unless local command evidence proves the behavior.
 
 ## Instruction Emitters
 
 Generate instruction files with:
 
 ```bash
-pnpm --filter @meta-harness/cli exec mh emit-instructions --target all
+node packages/cli/dist/index.js emit-instructions --target all
 ```
 
 Current emitted surfaces include:
@@ -33,5 +33,16 @@ Current emitted surfaces include:
 - `.github/copilot-instructions.md`
 - `.github/instructions/meta-harness.instructions.md`
 - `.continue/rules/meta-harness.md`
+- `.opencode/instructions/meta-harness.md`
+- `opencode.json`
+- `.roo/rules/meta-harness.md`
+- `.roo/mcp.json`
+
+Host-specific skill placements include:
+
+- `.agents/skills/meta-harness/SKILL.md`
+- `.claude/skills/meta-harness/SKILL.md`
+
+MCP sample configs are stored under `docs/examples/mcp-configs/`.
 
 See [Agent Support Matrix](./agent-support-matrix.md) for current proof status and gaps.

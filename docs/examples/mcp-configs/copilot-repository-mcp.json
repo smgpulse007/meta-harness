@@ -1,0 +1,21 @@
+{
+  "mcpServers": {
+    "meta-harness": {
+      "type": "local",
+      "command": "node",
+      "args": ["packages/cli/dist/index.js", "mcp", "--stdio"],
+      "tools": [
+        "get_protocol_version",
+        "get_harness_status",
+        "get_current_phase",
+        "list_phases",
+        "get_phase",
+        "get_ready_slices",
+        "get_slice",
+        "get_validation_plan",
+        "get_checkpoint",
+        "get_next_action"
+      ]
+    }
+  }
+}
