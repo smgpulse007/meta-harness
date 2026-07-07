@@ -8,9 +8,7 @@ on:
     - cron: "23 7 * * 1"
 
 permissions:
-  actions: read
   contents: read
-  security-events: write
 
 jobs:
   analyze:
@@ -31,3 +29,5 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm run build
       - uses: github/codeql-action/analyze@v3
+        with:
+          upload: never
