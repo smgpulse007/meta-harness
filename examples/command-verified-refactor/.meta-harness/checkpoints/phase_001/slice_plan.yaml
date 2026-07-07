@@ -1,0 +1,31 @@
+protocol_version: 0.1.0
+phase_id: phase_001
+slices:
+  - id: phase_001_slice_001
+    phase_id: phase_001
+    title: Implement safe addition
+    objective: Add a tiny calculator function and prove it with Node's built-in test runner.
+    owner: worker
+    dependencies: []
+    spec_refs:
+      - docs/implementation_spec.md#REQ-001
+    allowed_write_scope:
+      - src/**
+      - tests/**
+      - .meta-harness/checkpoints/phase_001/**
+    forbidden_write_scope:
+      - .git/**
+      - node_modules/**
+      - .secrets/**
+    expected_changed_files:
+      - src/math.mjs
+      - tests/math.node-test.mjs
+    validation_commands:
+      - id: node-test
+        command: node --test tests/math.node-test.mjs
+        required: true
+    evidence_requirements:
+      - Node test command exits 0 and output excerpt is recorded.
+    side_effect_policy: default
+    packet_required: true
+    next_dependencies: []

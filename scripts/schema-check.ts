@@ -107,6 +107,31 @@ const validationTargets: Array<[string, string, "json" | "yaml"]> = [
     "yaml"
   ],
   [
+    "https://meta-harness.dev/schemas/phase_manifest.schema.json",
+    "examples/command-verified-refactor/docs/implementation_harness/phase_manifest.yaml",
+    "yaml"
+  ],
+  [
+    "https://meta-harness.dev/schemas/slice_plan.schema.json",
+    "examples/command-verified-refactor/.meta-harness/checkpoints/phase_001/slice_plan.yaml",
+    "yaml"
+  ],
+  [
+    "https://meta-harness.dev/schemas/slice_packet.schema.json",
+    "examples/command-verified-refactor/.meta-harness/checkpoints/phase_001/subagent_packets/phase_001_slice_001.packet.yaml",
+    "yaml"
+  ],
+  [
+    "https://meta-harness.dev/schemas/proof.schema.json",
+    "examples/command-verified-refactor/.meta-harness/checkpoints/phase_001/proof.json",
+    "json"
+  ],
+  [
+    "https://meta-harness.dev/schemas/next_action.schema.json",
+    "examples/command-verified-refactor/.meta-harness/checkpoints/phase_001/next_action.yaml",
+    "yaml"
+  ],
+  [
     "https://meta-harness.dev/schemas/budget_report.schema.json",
     "docs/examples/context-packs/budget-report.sample.json",
     "json"
@@ -114,6 +139,11 @@ const validationTargets: Array<[string, string, "json" | "yaml"]> = [
   [
     "https://meta-harness.dev/schemas/evidence_excerpt.schema.json",
     "docs/examples/evidence-excerpts/sample-command-output.excerpt.json",
+    "json"
+  ],
+  [
+    "https://meta-harness.dev/schemas/evidence_excerpt.schema.json",
+    "examples/command-verified-refactor/.meta-harness/checkpoints/phase_001/artifacts/node-test.excerpt.json",
     "json"
   ]
 ];

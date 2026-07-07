@@ -8,7 +8,12 @@ describe("mcp server", () => {
   });
 
   it("blocks write tools in read-only mode", async () => {
-    const server = createMetaHarnessServer({ workspaceRoot: process.cwd(), mode: "read-only" }) as any;
+    const server = createMetaHarnessServer({
+      workspaceRoot: process.cwd(),
+      mode: "read-only"
+    }) as any;
+    expect(server._registeredTools.get_next_action).toBeDefined();
+    expect(server._registeredTools.get_ready_slices).toBeDefined();
     const writeToolInputs: Record<string, unknown> = {
       claim_slice: { phaseId: "phase_001", sliceId: "slice_001", owner: "test" },
       submit_slice_packet: { phaseId: "phase_001", packet: { slice_id: "slice_001" } },
@@ -26,7 +31,9 @@ describe("mcp server", () => {
       update_requirement_status: { requirementId: "REQ-001", status: "implemented" }
     };
     for (const [toolName, input] of Object.entries(writeToolInputs)) {
-      await expect(server._registeredTools[toolName].handler(input, {})).rejects.toThrow(/requires/);
+      await expect(server._registeredTools[toolName].handler(input, {})).rejects.toThrow(
+        /requires/
+      );
     }
   });
 
