@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "description": "Agent adapter interfaces and starter adapters for Meta Harness.",
   "license": "MIT",
+  "engines": {
+    "node": ">=22.0.0"
+  },
   "homepage": "https://github.com/smgpulse007/meta-harness#readme",
   "repository": {
     "type": "git",

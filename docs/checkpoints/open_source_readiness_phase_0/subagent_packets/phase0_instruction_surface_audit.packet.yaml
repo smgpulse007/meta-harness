@@ -1,0 +1,61 @@
+protocol_version: 0.1.0
+slice_id: phase0_instruction_surface_audit
+status: complete
+planned_owner: explorer
+actual_owner: Kuhn
+changed_files: []
+spec_alignment_refs:
+  - docs/open-source-readiness-goal-prompt.md#phase-0-compatibility-research-and-claims-audit
+  - docs/open-source-readiness-goal-prompt.md#track-c-agent-compatibility-and-adapter-roadmap
+implementation_summary: >
+  Read-only instruction surface audit. Confirmed existing host instruction files, valid-looking Cursor MDC
+  frontmatter, missing Copilot applyTo frontmatter, and absent opencode/Roo generated targets.
+proof_statements:
+  - id: host-instruction-files-exist
+    claim: Root host instruction files and current generated instruction files exist for AGENTS, Claude, Gemini, Cursor, Copilot, Windsurf, Continue, and the Meta Harness skill.
+    status: static_verified
+    evidence:
+      - AGENTS.md
+      - CLAUDE.md
+      - GEMINI.md
+      - .cursor/rules/meta-harness.mdc
+      - .github/copilot-instructions.md
+      - .github/instructions/meta-harness.instructions.md
+      - .windsurf/rules/meta-harness.md
+      - .continue/rules/meta-harness.md
+      - skills/meta-harness/SKILL.md
+    required: true
+  - id: cursor-rule-frontmatter
+    claim: Cursor rule uses .mdc with YAML frontmatter and alwaysApply true.
+    status: static_verified
+    evidence:
+      - .cursor/rules/meta-harness.mdc
+    required: true
+  - id: copilot-applyto-missing
+    claim: Path-specific Copilot instructions lack applyTo frontmatter.
+    status: static_verified
+    evidence:
+      - .github/instructions/meta-harness.instructions.md
+    required: true
+  - id: opencode-roo-targets-missing
+    claim: emit-instructions does not yet support opencode or roo targets.
+    status: static_verified
+    evidence:
+      - packages/cli/src/commands/emit-instructions.ts
+      - packages/cli/src/index.ts
+    required: true
+validation_command_outputs: []
+side_effect_safety_status: ok
+blockers: []
+risks:
+  - docs/open-source-readiness-goal-prompt.md is larger than the 32 KiB hard warning if treated as always-loaded instruction context.
+  - Live GitHub Actions status in the pasted goal was not reverified by this audit.
+next_dependencies:
+  - Add applyTo frontmatter to path-specific Copilot instructions and emitter tests.
+  - Add opencode and roo instruction/MCP samples without native dispatch claims.
+auto_continue_recommendation: human_review
+delegation_metrics:
+  files_edited: 0
+interruptions: []
+takeovers: []
+recovery_events: []

@@ -1,15 +1,17 @@
-name: Integration Smoke
+name: Dependency Audit
 
 on:
   pull_request:
   push:
     branches: [main]
+  schedule:
+    - cron: "41 7 * * 1"
 
 permissions:
   contents: read
 
 jobs:
-  integration-smoke:
+  dependency-audit:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -21,5 +23,4 @@ jobs:
           node-version-file: .node-version
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm build
-      - run: pnpm integration-smoke
+      - run: pnpm audit --prod

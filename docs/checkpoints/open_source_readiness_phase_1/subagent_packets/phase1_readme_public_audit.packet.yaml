@@ -1,0 +1,39 @@
+protocol_version: 0.1.0
+slice_id: phase1_readme_public_audit
+status: complete
+planned_owner: explorer
+actual_owner: Gauss
+changed_files: []
+spec_alignment_refs:
+  - docs/open-source-readiness-goal-prompt.md#phase-1-public-ready-repo-hygiene
+  - README.md
+implementation_summary: >
+  Read-only audit of README public first screen, install/quickstart clarity, support-claim accuracy,
+  safety posture, and top-level documentation links. Findings were integrated into README edits.
+proof_statements:
+  - id: readme-first-screen-gap-identified
+    claim: README needed badges, a sharper promise, top-level links, a shorter quickstart, and softer native-dispatch wording.
+    status: static_verified
+    evidence:
+      - README.md
+    required: true
+  - id: readme-overclaim-risk-identified
+    claim: Tier 3 wording needed to avoid implying native dispatch is verified.
+    status: static_verified
+    evidence:
+      - README.md
+      - docs/agent-support-matrix.md
+    required: true
+validation_command_outputs: []
+side_effect_safety_status: ok
+blockers: []
+risks:
+  - Workflow badges for new workflows will not show green until those workflows run on GitHub after push or PR.
+next_dependencies:
+  - Verify README badge status after workflows run remotely.
+auto_continue_recommendation: stop
+delegation_metrics:
+  files_edited: 0
+interruptions: []
+takeovers: []
+recovery_events: []

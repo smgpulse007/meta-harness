@@ -1,0 +1,107 @@
+{
+  "protocol_version": "0.1.0",
+  "phase_id": "open_source_readiness_phase_1",
+  "claims": [
+    {
+      "id": "phase1-node-version",
+      "claim": "Node version files and package engine declarations exist for Node 22 and pnpm 11.7.0.",
+      "status": "static_verified",
+      "evidence": [
+        ".node-version",
+        ".nvmrc",
+        "package.json",
+        "packages/core/package.json",
+        "packages/adapters/package.json",
+        "packages/cli/package.json",
+        "packages/mcp-server/package.json"
+      ],
+      "required": true
+    },
+    {
+      "id": "phase1-windows-ci",
+      "claim": "CI workflow includes Windows and Ubuntu matrix coverage using the repo Node version file.",
+      "status": "static_verified",
+      "evidence": [".github/workflows/ci.yml"],
+      "required": true
+    },
+    {
+      "id": "phase1-package-dry-run-ci",
+      "claim": "Package dry-run workflow builds and dry-run packs all four publishable packages without publishing.",
+      "status": "static_verified",
+      "evidence": [".github/workflows/package-dry-run.yml"],
+      "required": true
+    },
+    {
+      "id": "phase1-security-automation",
+      "claim": "Dependabot, CodeQL, and production dependency audit automation are present.",
+      "status": "static_verified",
+      "evidence": [
+        ".github/dependabot.yml",
+        ".github/workflows/codeql.yml",
+        ".github/workflows/dependency-audit.yml"
+      ],
+      "required": true
+    },
+    {
+      "id": "phase1-readme-first-screen",
+      "claim": "README first screen has public-facing badges, source install guidance, safety defaults, and conservative support wording.",
+      "status": "static_verified",
+      "evidence": ["README.md"],
+      "required": true
+    },
+    {
+      "id": "phase1-local-validation",
+      "claim": "Phase 1 local validation and package dry-runs passed without publishing.",
+      "status": "command_verified",
+      "evidence": [
+        "docs/checkpoints/open_source_readiness_phase_1/commands.md",
+        "docs/checkpoints/open_source_readiness_phase_1/artifacts/validation_summary.json"
+      ],
+      "required": true
+    },
+    {
+      "id": "phase1-no-generated-artifacts",
+      "claim": "Generated and local-only artifacts are ignored and not tracked.",
+      "status": "command_verified",
+      "evidence": [
+        ".gitignore",
+        "docs/checkpoints/open_source_readiness_phase_1/artifacts/validation_summary.json"
+      ],
+      "required": true
+    },
+    {
+      "id": "phase1-remote-main-ci-baseline",
+      "claim": "Latest remote main baseline was green for CI, Schema Check, and Integration Smoke before Phase 1 changes were pushed.",
+      "status": "command_verified",
+      "evidence": [
+        "docs/checkpoints/open_source_readiness_phase_1/artifacts/validation_summary.json"
+      ],
+      "required": false
+    },
+    {
+      "id": "phase1-github-ci-for-phase-changes",
+      "claim": "GitHub Actions are green for the unpushed Phase 1 workflow changes.",
+      "status": "not_verified",
+      "evidence": [
+        "docs/checkpoints/open_source_readiness_phase_1/artifacts/validation_summary.json"
+      ],
+      "required": true
+    },
+    {
+      "id": "phase1-review-gate",
+      "claim": "Independent reviewer audit ran and found remote GitHub Actions proof for unpushed Phase 1 changes is blocking.",
+      "status": "parent_verified",
+      "evidence": ["docs/checkpoints/open_source_readiness_phase_1/alignment_review.md"],
+      "required": true
+    },
+    {
+      "id": "phase1-push-pr-authorization",
+      "claim": "Maintainer explicitly authorized pushing or opening a PR to run GitHub Actions for Phase 1 workflow changes.",
+      "status": "human_verified",
+      "evidence": [
+        "docs/checkpoints/open_source_readiness_phase_1/artifacts/push_pr_authorization.md"
+      ],
+      "required": true
+    }
+  ]
+}

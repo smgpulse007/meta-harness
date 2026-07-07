@@ -1,0 +1,124 @@
+{
+  "phase_id": "open_source_readiness_phase_0",
+  "status": "command_verified",
+  "generated_at": "2026-07-06T21:54:50-04:00",
+  "commands": [
+    {
+      "id": "install-frozen-lockfile",
+      "command": "pnpm install --frozen-lockfile",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "Scope: all 5 workspace projects; Already up to date; Done in 222ms using pnpm v11.7.0"
+    },
+    {
+      "id": "clean",
+      "command": "pnpm run clean",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "Clean completed for @meta-harness/core, @meta-harness/adapters, @meta-harness/mcp-server, and @meta-harness/cli."
+    },
+    {
+      "id": "ci-final",
+      "command": "pnpm run ci",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "Post-recovery run passed ESLint, typecheck/build, Vitest 4 files and 15 tests, schema check validating 11 schemas and 17 artifacts, build, and integration smoke."
+    },
+    {
+      "id": "audit-prod",
+      "command": "pnpm audit --prod",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "No known vulnerabilities found."
+    },
+    {
+      "id": "pack-core",
+      "command": "pnpm --filter @meta-harness/core pack --dry-run",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "Package dry-run reported @meta-harness/core@0.1.0 tarball contents; no publish was performed."
+    },
+    {
+      "id": "pack-adapters",
+      "command": "pnpm --filter @meta-harness/adapters pack --dry-run",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "Package dry-run reported @meta-harness/adapters@0.1.0 tarball contents; no publish was performed."
+    },
+    {
+      "id": "pack-cli",
+      "command": "pnpm --filter @meta-harness/cli pack --dry-run",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "Package dry-run reported @meta-harness/cli@0.1.0 tarball contents; no publish was performed."
+    },
+    {
+      "id": "pack-mcp-server",
+      "command": "pnpm --filter @meta-harness/mcp-server pack --dry-run",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "Package dry-run reported @meta-harness/mcp-server@0.1.0 tarball contents; no publish was performed."
+    },
+    {
+      "id": "diff-check",
+      "command": "git diff --check",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "No whitespace errors. Git warned that docs/agent-support-matrix.md LF will be replaced by CRLF the next time Git touches it."
+    },
+    {
+      "id": "status",
+      "command": "git status --short --branch",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "## main...origin/main; modified docs/agent-support-matrix.md; untracked docs/open-source-readiness-goal-prompt.md; untracked docs/research/."
+    },
+    {
+      "id": "format-check-repo-wide",
+      "command": "pnpm run format:check",
+      "exit_code": 1,
+      "proof_status": "partial",
+      "excerpt": "Repo-wide Prettier check reported 281 pre-existing style issues across many files. Phase 0 files were formatted separately to avoid unrelated churn."
+    },
+    {
+      "id": "format-check-phase0",
+      "command": "pnpm exec prettier --check <Phase 0 docs and checkpoint files>",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "All matched Phase 0 docs and checkpoint files use Prettier code style."
+    },
+    {
+      "id": "schema-check-phase0",
+      "command": "node --input-type=module -",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "Direct AJV/YAML validation passed for Phase 0 proof.json, next_action.yaml, slice_plan.yaml, and both subagent packet YAML files."
+    },
+    {
+      "id": "planned-proof-status-check",
+      "command": "rg -n <invalid planned proof-status pattern>",
+      "exit_code": 1,
+      "proof_status": "command_verified",
+      "excerpt": "No invalid planned proof-status occurrences remained; ripgrep exit 1 means no matches."
+    },
+    {
+      "id": "docs-build",
+      "command": "pnpm docs:build",
+      "exit_code": null,
+      "proof_status": "not_verified",
+      "excerpt": "Not run in Phase 0 because package.json has no docs:build script yet; docs-site tooling is explicitly scheduled for Phase 2."
+    }
+  ],
+  "non_command_evidence": [
+    {
+      "id": "dry-run-tarball-check",
+      "proof_status": "static_verified",
+      "excerpt": "Get-ChildItem -Filter *.tgz returned no tarballs after package dry-runs."
+    },
+    {
+      "id": "github-actions-live-state",
+      "proof_status": "not_verified",
+      "excerpt": "Phase 0 did not re-check live GitHub Actions state; do not claim current remote workflow status from this checkpoint."
+    }
+  ]
+}

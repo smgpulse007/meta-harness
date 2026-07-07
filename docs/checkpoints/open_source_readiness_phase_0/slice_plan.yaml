@@ -1,0 +1,67 @@
+protocol_version: 0.1.0
+phase_id: open_source_readiness_phase_0
+slices:
+  - id: phase0_research_and_claims_audit
+    phase_id: open_source_readiness_phase_0
+    title: Compatibility research and claims audit
+    objective: Refresh official compatibility evidence, audit local support claims, and update the support matrix without overclaiming native dispatch.
+    owner: parent_coordinator
+    dependencies: []
+    spec_refs:
+      - docs/open-source-readiness-goal-prompt.md
+      - docs/agent-support-matrix.md
+    allowed_write_scope:
+      - docs/agent-support-matrix.md
+      - docs/research/**
+      - docs/checkpoints/open_source_readiness_phase_0/**
+    forbidden_write_scope:
+      - .git/**
+      - node_modules/**
+      - .secrets/**
+      - dist/**
+    expected_changed_files:
+      - docs/agent-support-matrix.md
+      - docs/research/agent-compatibility-2026-07-07.md
+      - docs/research/agent-support-claim-ledger-2026-07-07.md
+      - docs/checkpoints/open_source_readiness_phase_0/**
+    validation_commands:
+      - id: install
+        command: pnpm install --frozen-lockfile
+        required: true
+      - id: clean
+        command: pnpm run clean
+        required: true
+      - id: ci
+        command: pnpm run ci
+        required: true
+      - id: audit
+        command: pnpm audit --prod
+        required: true
+      - id: pack-core
+        command: pnpm --filter @meta-harness/core pack --dry-run
+        required: true
+      - id: pack-adapters
+        command: pnpm --filter @meta-harness/adapters pack --dry-run
+        required: true
+      - id: pack-cli
+        command: pnpm --filter @meta-harness/cli pack --dry-run
+        required: true
+      - id: pack-mcp-server
+        command: pnpm --filter @meta-harness/mcp-server pack --dry-run
+        required: true
+      - id: diff-check
+        command: git diff --check
+        required: true
+      - id: status
+        command: git status --short --branch
+        required: true
+    evidence_requirements:
+      - No support claim lacks a source or local evidence.
+      - Codex support is described as partial and conservative.
+      - Native dispatch remains not_verified until local command evidence exists.
+      - next_action.yaml is the continuation source of truth.
+    side_effect_policy: read_only_external_systems
+    packet_required: true
+    next_dependencies:
+      - Human review of Phase 0 checkpoint.
+      - Phase 1 public-ready repo hygiene after acceptance.

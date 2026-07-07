@@ -1,0 +1,78 @@
+protocol_version: 0.1.0
+slice_id: phase0_adapter_cli_audit
+status: complete
+planned_owner: explorer
+actual_owner: Lovelace
+changed_files: []
+spec_alignment_refs:
+  - docs/open-source-readiness-goal-prompt.md#phase-0-compatibility-research-and-claims-audit
+  - docs/open-source-readiness-goal-prompt.md#agent-by-agent-target-plan
+implementation_summary: >
+  Read-only adapter and CLI audit. Found filesystem and fake as the only concrete local adapter behaviors,
+  configurable CLI adapters as prompt-file fallback only, and missing opencode/roo emit-instructions targets.
+proof_statements:
+  - id: adapter-registry-current
+    claim: Adapter registry includes filesystem, fake, Codex, Claude Code, Cursor, Gemini, Copilot, Windsurf, Aider, and OpenCode.
+    status: static_verified
+    evidence:
+      - packages/adapters/src/index.ts
+    required: true
+  - id: configurable-cli-launch-disabled
+    claim: Configurable CLI adapters detect commands but dispatch falls back to prompt files and returns skipped.
+    status: static_verified
+    evidence:
+      - packages/adapters/src/cli-adapter.ts
+    required: true
+  - id: native-dispatch-unverified
+    claim: Native dispatch is not verified for Codex, Claude Code, Cursor, Gemini, Copilot, Windsurf, Aider, or OpenCode.
+    status: not_verified
+    evidence:
+      - packages/adapters/src/codex.ts
+      - packages/adapters/src/claude-code.ts
+      - packages/adapters/src/cursor.ts
+      - packages/adapters/src/gemini.ts
+      - packages/adapters/src/copilot.ts
+      - packages/adapters/src/windsurf.ts
+      - packages/adapters/src/aider.ts
+      - packages/adapters/src/opencode.ts
+    required: true
+validation_command_outputs:
+  - id: subagent-pnpm-test
+    command: pnpm test
+    evidence_kind: command
+    exit_code: 0
+    output_excerpt: 4 test files and 15 tests passed.
+  - id: subagent-integration-smoke
+    command: pnpm integration-smoke
+    evidence_kind: command
+    exit_code: 0
+    output_excerpt: Integration smoke passed using fake adapter.
+  - id: subagent-cli-test
+    command: pnpm --filter @meta-harness/cli test
+    evidence_kind: command
+    exit_code: 0
+    output_excerpt: CLI tests passed; coverage is narrow and skips one test.
+  - id: subagent-adapters-typecheck
+    command: pnpm --filter @meta-harness/adapters typecheck
+    evidence_kind: command
+    exit_code: 0
+    output_excerpt: Adapter package typecheck passed.
+  - id: subagent-adapters-test
+    command: pnpm --filter @meta-harness/adapters test
+    evidence_kind: command
+    exit_code: 1
+    output_excerpt: Failed because no adapter test files exist.
+side_effect_safety_status: ok
+blockers: []
+risks:
+  - Adapter package has no direct test files; current adapter proof is mostly CI/integration-smoke plus static inspection.
+  - Filesystem adapter advertises supportsDryRun but dispatch writes prompt files; dry-run semantics need a later audit.
+next_dependencies:
+  - Add adapter tests for filesystem, fake, and configurable CLI fallback behavior.
+  - Add opencode and roo instruction targets in a later emitter slice.
+auto_continue_recommendation: human_review
+delegation_metrics:
+  files_edited: 0
+interruptions: []
+takeovers: []
+recovery_events: []

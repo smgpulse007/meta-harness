@@ -1,0 +1,131 @@
+{
+  "phase_id": "open_source_readiness_phase_1",
+  "status": "blocked",
+  "generated_at": "2026-07-06T22:22:38-04:00",
+  "commands": [
+    {
+      "id": "phase1-preface-ci",
+      "command": "pnpm run ci",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "Required preface CI passed before Phase 1 edits: lint, typecheck/build, Vitest 4 files and 15 tests, schema check, build, and integration smoke."
+    },
+    {
+      "id": "install-frozen-lockfile",
+      "command": "pnpm install --frozen-lockfile",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "Scope: all 5 workspace projects; already up to date; no dependency changes."
+    },
+    {
+      "id": "clean",
+      "command": "pnpm run clean",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "Clean completed for core, adapters, mcp-server, and cli packages."
+    },
+    {
+      "id": "ci",
+      "command": "pnpm run ci",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "Post-edit CI passed: ESLint, typecheck/build, Vitest 4 files and 15 tests, schema check validating 11 schemas and 17 artifacts, build, and integration smoke."
+    },
+    {
+      "id": "audit-prod",
+      "command": "pnpm audit --prod",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "No known vulnerabilities found."
+    },
+    {
+      "id": "pack-core",
+      "command": "pnpm --filter @meta-harness/core pack --dry-run",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "Dry-run package contents reported for @meta-harness/core; no publish performed."
+    },
+    {
+      "id": "pack-adapters",
+      "command": "pnpm --filter @meta-harness/adapters pack --dry-run",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "Dry-run package contents reported for @meta-harness/adapters; no publish performed."
+    },
+    {
+      "id": "pack-cli",
+      "command": "pnpm --filter @meta-harness/cli pack --dry-run",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "Dry-run package contents reported for @meta-harness/cli; no publish performed."
+    },
+    {
+      "id": "pack-mcp-server",
+      "command": "pnpm --filter @meta-harness/mcp-server pack --dry-run",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "Dry-run package contents reported for @meta-harness/mcp-server; no publish performed."
+    },
+    {
+      "id": "diff-check",
+      "command": "git diff --check",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "No whitespace errors; Git emitted LF-to-CRLF warnings for edited text files."
+    },
+    {
+      "id": "status",
+      "command": "git status --short --branch",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "Branch main...origin/main with Phase 0 and Phase 1 files modified/untracked; no generated tarballs shown."
+    },
+    {
+      "id": "workflow-yaml-parse",
+      "command": "node --input-type=module -",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "Parsed Dependabot and all GitHub Actions workflow YAML files with the repo YAML parser."
+    },
+    {
+      "id": "scoped-format-check",
+      "command": "pnpm exec prettier --check --ignore-unknown <Phase 1 touched files>",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "All matched Phase 1 touched files use Prettier style; unknown extensionless metadata files were ignored."
+    },
+    {
+      "id": "generated-artifact-scan",
+      "command": "git ls-files | rg <generated artifact pattern>",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "No tracked node_modules, dist, coverage, .vs, .tgz, .tsbuildinfo, or .log artifacts found."
+    },
+    {
+      "id": "live-main-github-actions",
+      "command": "gh run list --repo smgpulse007/meta-harness --branch main --limit 10",
+      "exit_code": 0,
+      "proof_status": "command_verified",
+      "excerpt": "Latest remote main baseline runs for CI, Schema Check, and Integration Smoke completed successfully for commit 64a1f39. This does not verify unpushed Phase 1 workflow changes."
+    },
+    {
+      "id": "actionlint",
+      "command": "actionlint --version",
+      "exit_code": 1,
+      "proof_status": "not_verified",
+      "excerpt": "actionlint is not installed in this environment; workflow validation is limited to YAML parse plus future GitHub Actions run."
+    }
+  ],
+  "non_command_evidence": [
+    {
+      "id": "no-tarballs-left",
+      "proof_status": "static_verified",
+      "excerpt": "Get-ChildItem -Filter *.tgz returned no local package tarballs after dry-runs."
+    },
+    {
+      "id": "remote-ci-for-phase1-changes",
+      "proof_status": "not_verified",
+      "excerpt": "The changed workflows are not pushed, and the goal forbids pushing Git refs without separate maintainer authorization."
+    }
+  ]
+}

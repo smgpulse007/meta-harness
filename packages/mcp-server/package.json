@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "description": "Read-only first MCP server for Meta Harness orchestration.",
   "license": "MIT",
+  "engines": {
+    "node": ">=22.0.0"
+  },
   "homepage": "https://github.com/smgpulse007/meta-harness#readme",
   "repository": {
     "type": "git",
