@@ -1,0 +1,81 @@
+protocol_version: 0.1.0
+slice_id: phase8_release_readiness
+status: complete
+planned_owner: parent_coordinator
+actual_owner: parent_coordinator
+changed_files:
+  - .changeset/
+  - .github/workflows/package-dry-run.yml
+  - .github/workflows/release-dry-run.yml
+  - package.json
+  - pnpm-lock.yaml
+  - scripts/package-dry-run.ts
+  - docs/release-plan.md
+  - docs/release-checklist.md
+  - README.md
+  - packages/*/package.json
+  - packages/*/README.md
+  - packages/*/LICENSE
+  - docs/checkpoints/open_source_readiness_phase_8/
+spec_alignment_refs:
+  - docs/open-source-readiness-goal-prompt.md#phase-8-release-readiness
+  - docs/checkpoints/open_source_readiness_phase_7/next_action.yaml
+implementation_summary: Added release-readiness dry-run tooling and package allowlists without publishing or creating releases.
+proof_statements:
+  - id: phase8-release-dry-run-command
+    claim: pnpm run release:dry-run verifies release readiness locally without publishing.
+    status: command_verified
+    evidence:
+      - package.json
+      - docs/checkpoints/open_source_readiness_phase_8/commands.md
+    required: true
+  - id: phase8-package-file-policy
+    claim: Package file allowlists limit publishable packages to dist, README, LICENSE, and package metadata.
+    status: command_verified
+    evidence:
+      - scripts/package-dry-run.ts
+      - packages/core/package.json
+      - packages/adapters/package.json
+      - packages/cli/package.json
+      - packages/mcp-server/package.json
+    required: true
+  - id: phase8-no-publish-release
+    claim: No package publish or GitHub release was performed.
+    status: parent_verified
+    evidence:
+      - docs/checkpoints/open_source_readiness_phase_8/checkpoint.md
+    required: true
+validation_command_outputs:
+  - id: release-dry-run
+    command: pnpm run release:dry-run
+    evidence_kind: command
+    exit_code: 0
+    output_excerpt: Clean, CI, docs build, production audit, package dry-runs, and Changesets status completed.
+  - id: schema-check
+    command: pnpm schema-check
+    evidence_kind: command
+    exit_code: 0
+    output_excerpt: Validated 13 JSON schemas and 25 artifacts after adding Phase 8 checkpoint bundle.
+  - id: diff-check
+    command: git diff --check
+    evidence_kind: command
+    exit_code: 0
+    output_excerpt: No whitespace errors reported.
+side_effect_safety_status: ok
+blockers: []
+risks:
+  - Hosted Release Dry Run workflow proof can only be collected after merge to main.
+  - GitHub Pages is blocked by the current private repository plan.
+next_dependencies:
+  - Record independent final reviewer artifact.
+  - Push PR and verify GitHub checks.
+  - Merge, dispatch manual Release Dry Run workflow on main, and verify Pages state.
+auto_continue_recommendation: continue
+delegation_metrics:
+  parent_integrated_subagents: 1
+  reviewer_pending: false
+  independent_reviewer_agent: 019f3c55-e6fe-7c31-bffe-d1dbc5ecfc2e
+interruptions: []
+takeovers: []
+recovery_events:
+  - package-dry-run-artifact-cleanup

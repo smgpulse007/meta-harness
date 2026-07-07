@@ -36,7 +36,12 @@
     "budget": "node packages/cli/dist/index.js budget --json",
     "schema-check": "tsx scripts/schema-check.ts",
     "integration-smoke": "tsx scripts/integration-smoke.ts",
-    "ci": "pnpm lint && pnpm typecheck && pnpm test && pnpm schema-check && pnpm build && pnpm budget && pnpm integration-smoke"
+    "ci": "pnpm lint && pnpm typecheck && pnpm test && pnpm schema-check && pnpm build && pnpm budget && pnpm integration-smoke",
+    "package:dry-run": "tsx scripts/package-dry-run.ts",
+    "changeset": "changeset",
+    "changeset:status": "changeset status",
+    "version-packages": "changeset version",
+    "release:dry-run": "pnpm run clean && pnpm run ci && pnpm docs:build && pnpm audit --prod && pnpm run package:dry-run && pnpm run changeset:status"
   },
   "keywords": [
     "coding-agents",
@@ -56,6 +61,7 @@
     "access": "restricted"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.31.0",
     "@eslint/js": "^9.18.0",
     "@types/node": "^22.10.6",
     "ajv": "^8.17.1",

@@ -1,0 +1,79 @@
+{
+  "protocol_version": "0.1.0",
+  "phase_id": "open_source_readiness_phase_8",
+  "claims": [
+    {
+      "id": "phase8-release-dry-run-command",
+      "claim": "A maintainer can run one local command, `pnpm run release:dry-run`, to verify release readiness without publishing.",
+      "status": "command_verified",
+      "evidence": [
+        "package.json",
+        "docs/checkpoints/open_source_readiness_phase_8/commands.md",
+        "docs/checkpoints/open_source_readiness_phase_8/artifacts/validation_summary.json"
+      ],
+      "required": true
+    },
+    {
+      "id": "phase8-manual-release-workflow",
+      "claim": "A manual read-only GitHub Actions workflow exists for hosted release dry-runs.",
+      "status": "static_verified",
+      "evidence": [
+        ".github/workflows/release-dry-run.yml",
+        "docs/checkpoints/open_source_readiness_phase_8/artifacts/release_workflow_review.md"
+      ],
+      "required": true
+    },
+    {
+      "id": "phase8-package-file-policy",
+      "claim": "Publishable packages have explicit file allowlists and package dry-runs contain only compiled output, README, LICENSE, and package metadata.",
+      "status": "command_verified",
+      "evidence": [
+        "packages/core/package.json",
+        "packages/adapters/package.json",
+        "packages/cli/package.json",
+        "packages/mcp-server/package.json",
+        "scripts/package-dry-run.ts",
+        "docs/checkpoints/open_source_readiness_phase_8/artifacts/package_file_policy.md"
+      ],
+      "required": true
+    },
+    {
+      "id": "phase8-changesets-version-workflow",
+      "claim": "Changesets is configured for release-note and version preparation across all four publishable packages.",
+      "status": "command_verified",
+      "evidence": [
+        ".changeset/config.json",
+        ".changeset/release-readiness-phase-8.md",
+        "docs/checkpoints/open_source_readiness_phase_8/commands.md"
+      ],
+      "required": true
+    },
+    {
+      "id": "phase8-no-publish-release",
+      "claim": "Phase 8 did not publish packages, create GitHub releases, upload package provenance, or write to a package registry.",
+      "status": "parent_verified",
+      "evidence": [
+        "docs/checkpoints/open_source_readiness_phase_8/checkpoint.md",
+        "docs/checkpoints/open_source_readiness_phase_8/commands.md"
+      ],
+      "required": true
+    },
+    {
+      "id": "phase8-pages-plan-blocker",
+      "claim": "GitHub Pages remains inaccessible because the current private repository plan does not support Pages for this repository.",
+      "status": "not_verified",
+      "evidence": [
+        "docs/checkpoints/open_source_readiness_phase_8/artifacts/pages_status.md",
+        "docs/checkpoints/open_source_readiness_phase_8/commands.md"
+      ],
+      "required": false
+    },
+    {
+      "id": "phase8-independent-review",
+      "claim": "Independent reviewer found Phase 8 aligned, on track, adequate evidence quality, no Phase 8 blockers, no recovery slices, and recommended continuation.",
+      "status": "parent_verified",
+      "evidence": ["docs/checkpoints/open_source_readiness_phase_8/artifacts/final_reviewer.md"],
+      "required": true
+    }
+  ]
+}
