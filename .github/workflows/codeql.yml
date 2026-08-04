@@ -21,7 +21,7 @@ jobs:
       - uses: github/codeql-action/init@v4
         with:
           languages: javascript-typescript
-      - uses: pnpm/action-setup@v6
+      - uses: pnpm/action-setup@v6.0.9
         with:
           version: 11.7.0
       - uses: actions/setup-node@v6
