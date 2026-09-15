@@ -43,8 +43,8 @@
     "@meta-harness/adapters": "workspace:*",
     "@meta-harness/core": "workspace:*",
     "@meta-harness/mcp-server": "workspace:*",
-    "commander": "^12.1.0",
-    "yaml": "^2.7.0"
+    "commander": "^15.0.0",
+    "yaml": "^2.9.1"
   },
   "publishConfig": {
     "access": "public",
