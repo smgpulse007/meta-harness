@@ -4,6 +4,7 @@ export default defineConfig({
   title: "Meta Harness",
   description: "Evidence-gated execution harness for coding-agent implementation workflows.",
   base: "/meta-harness/",
+  head: [["link", { rel: "icon", type: "image/svg+xml", href: "/meta-harness/logo.svg" }]],
   cleanUrls: true,
   lastUpdated: true,
   themeConfig: {
