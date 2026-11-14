@@ -1,0 +1,22 @@
+protocol_version: 0.1.0
+current_phase_id: portfolio_repair_20261114
+current_phase_status: pass_with_risks
+auto_continue_allowed: true
+human_acceptance_required: false
+human_acceptance_present: true
+required_files_to_read:
+  - docs/checkpoints/portfolio_repair_20261114/checkpoint.md
+  - docs/checkpoints/portfolio_repair_20261114/proof.json
+  - docs/checkpoints/portfolio_repair_20261114/commands.md
+  - docs/checkpoints/portfolio_repair_20261114/artifacts/review-disposition.md
+carry_forward_risks:
+  - Registry audit results are not exploitability assessments.
+  - Fake adapter output does not establish native-agent implementation.
+  - Exported core schema types now require Zod 4; this is a pre-1.0 minor change.
+  - The pre-existing doctor JSON-only presentation and docs chunk warning remain.
+  - Package publishing and native agent dispatch are outside this slice.
+blocking_risks: []
+required_validation_preface:
+  - Verify exact-head PR CI before merging.
+  - Verify merged main checks and live Pages assets before claiming deployment health.
+allowed_next_transition: verify_authorized_oss_release

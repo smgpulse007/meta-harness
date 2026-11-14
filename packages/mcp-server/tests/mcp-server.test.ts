@@ -1,7 +1,66 @@
 import { describe, expect, it } from "vitest";
 import { createMetaHarnessServer } from "../src/index.js";
+import { Client } from "@modelcontextprotocol/sdk/client/index.js";
+import { InMemoryTransport } from "@modelcontextprotocol/sdk/inMemory.js";
 
 describe("mcp server", () => {
+  it("lists and validates record-valued tools over the MCP protocol", async () => {
+    const server = createMetaHarnessServer({ workspaceRoot: process.cwd(), mode: "read-only" });
+    const client = new Client({ name: "schema-regression", version: "1.0.0" });
+    const [clientTransport, serverTransport] = InMemoryTransport.createLinkedPair();
+    try {
+      await Promise.all([server.connect(serverTransport), client.connect(clientTransport)]);
+      const listed = await client.listTools();
+      expect(listed.tools.some((tool) => tool.name === "render_template")).toBe(true);
+      const templates = await client.callTool({ name: "list_templates", arguments: {} });
+      const content = templates.content as Array<{ type: string; text: string }>;
+      const names = JSON.parse(content[0]!.text) as string[];
+      expect(names).toHaveLength(4);
+      for (const template of names) {
+        const rendered = await client.callTool({
+          name: "render_template",
+          arguments: { template }
+        });
+        expect(rendered.isError).not.toBe(true);
+      }
+      const nextAction = await client.callTool({
+        name: "get_default_next_action_shape",
+        arguments: {}
+      });
+      const nextContent = nextAction.content as Array<{ type: string; text: string }>;
+      expect(JSON.parse(nextContent[0]!.text).current_phase_id).toBe("phase_001");
+
+      const valid = await client.callTool({
+        name: "render_template",
+        arguments: {
+          template: "worker_prompt",
+          values: { objective: "Synthetic task", budget: 12, enabled: false }
+        }
+      });
+      expect(valid.isError).not.toBe(true);
+      const invalid = await client.callTool({
+        name: "render_template",
+        arguments: {
+          template: "worker_prompt",
+          values: { objective: ["invalid nested value"] }
+        }
+      });
+      expect(invalid.isError).toBe(true);
+      const blocked = await client.callTool({
+        name: "claim_slice",
+        arguments: {
+          phaseId: "phase_001",
+          sliceId: "slice_001",
+          owner: "test"
+        }
+      });
+      expect(blocked.isError).toBe(true);
+    } finally {
+      await client.close();
+      await server.close();
+    }
+  });
+
   it("creates a stdio-capable server", () => {
     const server = createMetaHarnessServer({ workspaceRoot: process.cwd(), mode: "read-only" });
     expect(server.isConnected()).toBe(false);

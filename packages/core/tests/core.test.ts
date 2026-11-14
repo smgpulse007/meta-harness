@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { SideEffectPolicySchema, HarnessStateSchema } from "../src/schemas.js";
 import {
   analyzeSliceDag,
   auditCheckpoint,
@@ -59,6 +60,20 @@ function validPlan(): SlicePlan {
 }
 
 describe("core gates", () => {
+  it("retains read-only policy and empty state defaults after the schema upgrade", () => {
+    expect(SideEffectPolicySchema.parse({})).toEqual(defaultSideEffectPolicy);
+    const state = HarnessStateSchema.parse({
+      protocol_version: "0.1.0",
+      state: "DECIDE_STOP_CONDITION",
+      updated_at: "2026-11-14T00:00:00Z"
+    });
+    expect(state.completed_phases).toEqual([]);
+    expect(state.current_phase_id).toBeUndefined();
+    expect(SideEffectPolicySchema.safeParse({ authorization_required: "false" }).success).toBe(
+      false
+    );
+  });
+
   it("orders slice dependencies", () => {
     const result = analyzeSliceDag(validPlan());
     expect(result.cycles).toEqual([]);

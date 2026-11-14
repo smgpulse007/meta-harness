@@ -17,7 +17,7 @@ const context = {
   stderr: (message: string) => process.stderr.write(message)
 };
 
-await initCommand(context, { profile: "strict" });
+await initCommand(context);
 await writeFile(
   path.join(cwd, "docs", "implementation_spec.md"),
   "# Tiny Spec\n\n- Must demonstrate fake adapter execution.\n",

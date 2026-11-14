@@ -115,7 +115,8 @@ export async function buildDoctorReport(
           ? "Harness state has not been initialized in this workspace."
           : "Harness state file is present.",
       evidence: ".meta-harness/state.json",
-      remediation: currentPhase === "not initialized" ? "Run mh init --profile strict." : undefined
+      remediation:
+        currentPhase === "not initialized" ? "Run mh init in the target workspace." : undefined
     },
     fileCheck(
       "schemas",

@@ -1,0 +1,14 @@
+{
+  "recorded_utc": "2026-11-14T05:45:49.033816+00:00",
+  "kind": "animation_rendered_from_actual_command_output",
+  "command": "node scripts/demo.mjs (after pnpm build)",
+  "exit_code": 0,
+  "output": "Meta Harness / real CLI, disposable synthetic workspace\n\n$ mh init\nInitialized Meta Harness with the default read-only side-effect policy.\nVerified generated policy: read_only; no dangerous operations allowed.\n\n$ mh compile-spec --spec docs/implementation_spec.md\nCompiled 1 requirements.\n\n$ mh plan --phase phase_001\nWrote slice plan for phase_001.\n\n$ mh lint-plan --phase phase_001\n{\n  \"ok\": true,\n  \"findings\": []\n}\n\nPlan prepared and checked. No coding agent was dispatched; no implementation is claimed.\n",
+  "source_hash_format": "UTF-8 bytes with CRLF normalized to LF, matching Git blobs",
+  "source_sha256": {
+    "scripts/demo.mjs": "56d12d9361a6919e76bfd08cb90e20041d31a38abaeb3e6562bf0c9132dccf78",
+    "packages/cli/src/commands/init.ts": "1c743feafe17956aefc3f406bac69589caa601e2a078dd2354c399f6ce8372cb",
+    "packages/cli/src/index.ts": "88d94d345bd4ea2b47ce215ef81da849ee0418e895418b12229a3137b64ca0a6"
+  },
+  "gif_sha256": "2e05e4d103c5224038c42c13d89bfb9525e3d22a4ab31f982a65942d0f812a10"
+}

@@ -41,7 +41,8 @@
     "changeset": "changeset",
     "changeset:status": "changeset status",
     "version-packages": "changeset version",
-    "release:dry-run": "pnpm run clean && pnpm run ci && pnpm docs:build && pnpm audit --prod && pnpm run package:dry-run && pnpm run changeset:status"
+    "release:dry-run": "pnpm run clean && pnpm run ci && pnpm docs:build && pnpm audit --prod && pnpm run package:dry-run && pnpm run changeset:status",
+    "demo": "pnpm build && node scripts/demo.mjs"
   },
   "keywords": [
     "coding-agents",

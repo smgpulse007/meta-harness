@@ -9,15 +9,18 @@ import {
   assertSafeId,
   buildDefaultNextAction,
   createInitialState,
+  CommandEvidenceSchema,
   defaultParentPrompt,
   defaultRecoveryPrompt,
   defaultReviewerPrompt,
   defaultWorkerPrompt,
   getReadySlices,
   HARNESS_PROTOCOL_VERSION,
+  HarnessStateSchema,
   readJsonFile,
   readTextFile,
   readYamlFile,
+  redactSecrets,
   renderTemplate,
   resolveInsideWorkspace,
   safeIdPattern,
@@ -39,7 +42,18 @@ export interface MetaHarnessServerOptions {
 }
 
 const safeId = () => z.string().regex(safeIdPattern, "unsafe id");
-const checkpointPath = (phaseId: string) => `.meta-harness/checkpoints/${assertSafeId(phaseId, "phaseId")}`;
+const checkpointPath = (phaseId: string) =>
+  `.meta-harness/checkpoints/${assertSafeId(phaseId, "phaseId")}`;
+const commandText = z.string().max(4096);
+const outputText = z.string().max(16384);
+const boundedPacket = SlicePacketSchema.extend({
+  validation_command_outputs: z.array(
+    CommandEvidenceSchema.extend({
+      command: commandText.min(1),
+      output_excerpt: outputText.optional()
+    })
+  )
+});
 
 export function createMetaHarnessServer(options: MetaHarnessServerOptions): McpServer {
   const workspaceRoot = path.resolve(options.workspaceRoot);
@@ -70,15 +84,18 @@ function registerTools(server: McpServer, workspaceRoot: string, mode: McpServer
   server.registerTool(
     "get_harness_status",
     { title: "Get harness status", description: "Read .meta-harness/state.json." },
-    async () => textResult(await readOptionalJson(workspaceRoot, ".meta-harness/state.json", createInitialState()))
+    async () => textResult(await readHarnessState(workspaceRoot))
   );
 
   server.registerTool(
     "get_current_phase",
     { title: "Get current phase", description: "Read the current phase from harness state." },
     async () => {
-      const state = await readOptionalJson<any>(workspaceRoot, ".meta-harness/state.json", createInitialState());
-      return textResult({ current_phase_id: state.current_phase_id ?? "phase_001", state: state.state });
+      const state = await readHarnessState(workspaceRoot);
+      return textResult({
+        current_phase_id: state.current_phase_id ?? "phase_001",
+        state: state.state
+      });
     }
   );
 
@@ -121,7 +138,10 @@ function registerTools(server: McpServer, workspaceRoot: string, mode: McpServer
       }
     },
     async ({ phaseId, completedSliceIds }) => {
-      const plan = await readYamlFile<SlicePlan>(workspaceRoot, `${checkpointPath(phaseId)}/slice_plan.yaml`);
+      const plan = await readYamlFile<SlicePlan>(
+        workspaceRoot,
+        `${checkpointPath(phaseId)}/slice_plan.yaml`
+      );
       return textResult(getReadySlices(plan, completedSliceIds));
     }
   );
@@ -135,11 +155,15 @@ function registerTools(server: McpServer, workspaceRoot: string, mode: McpServer
     },
     async ({ phaseId, sliceId, owner }) => {
       assertWriteMode(mode, "claim_slice");
-      return writeJsonResult(workspaceRoot, `${checkpointPath(phaseId)}/artifacts/claim_${sliceId}.json`, {
-        sliceId,
-        owner,
-        claimed_at: new Date().toISOString()
-      });
+      return writeJsonResult(
+        workspaceRoot,
+        `${checkpointPath(phaseId)}/artifacts/claim_${sliceId}.json`,
+        {
+          sliceId,
+          owner,
+          claimed_at: new Date().toISOString()
+        }
+      );
     }
   );
 
@@ -151,7 +175,10 @@ function registerTools(server: McpServer, workspaceRoot: string, mode: McpServer
       inputSchema: { phaseId: safeId().default("phase_001"), sliceId: safeId() }
     },
     async ({ phaseId, sliceId }) => {
-      const plan = await readYamlFile<SlicePlan>(workspaceRoot, `${checkpointPath(phaseId)}/slice_plan.yaml`);
+      const plan = await readYamlFile<SlicePlan>(
+        workspaceRoot,
+        `${checkpointPath(phaseId)}/slice_plan.yaml`
+      );
       return textResult(plan.slices.find((slice) => slice.id === sliceId) ?? null);
     }
   );
@@ -165,8 +192,19 @@ function registerTools(server: McpServer, workspaceRoot: string, mode: McpServer
     },
     async ({ phaseId, packet }) => {
       assertCheckpointWriteMode(mode, "submit_slice_packet");
-      const parsed = SlicePacketSchema.parse(packet);
+      const encoded = JSON.stringify(packet);
+      if (!encoded || Buffer.byteLength(encoded, "utf8") > 262144) {
+        throw new Error("Slice packet must be JSON no larger than 256 KiB.");
+      }
+      const parsed = boundedPacket.parse(packet);
       assertSafeId(parsed.slice_id, "packet.slice_id");
+      parsed.validation_command_outputs = parsed.validation_command_outputs.map((entry) => ({
+        ...entry,
+        command: redactSecrets(entry.command),
+        ...(entry.output_excerpt !== undefined
+          ? { output_excerpt: redactSecrets(entry.output_excerpt) }
+          : {})
+      }));
       return writeYamlResult(
         workspaceRoot,
         `${checkpointPath(phaseId)}/subagent_packets/${parsed.slice_id}.packet.yaml`,
@@ -179,13 +217,13 @@ function registerTools(server: McpServer, workspaceRoot: string, mode: McpServer
     "record_command_output",
     {
       title: "Record command output",
-      description: "Append a command evidence record without executing a command.",
+      description: "Write bounded, pattern-redacted command evidence without executing a command.",
       inputSchema: {
         phaseId: safeId().default("phase_001"),
         commandId: safeId(),
-        command: z.string(),
+        command: commandText,
         exitCode: z.number().int().nullable(),
-        outputExcerpt: z.string().default("")
+        outputExcerpt: outputText.default("")
       }
     },
     async ({ phaseId, commandId, command, exitCode, outputExcerpt }) => {
@@ -193,9 +231,10 @@ function registerTools(server: McpServer, workspaceRoot: string, mode: McpServer
       const safePath = `${checkpointPath(phaseId)}/artifacts/command_${commandId}.json`;
       return writeJsonResult(workspaceRoot, safePath, {
         commandId,
-        command,
+        command: redactSecrets(command),
         exitCode,
-        outputExcerpt,
+        outputExcerpt: redactSecrets(outputExcerpt),
+        redaction: "secret_patterns",
         recorded_at: new Date().toISOString()
       });
     }
@@ -243,7 +282,10 @@ function registerTools(server: McpServer, workspaceRoot: string, mode: McpServer
       inputSchema: { phaseId: safeId().default("phase_001") }
     },
     async ({ phaseId }) => {
-      const plan = await readYamlFile<SlicePlan>(workspaceRoot, `${checkpointPath(phaseId)}/slice_plan.yaml`);
+      const plan = await readYamlFile<SlicePlan>(
+        workspaceRoot,
+        `${checkpointPath(phaseId)}/slice_plan.yaml`
+      );
       return textResult(plan.slices.flatMap((slice) => slice.validation_commands));
     }
   );
@@ -271,12 +313,16 @@ function registerTools(server: McpServer, workspaceRoot: string, mode: McpServer
           throw new Error(`validation evidencePath does not exist: ${evidencePath}`);
         }
       }
-      return writeJsonResult(workspaceRoot, `${checkpointPath(phaseId)}/artifacts/validation_${commandId}.json`, {
-        commandId,
-        status,
-        evidencePath,
-        recorded_at: new Date().toISOString()
-      });
+      return writeJsonResult(
+        workspaceRoot,
+        `${checkpointPath(phaseId)}/artifacts/validation_${commandId}.json`,
+        {
+          commandId,
+          status,
+          evidencePath,
+          recorded_at: new Date().toISOString()
+        }
+      );
     }
   );
 
@@ -289,7 +335,10 @@ function registerTools(server: McpServer, workspaceRoot: string, mode: McpServer
     },
     async ({ phaseId }) => {
       const proof = await readJsonFile(workspaceRoot, `${checkpointPath(phaseId)}/proof.json`);
-      const nextAction = await readYamlFile(workspaceRoot, `${checkpointPath(phaseId)}/next_action.yaml`);
+      const nextAction = await readYamlFile(
+        workspaceRoot,
+        `${checkpointPath(phaseId)}/next_action.yaml`
+      );
       return textResult(
         await auditCheckpoint({
           workspaceRoot,
@@ -321,10 +370,14 @@ function registerTools(server: McpServer, workspaceRoot: string, mode: McpServer
     },
     async ({ phaseId, summary }) => {
       assertCheckpointWriteMode(mode, "write_checkpoint");
-      return writeJsonResult(workspaceRoot, `${checkpointPath(phaseId)}/artifacts/mcp_checkpoint_marker.json`, {
-        summary,
-        written_at: new Date().toISOString()
-      });
+      return writeJsonResult(
+        workspaceRoot,
+        `${checkpointPath(phaseId)}/artifacts/mcp_checkpoint_marker.json`,
+        {
+          summary,
+          written_at: new Date().toISOString()
+        }
+      );
     }
   );
 
@@ -347,10 +400,16 @@ function registerTools(server: McpServer, workspaceRoot: string, mode: McpServer
       inputSchema: { requirementId: safeId() }
     },
     async ({ requirementId }) => {
-      const ledger = await readOptionalJson<any>(workspaceRoot, ".meta-harness/requirement_ledger.json", {
-        requirements: []
-      });
-      return textResult(ledger.requirements.find((requirement: any) => requirement.id === requirementId) ?? null);
+      const ledger = await readOptionalJson<any>(
+        workspaceRoot,
+        ".meta-harness/requirement_ledger.json",
+        {
+          requirements: []
+        }
+      );
+      return textResult(
+        ledger.requirements.find((requirement: any) => requirement.id === requirementId) ?? null
+      );
     }
   );
 
@@ -366,12 +425,16 @@ function registerTools(server: McpServer, workspaceRoot: string, mode: McpServer
     },
     async ({ requirementId, status }) => {
       assertWriteMode(mode, "update_requirement_status");
-      const ledger = await readOptionalJson<any>(workspaceRoot, ".meta-harness/requirement_ledger.json", {
-        protocol_version: HARNESS_PROTOCOL_VERSION,
-        generated_at: new Date().toISOString(),
-        requirements: [],
-        limitations: []
-      });
+      const ledger = await readOptionalJson<any>(
+        workspaceRoot,
+        ".meta-harness/requirement_ledger.json",
+        {
+          protocol_version: HARNESS_PROTOCOL_VERSION,
+          generated_at: new Date().toISOString(),
+          requirements: [],
+          limitations: []
+        }
+      );
       for (const requirement of ledger.requirements) {
         if (requirement.id === requirementId) {
           requirement.implementation_status = status;
@@ -384,14 +447,7 @@ function registerTools(server: McpServer, workspaceRoot: string, mode: McpServer
   server.registerTool(
     "list_templates",
     { title: "List templates", description: "List built-in prompt templates." },
-    async () =>
-      textResult([
-        "parent_prompt",
-        "worker_prompt",
-        "reviewer_prompt",
-        "recovery_prompt",
-        "next_action"
-      ])
+    async () => textResult(["parent_prompt", "worker_prompt", "reviewer_prompt", "recovery_prompt"])
   );
 
   server.registerTool(
@@ -401,7 +457,7 @@ function registerTools(server: McpServer, workspaceRoot: string, mode: McpServer
       description: "Render a built-in template.",
       inputSchema: {
         template: z.enum(["parent_prompt", "worker_prompt", "reviewer_prompt", "recovery_prompt"]),
-        values: z.record(z.union([z.string(), z.number(), z.boolean()])).default({})
+        values: z.record(z.string(), z.union([z.string(), z.number(), z.boolean()])).default({})
       }
     },
     async ({ template, values }) => {
@@ -430,10 +486,18 @@ function registerResources(server: McpServer, workspaceRoot: string): void {
   const resources: Array<[string, string, string]> = [
     ["status", "harness://status", ".meta-harness/state.json"],
     ["phase-current", "harness://phase/current", "docs/implementation_harness/phase_manifest.yaml"],
-    ["slice-plan-current", "harness://slice-plan/current", ".meta-harness/checkpoints/phase_001/slice_plan.yaml"],
+    [
+      "slice-plan-current",
+      "harness://slice-plan/current",
+      ".meta-harness/checkpoints/phase_001/slice_plan.yaml"
+    ],
     ["requirements", "harness://requirements", ".meta-harness/requirement_ledger.json"],
     ["proof-latest", "harness://proof/latest", ".meta-harness/checkpoints/phase_001/proof.json"],
-    ["checkpoint-latest", "harness://checkpoint/latest", ".meta-harness/checkpoints/phase_001/checkpoint.md"],
+    [
+      "checkpoint-latest",
+      "harness://checkpoint/latest",
+      ".meta-harness/checkpoints/phase_001/checkpoint.md"
+    ],
     ["templates-parent", "harness://templates/parent", "templates/parent_prompt.md"],
     ["templates-worker", "harness://templates/worker", "templates/worker_prompt.md"],
     ["templates-reviewer", "harness://templates/reviewer", "templates/reviewer_prompt.md"],
@@ -470,12 +534,14 @@ function registerPrompts(server: McpServer): void {
   server.registerPrompt(
     "reviewer_prompt",
     { title: "Reviewer prompt", argsSchema: { phaseId: safeId().default("phase_001") } },
-    async ({ phaseId }) => promptResult(renderTemplate(defaultReviewerPrompt, { phase_id: phaseId }))
+    async ({ phaseId }) =>
+      promptResult(renderTemplate(defaultReviewerPrompt, { phase_id: phaseId }))
   );
   server.registerPrompt(
     "recovery_prompt",
     { title: "Recovery prompt", argsSchema: { phaseId: safeId().default("phase_001") } },
-    async ({ phaseId }) => promptResult(renderTemplate(defaultRecoveryPrompt, { phase_id: phaseId }))
+    async ({ phaseId }) =>
+      promptResult(renderTemplate(defaultRecoveryPrompt, { phase_id: phaseId }))
   );
   server.registerPrompt(
     "continuation_prompt",
@@ -495,16 +561,35 @@ function assertWriteMode(mode: McpServerMode, toolName: string): void {
 
 function assertCheckpointWriteMode(mode: McpServerMode, toolName: string): void {
   if (mode !== "checkpoint-write" && mode !== "workspace-write") {
-    throw new Error(`${toolName} requires checkpoint-write or workspace-write mode; current mode is ${mode}`);
+    throw new Error(
+      `${toolName} requires checkpoint-write or workspace-write mode; current mode is ${mode}`
+    );
   }
 }
 
-async function readOptionalJson<T>(workspaceRoot: string, relativePath: string, fallback: T): Promise<T> {
+async function readOptionalJson<T>(
+  workspaceRoot: string,
+  relativePath: string,
+  fallback: T
+): Promise<T> {
   try {
     return await readJsonFile<T>(workspaceRoot, relativePath);
-  } catch {
-    return fallback;
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code === "ENOENT") return fallback;
+    // Parser errors can contain source excerpts. Do not echo malformed state.
+    throw new Error(`Unable to read valid JSON from ${relativePath}.`, { cause: error });
   }
+}
+
+async function readHarnessState(workspaceRoot: string) {
+  const value = await readOptionalJson(
+    workspaceRoot,
+    ".meta-harness/state.json",
+    createInitialState()
+  );
+  const result = HarnessStateSchema.safeParse(value);
+  if (!result.success) throw new Error("Invalid harness state in .meta-harness/state.json.");
+  return result.data;
 }
 
 async function writeJsonResult(workspaceRoot: string, relativePath: string, value: unknown) {

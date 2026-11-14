@@ -82,7 +82,7 @@ async function buildEvidenceExcerpt(
     protocol_version: "0.1.0",
     raw_path: input.input,
     raw_sha256: createHash("sha256").update(raw).digest("hex"),
-    ...(input.command ? { command: input.command } : {}),
+    ...(input.command ? { command: redactSecrets(input.command) } : {}),
     ...(input.exitCode !== undefined ? { exit_code: input.exitCode } : {}),
     recorded_at: input.timestamp ?? new Date().toISOString(),
     excerpt_line_count: excerptLines,

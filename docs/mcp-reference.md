@@ -33,6 +33,14 @@ The MCP server is intended to expose stable harness state:
 
 Write-capable tools must preserve path containment, safe IDs, and explicit mode checks.
 
+## Evidence records and state errors
+
+`record_command_output` writes a record; it does not execute the command. Commands are limited to 4,096 characters and output excerpts to 16,384 characters. Oversized inputs are rejected before writing. Submitted slice packets have the same command-field limits and a total JSON size limit of 256 KiB.
+
+Command and output fields use the same known-secret-pattern redaction as CLI log summaries, including command evidence inside slice packets. This is best-effort pattern matching, not comprehensive sensitive-data detection. Review all packet fields and remove secrets or confidential data before submitting them. Other packet fields are not automatically redacted.
+
+Missing harness state receives the initial-state default. Malformed JSON, invalid state shapes, and unreadable state return errors instead of being treated as a fresh workspace. Parser errors do not echo the malformed file contents.
+
 ## Host Guidance
 
 Use local stdio MCP for workstation development. Use remote Streamable HTTP only after an explicit auth, audit, and deployment design review.

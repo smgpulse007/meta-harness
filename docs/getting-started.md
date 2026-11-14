@@ -5,6 +5,8 @@ Meta Harness is currently installed from source. The root package is private; th
 Install dependencies and run the current verification gate:
 
 ```bash
+git clone https://github.com/smgpulse007/meta-harness.git
+cd meta-harness
 corepack enable
 pnpm install --frozen-lockfile
 pnpm run ci
@@ -16,38 +18,54 @@ Run the local CLI from the workspace:
 node packages/cli/dist/index.js --help
 ```
 
-Initialize a strict harness workspace:
+Try the reproducible walkthrough first:
+
+![Actual disposable CLI walkthrough](/cli-demo.gif)
 
 ```bash
-node packages/cli/dist/index.js init --profile strict
+pnpm demo
 ```
 
-Register a spec and compile requirements:
+This executes the real CLI in a disposable temporary directory, checks the generated policy, and prepares a synthetic plan. It does not dispatch an agent or claim an implementation.
+
+For your own project, initialize a separate target workspace. From the `meta-harness` source checkout created above:
 
 ```bash
-node packages/cli/dist/index.js ingest --spec docs/implementation_spec.md --manifest docs/implementation_harness/phase_manifest.yaml
-node packages/cli/dist/index.js compile-spec --spec docs/implementation_spec.md
+mkdir ../my-harness-workspace
+cd ../my-harness-workspace
+node ../meta-harness/packages/cli/dist/index.js init
+```
+
+Keep using the built CLI from the source checkout while your working directory stays in the target project. If you chose a different checkout name, adjust the path. There is one default read-only side-effect policy. The former `--profile` names did not implement different policies and now fail as unsupported options.
+
+Do not use `init --force` to experiment in the source checkout; it intentionally overwrites harness files. `pnpm demo` is the isolated alternative.
+
+Create `docs/implementation_spec.md` in the target workspace with your requirements, then register it and compile requirements:
+
+```bash
+node ../meta-harness/packages/cli/dist/index.js ingest --spec docs/implementation_spec.md --manifest docs/implementation_harness/phase_manifest.yaml
+node ../meta-harness/packages/cli/dist/index.js compile-spec --spec docs/implementation_spec.md
 ```
 
 Create and check a plan:
 
 ```bash
-node packages/cli/dist/index.js plan --phase phase_001
-node packages/cli/dist/index.js lint-plan --phase phase_001
+node ../meta-harness/packages/cli/dist/index.js plan --phase phase_001
+node ../meta-harness/packages/cli/dist/index.js lint-plan --phase phase_001
 ```
 
 Dispatch through the universal filesystem adapter:
 
 ```bash
-node packages/cli/dist/index.js dispatch --phase phase_001 --agent filesystem
+node ../meta-harness/packages/cli/dist/index.js dispatch --phase phase_001 --agent filesystem
 ```
 
 Collect packets, verify, and checkpoint:
 
 ```bash
-node packages/cli/dist/index.js collect --phase phase_001
-node packages/cli/dist/index.js verify --phase phase_001
-node packages/cli/dist/index.js checkpoint --phase phase_001 --status complete_pending_human_review
+node ../meta-harness/packages/cli/dist/index.js collect --phase phase_001
+node ../meta-harness/packages/cli/dist/index.js verify --phase phase_001
+node ../meta-harness/packages/cli/dist/index.js checkpoint --phase phase_001 --status complete_pending_human_review
 ```
 
 Use `--agent fake` only for deterministic harness tests and examples. Fake adapter output is simulation evidence, not production implementation proof.
@@ -55,7 +73,7 @@ Use `--agent fake` only for deterministic harness tests and examples. Fake adapt
 Continue from the machine-readable contract:
 
 ```bash
-node packages/cli/dist/index.js continue --phase phase_001
+node ../meta-harness/packages/cli/dist/index.js continue --phase phase_001
 ```
 
 `next_action.yaml` is the continuation source of truth. A new parent coordinator should read it before deciding whether to continue, recover, or stop for review.

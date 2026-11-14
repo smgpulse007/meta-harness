@@ -1,0 +1,27 @@
+{
+  "date_utc": "2026-11-14",
+  "test_files": 6,
+  "tests_passed": 44,
+  "audit": {
+    "vulnerabilities": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 0,
+      "critical": 0
+    },
+    "dependencies": 94,
+    "devDependencies": 0,
+    "optionalDependencies": 0,
+    "totalDependencies": 94
+  },
+  "versions": {
+    "node": "22.16.0",
+    "pnpm": "11.7.0",
+    "mcp_sdk": "1.32.2",
+    "zod": "4.6.7",
+    "fast_uri_3x": "3.1.9"
+  },
+  "ci_log_sha256": "198e053ac62860ce68b7914cd09cbe9adb8b9b3b17961f85ad8d5a53328ea52c",
+  "scope": "Local command evidence; hosted release validation is a separate gate."
+}

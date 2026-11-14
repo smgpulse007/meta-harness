@@ -28,13 +28,9 @@ export const PhaseDefinitionSchema = z.object({
   output_checkpoint: z.string().min(1),
   acceptance_criteria: z.array(z.string().min(1)).default([]),
   validation_commands: z.array(ValidationCommandSchema).default([]),
-  allowed_terminal_statuses: z.array(z.enum(phaseTerminalStatuses)).default([
-    "complete",
-    "complete_pending_human_review",
-    "pass_with_risks",
-    "blocked",
-    "failed"
-  ]),
+  allowed_terminal_statuses: z
+    .array(z.enum(phaseTerminalStatuses))
+    .default(["complete", "complete_pending_human_review", "pass_with_risks", "blocked", "failed"]),
   human_acceptance_required: z.boolean().default(false),
   side_effect_policy: z.string().min(1).default("default"),
   slices: z.array(z.string().min(1)).default([]),
@@ -115,7 +111,7 @@ export const SlicePacketSchema = z.object({
   risks: z.array(z.string()),
   next_dependencies: z.array(z.string()),
   auto_continue_recommendation: z.enum(["continue", "stop", "human_review"]),
-  delegation_metrics: z.record(z.unknown()),
+  delegation_metrics: z.record(z.string(), z.unknown()),
   interruptions: z.array(z.string()),
   takeovers: z.array(z.string()),
   recovery_events: z.array(z.string())
@@ -184,7 +180,13 @@ export const AdapterRegistrySchema = z.object({
     z.object({
       id: z.string().min(1),
       displayName: z.string().min(1),
-      availability: z.enum(["available", "unavailable", "configured", "filesystem-only", "planned"]),
+      availability: z.enum([
+        "available",
+        "unavailable",
+        "configured",
+        "filesystem-only",
+        "planned"
+      ]),
       tier: z.union([z.literal(0), z.literal(1), z.literal(2), z.literal(3)]),
       reason: z.string(),
       capabilities: AdapterCapabilitiesSchema
