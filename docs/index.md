@@ -41,6 +41,8 @@ Run `pnpm demo` after installation. The walkthrough initializes, compiles, plans
 Meta Harness is pre-1.0. The source checkout is the supported onboarding path until a maintainer-approved package release.
 
 ```bash
+git clone https://github.com/smgpulse007/meta-harness.git
+cd meta-harness
 corepack enable
 pnpm install --frozen-lockfile
 pnpm run ci

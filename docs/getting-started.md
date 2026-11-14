@@ -20,7 +20,7 @@ node packages/cli/dist/index.js --help
 
 Try the reproducible walkthrough first:
 
-![Actual disposable CLI walkthrough](/cli-demo.gif)
+![Actual disposable CLI walkthrough](https://smgpulse007.github.io/meta-harness/cli-demo.gif)
 
 ```bash
 pnpm demo
