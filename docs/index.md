@@ -30,6 +30,12 @@ features:
     details: Use instruction files, MCP, skills, and prompt-file fallback without overclaiming native dispatch support.
 ---
 
+## See the CLI in action
+
+![Real CLI walkthrough in a disposable synthetic workspace](/cli-demo.gif)
+
+Run `pnpm demo` after installation. The walkthrough initializes, compiles, plans, and checks; it does not launch a coding agent.
+
 ## Install From Source
 
 Meta Harness is pre-1.0. The source checkout is the supported onboarding path until a maintainer-approved package release.

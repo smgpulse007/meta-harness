@@ -29,7 +29,6 @@ export function buildCli(cwd = process.cwd()): Command {
   program
     .command("init")
     .option("--force", "overwrite generated harness files")
-    .option("--profile <profile>", "basic, strict, or trading-safe", "basic")
     .action((options) => run(() => initCommand(context, options), context));
 
   program

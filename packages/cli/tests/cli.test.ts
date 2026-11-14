@@ -1,10 +1,11 @@
-import { mkdir, mkdtemp, readFile, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, writeFile, readdir } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import { execFile } from "node:child_process";
 import os from "node:os";
 import path from "node:path";
 import { promisify } from "node:util";
 import { describe, expect, it } from "vitest";
+import { parse as parseYaml } from "yaml";
 import { buildBudgetReport } from "../src/commands/budget.js";
 import { compileSpecCommand } from "../src/commands/compile-spec.js";
 import { contextPackCommand } from "../src/commands/context-pack.js";
@@ -24,6 +25,13 @@ const execFileAsync = promisify(execFile);
 const builtCliPath = path.resolve("packages/cli/dist/index.js");
 
 describe("cli commands", () => {
+  it("rejects profile options from JavaScript callers before writing anything", async () => {
+    const cwd = await tempRepo();
+    const options = { profile: "trading-safe" } as unknown as Parameters<typeof initCommand>[1];
+    await expect(initCommand({ cwd }, options)).rejects.toThrow(/profiles are unsupported/);
+    expect(await readdir(cwd)).toEqual([]);
+  });
+
   it("initializes, compiles, plans, and lints", async () => {
     const cwd = await tempRepo();
     const output: string[] = [];
@@ -32,7 +40,16 @@ describe("cli commands", () => {
       stdout: (message: string) => output.push(message),
       stderr: (message: string) => output.push(message)
     };
-    await initCommand(context, { profile: "strict" });
+    await initCommand(context);
+    const policy = parseYaml(
+      await readFile(
+        path.join(cwd, "docs", "implementation_harness", "side_effect_policy.yaml"),
+        "utf8"
+      )
+    );
+    expect(policy.default_posture).toBe("read_only");
+    expect(policy.allowed_dangerous_operations).toEqual([]);
+    expect(policy.authorization_required).toBe(true);
     await writeFile(
       path.join(cwd, "docs", "implementation_spec.md"),
       "# Spec\n\n- Must add a harness workflow.\n",
@@ -51,6 +68,20 @@ describe("cli commands", () => {
     expect(stdout).toContain("budget");
     expect(stdout).toContain("summarize-log");
   });
+
+  it.skipIf(!existsSync(builtCliPath)).each(["basic", "strict", "trading-safe", "unknown"])(
+    "rejects unsupported profile %s before writing workspace state",
+    async (profile) => {
+      const cwd = await tempRepo();
+      await expect(
+        execFileAsync(process.execPath, [builtCliPath, "init", "--profile", profile], { cwd })
+      ).rejects.toMatchObject({
+        code: 1,
+        stderr: expect.stringContaining("unknown option '--profile'")
+      });
+      expect(await readdir(cwd)).toEqual([]);
+    }
+  );
 
   it("emits target-specific instruction and MCP compatibility files", async () => {
     const cwd = await tempRepo();
@@ -112,7 +143,7 @@ describe("cli commands", () => {
       stdout: (message: string) => output.push(message),
       stderr: (message: string) => output.push(message)
     };
-    await initCommand(context, { profile: "strict" });
+    await initCommand(context);
     output.length = 0;
 
     await contextPackCommand(context, {
@@ -153,7 +184,7 @@ describe("cli commands", () => {
       stdout: (message: string) => output.push(message),
       stderr: (message: string) => output.push(message)
     };
-    await initCommand(context, { profile: "strict" });
+    await initCommand(context);
     await emitInstructionsCommand(context, { target: "all" });
     const skillBody = "# Meta Harness\n\nUse this skill for evidence-gated harness work.\n";
     for (const skillPath of [
@@ -201,7 +232,7 @@ describe("cli commands", () => {
       stdout: (_message: string) => undefined,
       stderr: (_message: string) => undefined
     };
-    await initCommand(context, { profile: "strict" });
+    await initCommand(context);
 
     await expect(contextPackCommand(context, { role: "observer" })).rejects.toThrow(
       /Unknown context-pack role/
@@ -218,7 +249,7 @@ describe("cli commands", () => {
       stdout: (_message: string) => undefined,
       stderr: (_message: string) => undefined
     };
-    await initCommand(context, { profile: "strict" });
+    await initCommand(context);
 
     const report = await buildDoctorReport(context, { phase: "phase_001" });
     expect(report.protocol_version).toBe("0.1.0");
@@ -260,7 +291,7 @@ describe("cli commands", () => {
 
     await summarizeLogCommand(context, {
       input: "command-output.txt",
-      command: "pnpm test",
+      command: "pnpm test --token=fixture-command-value",
       exitCode: "0",
       timestamp: "2026-07-07T00:00:00.000Z",
       format: "json",
@@ -269,7 +300,8 @@ describe("cli commands", () => {
 
     const excerpt = JSON.parse(output.join(""));
     expect(excerpt.raw_path).toBe("command-output.txt");
-    expect(excerpt.command).toBe("pnpm test");
+    expect(excerpt.command).toBe("pnpm test --[REDACTED]");
+    expect(JSON.stringify(excerpt)).not.toContain("fixture-command-value");
     expect(excerpt.exit_code).toBe(0);
     expect(excerpt.excerpt).toContain("[REDACTED]");
     expect(excerpt.excerpt).not.toContain("supersecretvalue");

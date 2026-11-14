@@ -16,6 +16,10 @@ It is not an LLM or a coding agent. It is the protocol, state machine, CLI, MCP 
 
 > No phase advances without verified evidence.
 
+![Actual CLI: initialize an isolated workspace, compile requirements, and check a plan](docs/public/cli-demo.gif)
+
+Run `pnpm demo` to reproduce this recording. It uses the real CLI with a synthetic spec; no coding agent is dispatched. [Recording evidence](docs/demo-recording.json).
+
 [Docs site](https://smgpulse007.github.io/meta-harness/) | [Getting started](docs/getting-started.md) | [Protocol](docs/protocol.md) | [Agent support](docs/agent-support-matrix.md) | [Security](SECURITY.md) | [Contributing](CONTRIBUTING.md) | [Release plan](docs/release-plan.md)
 
 ## Install From Source
@@ -29,6 +33,8 @@ Requirements:
 - pnpm 11.7.0
 
 ```bash
+git clone https://github.com/smgpulse007/meta-harness.git
+cd meta-harness
 corepack enable
 pnpm install --frozen-lockfile
 pnpm run ci
@@ -40,10 +46,10 @@ Run the local CLI:
 node packages/cli/dist/index.js --help
 ```
 
-Start a strict harness workspace:
+Try the real CLI in a disposable synthetic workspace:
 
 ```bash
-node packages/cli/dist/index.js init --profile strict
+pnpm demo
 ```
 
 For the full walkthrough, see [Getting started](docs/getting-started.md).
@@ -80,19 +86,14 @@ For the full walkthrough, see [Getting started](docs/getting-started.md).
 
 ## Quickstart
 
-The tiny TypeScript example exercises the harness without launching an external coding agent:
+The recorded walkthrough builds the CLI, initializes a fresh temporary workspace, verifies its generated read-only policy, and compiles and checks a synthetic plan. It removes only its own temporary directory afterward. No external coding agent is launched and no completed implementation is claimed:
 
 ```bash
 pnpm install --frozen-lockfile
-node packages/cli/dist/index.js init --profile strict
-node packages/cli/dist/index.js ingest --spec docs/implementation_spec.md --manifest docs/implementation_harness/phase_manifest.yaml
-node packages/cli/dist/index.js compile-spec --spec docs/implementation_spec.md
-node packages/cli/dist/index.js plan --phase phase_001
-node packages/cli/dist/index.js lint-plan --phase phase_001
-node packages/cli/dist/index.js dispatch --phase phase_001 --agent filesystem
+pnpm demo
 ```
 
-Use `--agent fake` for deterministic tests and examples. Fake adapter packets are simulation evidence only.
+For your own project, follow [Getting started](docs/getting-started.md) to initialize a separate target directory. Do not run `init --force` in this source checkout to try the example: that would overwrite its tracked harness state. There is one default read-only policy; the former no-op `--profile` option is no longer accepted.
 
 ## CLI
 

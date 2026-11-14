@@ -1,0 +1,57 @@
+{
+  "protocol_version": "0.1.0",
+  "phase_id": "portfolio_repair_20261114",
+  "claims": [
+    {
+      "id": "local-ci",
+      "claim": "The frozen install and complete local CI passed with 44 tests.",
+      "status": "command_verified",
+      "evidence": ["docs/checkpoints/portfolio_repair_20261114/commands.md"],
+      "required": true
+    },
+    {
+      "id": "init-contract",
+      "claim": "Unsupported initialization profiles reject before writes and default read-only policy is preserved.",
+      "status": "command_verified",
+      "evidence": [
+        "packages/cli/tests/cli.test.ts",
+        "docs/checkpoints/portfolio_repair_20261114/commands.md"
+      ],
+      "required": true
+    },
+    {
+      "id": "mcp-protocol",
+      "claim": "An in-memory MCP client/server exchange validates templates, defaults, scalar values and read-only rejection.",
+      "status": "command_verified",
+      "evidence": [
+        "packages/mcp-server/tests/mcp-server.test.ts",
+        "docs/checkpoints/portfolio_repair_20261114/commands.md"
+      ],
+      "required": true
+    },
+    {
+      "id": "actual-demo",
+      "claim": "The GIF was generated from the real CLI output in a disposable synthetic workspace.",
+      "status": "runtime_verified",
+      "evidence": ["docs/demo-recording.json"],
+      "required": true
+    },
+    {
+      "id": "production-audit",
+      "claim": "The current production registry audit reports zero findings after a 48-finding baseline.",
+      "status": "command_verified",
+      "evidence": [
+        "docs/checkpoints/portfolio_repair_20261114/artifacts/local-validation.json",
+        "docs/checkpoints/portfolio_repair_20261114/commands.md"
+      ],
+      "required": true
+    },
+    {
+      "id": "hosted-release",
+      "claim": "PR CI, post-merge checks and the deployed Pages assets have been verified for this change.",
+      "status": "not_verified",
+      "evidence": ["docs/checkpoints/portfolio_repair_20261114/next_action.yaml"],
+      "required": false
+    }
+  ]
+}
